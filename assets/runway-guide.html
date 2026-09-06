@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Runway — Member Guide · The ARC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500&family=Space+Mono&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0A0A0A;
+      color: #F2EFE8;
+      font-family: 'Barlow', sans-serif;
+      line-height: 1.7;
+      padding: 48px 24px 80px;
+    }
+    .page { max-width: 720px; margin: 0 auto; }
+
+    /* Header */
+    .hd-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #8A8478;
+      margin-bottom: 10px;
+    }
+    h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 52px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    h1 span { color: #C23B22; }
+    .hd-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: #8A8478;
+      margin-bottom: 48px;
+      letter-spacing: 1px;
+    }
+
+    /* Sections */
+    h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #C23B22;
+      border-bottom: 1px solid rgba(194,59,34,0.2);
+      padding-bottom: 8px;
+      margin: 40px 0 16px;
+    }
+    h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #F2EFE8;
+      margin: 24px 0 8px;
+    }
+    p { margin-bottom: 14px; font-size: 15px; color: #D8D4CC; }
+    strong { color: #F2EFE8; font-weight: 600; }
+    em { color: #8A8478; font-style: italic; }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+      font-size: 13px;
+    }
+    th {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #8A8478;
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid rgba(242,239,232,0.07);
+    }
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(242,239,232,0.04);
+      color: #D8D4CC;
+      vertical-align: top;
+    }
+    td:first-child { color: #F2EFE8; font-weight: 500; white-space: nowrap; }
+    tr:last-child td { border-bottom: none; }
+
+    /* Metric blocks */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 16px 0;
+    }
+    @media(max-width: 540px) { .metric-grid { grid-template-columns: 1fr; } }
+    .metric-card {
+      background: #141414;
+      border: 1px solid rgba(242,239,232,0.07);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+    .mc-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #8A8478;
+      margin-bottom: 6px;
+    }
+    .mc-value {
+      font-size: 14px;
+      color: #F2EFE8;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    .mc-desc { font-size: 12px; color: #8A8478; line-height: 1.5; }
+
+    /* Alert table */
+    .alert-row td:first-child { color: inherit; }
+    .red { color: #C23B22; }
+    .gold { color: #C9A227; }
+    .green { color: #57C25C; }
+
+    /* Privacy box */
+    .privacy-box {
+      background: linear-gradient(135deg, rgba(194,59,34,0.08), transparent);
+      border: 1px solid rgba(194,59,34,0.25);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-top: 40px;
+      font-size: 14px;
+      color: #D8D4CC;
+    }
+    .privacy-box strong { color: #C23B22; }
+
+    /* Footer */
+    .footer {
+      margin-top: 64px;
+      text-align: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: rgba(138,132,120,0.4);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* Print / download */
+    @media print {
+      body { background: white; color: #111; }
+      h1 span, h2, .mc-label { color: #C23B22; }
+      .hd-sub, .mc-desc, .footer { color: #555; }
+      p, td { color: #222; }
+      .privacy-box { border-color: #C23B22; background: #fff8f7; }
+      .metric-card { background: #f9f9f9; border-color: #ddd; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hd-eyebrow">The ARC · Community Tools</div>
+  <h1>RUN<span>WAY</span></h1>
+  <div class="hd-sub">how far your money actually flies — member guide</div>
+
+  <!-- WHAT IS RUNWAY -->
+  <h2>What is Runway?</h2>
+  <p>Runway is your private financial tracker inside The ARC portal. It tells you exactly how long your money lasts at your current pace — your <strong>runway</strong> before you either take off or run out of road.</p>
+  <p>Log your dues, your daily spending, and any money coming in. Runway does the rest — calculating your burn rate, days left, net flow, and debt-free date automatically.</p>
+
+  <!-- SETUP -->
+  <h2>Setup — 4 Steps</h2>
+
+  <h3>1. Set Your Credit Limit</h3>
+  <p>Enter the total money available to you this period — salary, savings, freelance income, all of it. This is your baseline. Everything is calculated against this number.</p>
+
+  <h3>2. Debt Ledger — Fixed Obligations</h3>
+  <p>Log everything you <em>must</em> pay: rent, EMIs, subscriptions, loan repayments. Enter the amount <strong>Due</strong> and how much you've already <strong>Paid</strong>. The balance is auto-calculated.</p>
+  <table>
+    <thead><tr><th>Column</th><th>What to enter</th></tr></thead>
+    <tbody>
+      <tr><td>Name</td><td>What the payment is for — e.g. ROOM RENT, AXIS EMI</td></tr>
+      <tr><td>Due</td><td>Total amount owed</td></tr>
+      <tr><td>Paid</td><td>Amount already paid</td></tr>
+      <tr><td>Balance</td><td>Auto-calculated. Goes green when cleared.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>3. Daily Bleed Log — Variable Spend</h3>
+  <p>Every time you spend outside of your fixed dues, log it here. Pick a date, add a description, choose a category, enter the amount.</p>
+  <table>
+    <thead><tr><th>Category</th><th>What it covers</th></tr></thead>
+    <tbody>
+      <tr><td>FEE</td><td>One-time charges, platform or onboarding fees</td></tr>
+      <tr><td>SUB</td><td>Recurring subscriptions — Netflix, Spotify, SaaS tools</td></tr>
+      <tr><td>FOOD</td><td>All food and drink</td></tr>
+      <tr><td>TRAVEL</td><td>Cabs, fuel, flights, transit</td></tr>
+      <tr><td>FUN</td><td>Entertainment, events, anything recreational</td></tr>
+      <tr><td>SHOP</td><td>Purchases, gear, clothing, online orders</td></tr>
+      <tr><td>OTHER</td><td>Anything else</td></tr>
+    </tbody>
+  </table>
+  <p><strong>REPEAT</strong> flag: if the same description appears more than once, Runway marks it — a sign of a recurring charge you may have forgotten.</p>
+
+  <h3>4. Received Funds — Money In</h3>
+  <p>Log any incoming money — freelance payments, refunds, transfers, side income. This is added to your available credit automatically.</p>
+
+  <!-- METRICS -->
+  <h2>Financial Metrics — Explained</h2>
+
+  <div class="metric-grid">
+    <div class="metric-card">
+      <div class="mc-label">🔥 Daily Burn Rate</div>
+      <div class="mc-value">Total spend ÷ days logged</div>
+      <div class="mc-desc">How much you spend per day on average. If your burn is ₹800/day and you have ₹12,000 left — that's 15 days, not a month.</div>
+    </div>
+    <div class="metric-card">
+      <div class="mc-label">🛬 Runway Days Left</div>
+      <div class="mc-value">Available credit ÷ daily burn rate</div>
+      <div class="mc-desc">How many days your money will last at current pace. Under 30 days triggers a red alert.</div>
+    </div>
+    <div class="metric-card">
+      <div class="mc-label">📊 Net Cash Flow</div>
+      <div class="mc-value">Received − Total Spend</div>
+      <div class="mc-desc">Green = more came in than went out. Red = you're burning faster than you're earning. The most honest number on the dashboard.</div>
+    </div>
+    <div class="metric-card">
+      <div class="mc-label">💳 Credit Utilisation</div>
+      <div class="mc-value">(Dues + Spend) ÷ Credit × 100</div>
+      <div class="mc-desc">How much of your total credit you've consumed. Above 80% is a danger zone — almost no buffer left.</div>
+    </div>
+    <div class="metric-card">
+      <div class="mc-label">💰 Savings Ratio</div>
+      <div class="mc-value">Remaining credit ÷ Credit Limit × 100</div>
+      <div class="mc-desc">What percentage of your income you're keeping after all expenses. Negative means you're living beyond your means.</div>
+    </div>
+    <div class="metric-card">
+      <div class="mc-label">📅 Freedom Countdown</div>
+      <div class="mc-value">Enter monthly payoff amount</div>
+      <div class="mc-desc">Enter how much you can put toward dues each month. Runway calculates your debt-free date — a real date, not an abstract goal.</div>
+    </div>
+  </div>
+
+  <!-- ALERTS -->
+  <h2>Alerts</h2>
+  <table class="alert-row">
+    <thead><tr><th>Alert</th><th>When it triggers</th></tr></thead>
+    <tbody>
+      <tr><td class="red">🔴 Negative Balance</td><td>Spending has exceeded your credit limit</td></tr>
+      <tr><td class="red">🔴 Credit Util &gt; 80%</td><td>Less than 20% of your money remains</td></tr>
+      <tr><td class="gold">🟡 Credit Util &gt; 50%</td><td>Crossed the halfway mark — watch your pace</td></tr>
+      <tr><td class="red">🔴 Runway &lt; 30 days</td><td>At current burn, money runs out in under a month</td></tr>
+    </tbody>
+  </table>
+
+  <!-- PRIVACY -->
+  <div class="privacy-box">
+    <strong>Your data is private.</strong><br />
+    Everything you log in Runway is stored privately against your Google account. It is not visible to other members, the ARC team, or anyone else. No one can access your financial data — not even the owner of this platform.
+  </div>
+
+  <div class="footer">The ARC · Runway Member Guide · Built for founders who want clarity, not complexity</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The ARC — The Salary Trap | Revanth Mapakshi</title>
+  <meta name="description" content="The ARC is a direct playbook for engineers and professionals ready to escape the salary trap and build income that compounds. By Revanth Mapakshi." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:    #0A0A0A;
+      --red:      #C23B22;
+      --red-dim:  #8c2a17;
+      --offwhite: #F2EFE8;
+      --dim:      #8A8478;
+      --dark:     #111111;
+      --card:     #161616;
+      --border:   #222222;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--offwhite);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .nav-brand {
+      font-size: 1rem; font-weight: 800; letter-spacing: 0.18em;
+      color: var(--offwhite); text-decoration: none; text-transform: uppercase;
+    }
+    .nav-brand span { color: var(--red); }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-links a {
+      color: var(--dim); font-size: 0.85rem; text-decoration: none;
+      letter-spacing: 0.05em; font-weight: 500; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--offwhite); }
+    .nav-cta {
+      background: var(--red) !important; color: #fff !important;
+      padding: 10px 22px; border-radius: 8px; font-weight: 700 !important;
+      letter-spacing: 0.04em; transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--red-dim) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 120px 48px 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse 60% 70% at 70% 40%, rgba(194,59,34,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-grid {
+      max-width: 1200px; margin: 0 auto; width: 100%;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+    .hero-eyebrow {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 24px;
+    }
+    .hero-eyebrow span {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--red);
+    }
+    .hero-eyebrow::before {
+      content: ''; display: block; width: 32px; height: 2px; background: var(--red);
+    }
+    h1 {
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -0.03em; margin-bottom: 12px;
+    }
+    h1 .accent { color: var(--red); }
+    .hero-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: 1.25rem;
+      color: var(--dim); margin-bottom: 28px; line-height: 1.5;
+    }
+    .hero-body {
+      font-size: 1rem; color: var(--dim); max-width: 480px;
+      margin-bottom: 40px; line-height: 1.7;
+    }
+    .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--red); color: #fff; padding: 16px 32px;
+      border-radius: 10px; font-size: 0.95rem; font-weight: 700;
+      text-decoration: none; letter-spacing: 0.03em;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary:hover { background: var(--red-dim); transform: translateY(-2px); }
+    .btn-secondary {
+      background: transparent; color: var(--offwhite);
+      padding: 16px 32px; border-radius: 10px;
+      border: 1px solid var(--border); font-size: 0.95rem; font-weight: 600;
+      text-decoration: none; letter-spacing: 0.03em;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+    .btn-secondary:hover { border-color: var(--dim); transform: translateY(-2px); }
+
+    /* Book cover mockup */
+    .hero-cover {
+      display: flex; justify-content: center; align-items: center;
+      position: relative;
+    }
+    .cover-img {
+      width: min(320px, 100%);
+      border-radius: 4px 12px 12px 4px;
+      box-shadow: -12px 12px 60px rgba(194,59,34,0.3), -4px 4px 20px rgba(0,0,0,0.8);
+      transform: perspective(800px) rotateY(-8deg);
+      transition: transform 0.4s ease;
+    }
+    .cover-img:hover { transform: perspective(800px) rotateY(-3deg) scale(1.02); }
+    .cover-glow {
+      position: absolute; width: 280px; height: 400px;
+      background: radial-gradient(ellipse, rgba(194,59,34,0.25) 0%, transparent 70%);
+      filter: blur(40px); z-index: -1;
+    }
+    /* Format badges */
+    .format-badges {
+      display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px;
+    }
+    .badge {
+      background: var(--card); border: 1px solid var(--border);
+      color: var(--dim); font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 100px;
+    }
+    .badge.active { border-color: var(--red); color: var(--red); }
+
+    /* ── SECTION BASE ── */
+    section { padding: 100px 48px; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--red); margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-label::after { content: ''; flex: 1; max-width: 40px; height: 1px; background: var(--red); }
+    h2 {
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 800; letter-spacing: -0.02em; line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .lead { color: var(--dim); font-size: 1.05rem; line-height: 1.7; max-width: 600px; }
+
+    /* ── LIE SECTION ── */
+    .lie-section { background: var(--dark); }
+    .lie-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .lie-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-style: italic; line-height: 1.4;
+      color: var(--offwhite); border-left: 3px solid var(--red);
+      padding-left: 28px;
+    }
+    .stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 48px; }
+    .stat-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 28px 24px; text-align: center;
+    }
+    .stat-num { font-size: 2.4rem; font-weight: 900; color: var(--red); letter-spacing: -0.02em; }
+    .stat-label { color: var(--dim); font-size: 0.82rem; margin-top: 4px; }
+
+    /* ── WHAT'S INSIDE ── */
+    .inside-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 20px; margin-top: 56px; }
+    .chapter-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 28px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .chapter-card:hover { border-color: var(--red); transform: translateY(-4px); }
+    .chapter-num { font-size: 0.7rem; font-weight: 700; color: var(--red); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+    .chapter-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .chapter-card p { color: var(--dim); font-size: 0.85rem; line-height: 1.55; }
+
+    /* ── AUTHOR ── */
+    .author-section { background: var(--dark); }
+    .author-grid { display: grid; grid-template-columns: auto 1fr; gap: 60px; align-items: start; }
+    .author-avatar {
+      width: 160px; height: 160px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--red), var(--red-dim));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem; font-weight: 900; color: #fff;
+      flex-shrink: 0;
+      border: 3px solid rgba(194,59,34,0.3);
+    }
+    .author-name { font-size: 1.6rem; font-weight: 800; margin-bottom: 4px; }
+    .author-role { color: var(--red); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 20px; }
+    .author-bio { color: var(--dim); line-height: 1.75; margin-bottom: 20px; }
+
+    /* ── PRICING ── */
+    .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 56px; }
+    .price-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 36px 28px; text-align: center;
+      position: relative; transition: transform 0.2s;
+    }
+    .price-card:hover { transform: translateY(-6px); }
+    .price-card.featured {
+      border-color: var(--red);
+      background: linear-gradient(160deg, #1a0a08 0%, var(--card) 60%);
+    }
+    .price-tag {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--red); color: #fff; font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 14px; border-radius: 100px;
+    }
+    .price-format { color: var(--dim); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+    .price-amount { font-size: 3rem; font-weight: 900; letter-spacing: -0.03em; }
+    .price-amount span { font-size: 1.2rem; font-weight: 500; color: var(--dim); vertical-align: super; }
+    .price-desc { color: var(--dim); font-size: 0.82rem; margin: 12px 0 24px; }
+    .price-btn {
+      display: block; padding: 13px 24px; border-radius: 8px;
+      font-size: 0.88rem; font-weight: 700; text-decoration: none;
+      letter-spacing: 0.03em; transition: all 0.2s;
+    }
+    .price-btn-red { background: var(--red); color: #fff; }
+    .price-btn-red:hover { background: var(--red-dim); }
+    .price-btn-outline { border: 1px solid var(--border); color: var(--offwhite); }
+    .price-btn-outline:hover { border-color: var(--red); }
+
+    /* ── EMAIL CAPTURE ── */
+    .email-section {
+      background: linear-gradient(135deg, #120604 0%, var(--dark) 100%);
+      text-align: center;
+    }
+    .email-section h2 { margin-bottom: 12px; }
+    .email-section .lead { margin: 0 auto 36px; }
+    .email-form { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .email-form input {
+      background: var(--card); border: 1px solid var(--border);
+      color: var(--offwhite); padding: 15px 22px; border-radius: 10px;
+      font-size: 0.95rem; width: 320px; font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    .email-form input::placeholder { color: var(--dim); }
+    .email-form input:focus { outline: none; border-color: var(--red); }
+    .email-form button {
+      background: var(--red); color: #fff; padding: 15px 28px;
+      border-radius: 10px; font-size: 0.95rem; font-weight: 700;
+      border: none; cursor: pointer; font-family: inherit;
+      transition: background 0.2s;
+    }
+    .email-form button:hover { background: var(--red-dim); }
+    .email-note { color: var(--dim); font-size: 0.78rem; margin-top: 12px; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 40px 48px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-brand { font-size: 0.85rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+    .footer-brand span { color: var(--red); }
+    .footer-copy { color: var(--dim); font-size: 0.8rem; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { color: var(--dim); font-size: 0.8rem; text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--offwhite); }
+
+    /* ── DIVIDER ── */
+    .red-rule { width: 48px; height: 3px; background: var(--red); margin: 20px 0; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 24px 60px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+      .hero-cover { order: -1; }
+      .cover-img { transform: none; }
+      .lie-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .author-grid { grid-template-columns: 1fr; }
+      section { padding: 60px 24px; }
+      footer { flex-direction: column; text-align: center; padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#"><span>THE</span> ARC</a>
+  <div class="nav-links">
+    <a href="#inside">Inside</a>
+    <a href="#author">Author</a>
+    <a href="#pricing">Get the Book</a>
+    <a href="#pricing" class="nav-cta">Buy on Amazon →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid container">
+    <div>
+      <div class="hero-eyebrow"><span>The ARC — Revanth Mapakshi</span></div>
+      <h1>Escape <span class="accent">The Salary Trap.</span> Build What's Yours.</h1>
+      <p class="hero-subtitle">"The system isn't broken. It was built to keep you comfortable — and contained."</p>
+      <p class="hero-body">
+        A direct, honest playbook for engineers and professionals who are done waiting for the right moment — and ready to build income that compounds while they sleep.
+      </p>
+      <div class="hero-ctas">
+        <a href="#pricing" class="btn-primary">Get the Book →</a>
+        <a href="#inside" class="btn-secondary">See What's Inside</a>
+      </div>
+      <div class="format-badges">
+        <span class="badge active">Kindle $4.99</span>
+        <span class="badge">Paperback $12.99</span>
+        <span class="badge">Hardcover $22.99</span>
+      </div>
+    </div>
+    <div class="hero-cover">
+      <div class="cover-glow"></div>
+      <img class="cover-img" src="images/covers/cover_v1.png" alt="The ARC - The Salary Trap Book Cover" />
+    </div>
+  </div>
+</section>
+
+<!-- THE LIE -->
+<section class="lie-section">
+  <div class="container">
+    <div class="lie-grid">
+      <div>
+        <div class="section-label">The Problem</div>
+        <h2>You Already Know Something Is Wrong.</h2>
+        <div class="red-rule"></div>
+        <p class="lead">
+          The monthly salary feels like proof you made the right call. It's not.
+          A salary is one signature away from zero. The stability you were sold is a ceiling disguised as comfort.
+        </p>
+        <p class="lead" style="margin-top:16px;">
+          This book names what most people only feel — and gives you the system to do something about it.
+        </p>
+      </div>
+      <div>
+        <p class="lie-quote">
+          "Stability without ownership is a slow ceiling. You're not building security — you're building someone else's asset."
+        </p>
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-num">93%</div>
+            <div class="stat-label">of employees have a single point of income failure</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">3%</div>
+            <div class="stat-label">average salary raise per year — below most inflation rates</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">0%</div>
+            <div class="stat-label">equity owned on the value you create for your employer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S INSIDE -->
+<section id="inside">
+  <div class="container">
+    <div class="section-label">What's Inside</div>
+    <h2>16 Chapters. One System.</h2>
+    <p class="lead">Built for people who are still employed but know they're building on rented land.</p>
+    <div class="inside-grid">
+      <div class="chapter-card">
+        <div class="chapter-num">Introduction</div>
+        <h3>The Comfortable Lie</h3>
+        <p>Why the salary feels like proof — and why it isn't.</p>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">Chapter 1</div>
+        <h3>The Salary Trap Nobody Talks About</h3>
+        <p>The unwritten terms of your contract and the real cost of renting your time.</p>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">Chapter 2</div>
+        <h3>Why Smart People Stay Stuck</h3>
+        <p>The optimisation trap, social proof, and the "Not Yet" mindset.</p>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">Chapter 3</div>
+        <h3>The Arc — What It Is and Why It Matters</h3>
+        <p>Reading your own trajectory. Snapshot vs. direction.</p>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">Chapter 4</div>
+        <h3>The Mindset Shift That Changes Everything</h3>
+        <p>Employee Brain vs. Owner Brain. The identity shift that precedes action.</p>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">Chapter 5</div>
+        <h3>What Residual Income Actually Means</h3>
+        <p>The compounding curve. Why months 1–6 feel like nothing.</p>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">Chapter 6</div>
+        <h3>Building While Employed — The Quiet Phase</h3>
+        <p>How to build your machine without quitting, burning out, or gambling.</p>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">Chapter 7</div>
+        <h3>The Leap — Making the Decision</h3>
+        <p>Month-by-month expectations. The income dip. Living with it.</p>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">Chapter 8</div>
+        <h3>Mentorship as a Business Model</h3>
+        <p>You don't need to be at the top. Two steps ahead is a business.</p>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">Chapters 9–16</div>
+        <h3>Building the Long Game</h3>
+        <p>Teams, money as a tool, consistency, plateaus, networks, failure, and designing a life that doesn't need a holiday.</p>
+      </div>
+      <div class="chapter-card" style="border-color: var(--red);">
+        <div class="chapter-num">Bonus</div>
+        <h3>The ARC Starter Kit</h3>
+        <p>Templates, audits, and the 90-day action plan to begin bending your arc today.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUTHOR -->
+<section id="author" class="author-section">
+  <div class="container">
+    <div class="author-grid">
+      <div class="author-avatar">R</div>
+      <div>
+        <div class="section-label">About the Author</div>
+        <div class="author-name">Revanth Mapakshi</div>
+        <div class="author-role">Design Engineer → Entrepreneur · Mentor · Builder</div>
+        <p class="author-bio">
+          I grew up watching my father run a business. Some years he had money, some years he didn't —
+          but he always had one thing: freedom of time and choice. That stayed with me.
+        </p>
+        <p class="author-bio">
+          I became a design engineer. I worked in Bangalore, then Hyderabad. Good salary, good trajectory,
+          good on paper. But I did the math one day and realised: saving through a corporate salary alone
+          would take a decade to build what I wanted. That realization made me go a little mad — in the best way.
+        </p>
+        <p class="author-bio">
+          I took a loan. I started. I built The ARC to give other professionals the system I wish I had
+          found before I needed to figure it out the hard way.
+        </p>
+        <a href="#pricing" class="btn-primary" style="display:inline-flex; margin-top:8px;">Read the Book →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container">
+    <div class="section-label">Get the Book</div>
+    <h2>Choose Your Format.</h2>
+    <p class="lead">All formats available on Amazon KDP. Start with the Kindle if you want to begin today.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-format">Kindle eBook</div>
+        <div class="price-amount"><span>$</span>4.99</div>
+        <div class="price-desc">Instant download. Read on any device. Start within 60 seconds.</div>
+        <a href="https://amazon.com" class="price-btn price-btn-red" target="_blank">Buy on Amazon →</a>
+      </div>
+      <div class="price-card featured">
+        <div class="price-tag">Most Popular</div>
+        <div class="price-format">Paperback</div>
+        <div class="price-amount"><span>$</span>12.99</div>
+        <div class="price-desc">Physical copy. Underline it. Dog-ear it. Keep it on your desk as a reminder.</div>
+        <a href="https://amazon.com" class="price-btn price-btn-red" target="_blank">Buy on Amazon →</a>
+      </div>
+      <div class="price-card">
+        <div class="price-format">Hardcover</div>
+        <div class="price-amount"><span>$</span>22.99</div>
+        <div class="price-desc">Premium edition. Great as a gift. Built to last on a shelf.</div>
+        <a href="https://amazon.com" class="price-btn price-btn-outline" target="_blank">Buy on Amazon →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EMAIL CAPTURE -->
+<section class="email-section">
+  <div class="container">
+    <div class="section-label" style="justify-content:center;">Stay Connected</div>
+    <h2>Get the First Chapter Free.</h2>
+    <p class="lead">Drop your email. I'll send you Chapter 1 instantly — no spam, ever.</p>
+    <form class="email-form" onsubmit="handleSubmit(event)">
+      <input type="email" id="email-input" placeholder="your@email.com" required />
+      <button type="submit">Send It →</button>
+    </form>
+    <p class="email-note" id="form-msg">No spam. Unsubscribe any time.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand"><span>THE</span> ARC</div>
+  <div class="footer-copy">© 2026 Revanth Mapakshi. All rights reserved.</div>
+  <div class="footer-links">
+    <a href="https://amazon.com" target="_blank">Amazon</a>
+    <a href="mailto:hello@thearc.in">Contact</a>
+    <a href="#">Privacy</a>
+  </div>
+</footer>
+
+<script>
+  function handleSubmit(e) {
+    e.preventDefault();
+    const email = document.getElementById('email-input').value;
+    const msg   = document.getElementById('form-msg');
+    msg.style.color  = '#C23B22';
+    msg.textContent  = `✓ Chapter 1 is on its way to ${email}!`;
+    e.target.reset();
+  }
+
+  // Animate stats on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.chapter-card, .stat-card, .price-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
