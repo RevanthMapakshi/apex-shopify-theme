@@ -17,6 +17,12 @@
 <body class="apex-light">
   {{ content_for_layout }}
 
+  <script>
+    window.APEX_ASSETS = {
+      heroBackdropDuo: "{{ 'backdrop-user-black-duo.jpg' | asset_url }}",
+      heroBackdropMobile: "{{ 'backdrop-user-black-mobile.jpg' | asset_url }}"
+    };
+  </script>
   <script type="module" src="{{ 'index.js' | asset_url }}"></script>
 </body>
 </html>
