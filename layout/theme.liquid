@@ -4,7 +4,11 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>APEX by The ARC</title>
+  <title>APEX by The ARC | Wear What Others Can't</title>
+
+  <link rel="icon" type="image/svg+xml" href="{{ 'favicon.svg' | asset_url }}">
+  <link rel="shortcut icon" type="image/svg+xml" href="{{ 'favicon.svg' | asset_url }}">
+  <link rel="apple-touch-icon" href="{{ 'favicon.svg' | asset_url }}">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,7 +24,8 @@
   <script>
     window.APEX_ASSETS = {
       heroBackdropDuo: "{{ 'backdrop-user-black-duo.jpg' | asset_url }}",
-      heroBackdropMobile: "{{ 'backdrop-user-black-mobile.jpg' | asset_url }}"
+      heroBackdropMobile: "{{ 'backdrop-user-black-mobile.jpg' | asset_url }}",
+      favicon: "{{ 'favicon.svg' | asset_url }}"
     };
   </script>
   <script type="module" src="{{ 'index.js' | asset_url }}"></script>
