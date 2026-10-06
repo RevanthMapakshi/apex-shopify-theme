@@ -6,5 +6,37 @@
     "theme_author": "The ARC",
     "theme_documentation_url": "https://thearc-rev.online",
     "theme_support_url": "https://thearc-rev.online"
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon image",
+        "info": "Will be scaled down to 32 x 32px. Used across the online store and the checkout page."
+      }
+    ]
+  },
+  {
+    "name": "Checkout",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Checkout Logo & Banner"
+      },
+      {
+        "type": "image_picker",
+        "id": "checkout_logo_image",
+        "label": "Checkout logo image",
+        "info": "Displays your brand logo at the top of the checkout page."
+      },
+      {
+        "type": "image_picker",
+        "id": "checkout_banner_image",
+        "label": "Checkout banner image",
+        "info": "Optional custom banner image across the top of the checkout page."
+      }
+    ]
   }
 ]

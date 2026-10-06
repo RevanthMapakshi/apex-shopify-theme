@@ -6,9 +6,16 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>APEX by The ARC | Wear What Others Can't</title>
 
-  <link rel="icon" type="image/svg+xml" href="{{ 'favicon.svg' | asset_url }}">
-  <link rel="shortcut icon" type="image/svg+xml" href="{{ 'favicon.svg' | asset_url }}">
-  <link rel="apple-touch-icon" href="{{ 'favicon.svg' | asset_url }}">
+  {% if settings.favicon != blank %}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    <link rel="shortcut icon" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
+  {% else %}
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ 'favicon-32.png' | asset_url }}">
+    <link rel="icon" type="image/svg+xml" href="{{ 'favicon.svg' | asset_url }}">
+    <link rel="shortcut icon" href="{{ 'favicon.ico' | asset_url }}">
+    <link rel="apple-touch-icon" href="{{ 'favicon-192.png' | asset_url }}">
+  {% endif %}
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,7 +32,9 @@
     window.APEX_ASSETS = {
       heroBackdropDuo: "{{ 'backdrop-user-black-duo.jpg' | asset_url }}",
       heroBackdropMobile: "{{ 'backdrop-user-black-mobile.jpg' | asset_url }}",
-      favicon: "{{ 'favicon.svg' | asset_url }}"
+      favicon: "{{ 'favicon.svg' | asset_url }}",
+      faviconPng: "{{ 'favicon-32.png' | asset_url }}",
+      faviconIco: "{{ 'favicon.ico' | asset_url }}"
     };
   </script>
   <script type="module" src="{{ 'index.js' | asset_url }}"></script>
