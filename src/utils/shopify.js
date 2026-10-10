@@ -196,7 +196,15 @@ export async function fetchShopifyProducts() {
     }
 
     const rawDescHtml = p.descriptionHtml || '';
-    let cleanDescHtml = rawDescHtml
+
+    // Protect interactive accordions (<details>...</details>) containing size charts from table stripping
+    const detailsBlocks = [];
+    let preservedHtml = rawDescHtml.replace(/<details[\s\S]*?<\/details>/gi, (match) => {
+      detailsBlocks.push(match);
+      return `__DETAILS_BLOCK_${detailsBlocks.length - 1}__`;
+    });
+
+    let cleanDescHtml = preservedHtml
       .replace(/<table[^>]*>[\s\S]*?<\/table>/gi, '')
       .replace(/<p>\s*(?:&nbsp;|\s)*<\/p>/gi, '')
       .replace(/<p>\s*<br\s*\/?>\s*<\/p>/gi, '')
@@ -219,7 +227,12 @@ export async function fetchShopifyProducts() {
       if (structured) cleanDescHtml = structured;
     }
 
-    cleanDescHtml = stripGsm(cleanDescHtml);
+    // Restore protected accordions
+    detailsBlocks.forEach((block, idx) => {
+      cleanDescHtml = cleanDescHtml.replace(`__DETAILS_BLOCK_${idx}__`, block);
+    });
+
+    cleanDescHtml = cleanDescHtml.trim();
 
     let cleanDesc = stripGsm(
       cleanDescHtml
@@ -305,7 +318,7 @@ export async function fetchShopifyProducts() {
       };
     }) || [];
 
-    const APPAREL_SIZE_ORDER = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '2XL', '3XL', '4XL'];
+    const APPAREL_SIZE_ORDER = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '2XL', '3XL', '4XL', '5XL'];
     const sizes = Array.from(sizesSet).sort((a, b) => {
       const ai = APPAREL_SIZE_ORDER.indexOf(a.toUpperCase());
       const bi = APPAREL_SIZE_ORDER.indexOf(b.toUpperCase());
@@ -436,7 +449,81 @@ export async function fetchShopifyProducts() {
         tagline: 'Organic wash streetwear silhouette, worn-in soul. Wear what others can\'t.',
       },
 
-      // ── HAUTE COUTURE BOMBER JACKETS (Master Section 1) ──
+      // ── HAUTE COUTURE BOMBER JACKETS (Drop 001 Qikink Native) ──
+      'unisex-gothic-bomber-jacket': {
+        title: 'APEX "Gothic Blood Rose" Haute Couture Bomber Jacket (Men\'s)',
+        fabricTag: 'Drop 001',
+        specTag: 'Gothic Rose & Smoke // Ribbed Trim',
+        tagline: 'Dark romance tailored in thorns, smoke, and silk-twill drama.',
+      },
+      'unisex-gothic-bomber-jacket-1': {
+        title: 'APEX "Gothic Blood Rose" Couture Bomber Jacket (Women\'s)',
+        fabricTag: 'Drop 001',
+        specTag: 'Gothic Rose & Smoke // Ribbed Trim',
+        tagline: 'Dark romantic poetry cut for bold feminine elegance.',
+      },
+      'unisex-dragon-bomber-jacket': {
+        title: 'APEX "Imperial Gold Dragon" Sukajan Bomber Jacket V2 (Men\'s)',
+        fabricTag: 'Drop 001',
+        specTag: 'Gold Sukajan Tapestry // YKK Hardware',
+        tagline: 'Gilded myth meets Tokyo street couture. Relentless power in 24-karat hues.',
+      },
+      'unisex-dragon-bomber-jacket-1': {
+        title: 'APEX "Imperial Gold Dragon" Sukajan Bomber Jacket V2 (Women\'s)',
+        fabricTag: 'Drop 001',
+        specTag: 'Gold Sukajan Tapestry // YKK Hardware',
+        tagline: 'Ancient gilded royalty reimagined for the modern vanguard.',
+      },
+      'apex-samurai-oni-the-great-wave-couture-bomber-jacket-mens': {
+        title: 'APEX "Samurai Oni & The Great Wave" Couture Bomber Jacket (Men\'s)',
+        fabricTag: 'Drop 001',
+        specTag: 'Ukiyo-e Tapestry // Matte Hardware',
+        tagline: 'Demon armor born from cresting storms. Chaos harnessed into pure couture.',
+      },
+      'apex-samurai-oni-the-great-wave-couture-bomber-jacket-womens-1': {
+        title: 'APEX "Samurai Oni & The Great Wave" Couture Bomber Jacket (Women\'s)',
+        fabricTag: 'Drop 001',
+        specTag: 'Ukiyo-e Tapestry // Matte Hardware',
+        tagline: 'Untamed ocean tempest meets ancient warrior mysticism.',
+      },
+      'apex-baroque-burgundy-oil-tapestry-bomber-jacket-mens': {
+        title: 'APEX "Baroque Burgundy" Oil Tapestry Bomber Jacket (Men\'s)',
+        fabricTag: 'Drop 001',
+        specTag: 'Baroque Oil Tapestry // Matte Trim',
+        tagline: 'Old-world palace opulence. Renaissance oil masterpiece cut for the modern vanguard.',
+      },
+      'apex-baroque-burgundy-oil-tapestry-bomber-jacket-womens': {
+        title: 'APEX "Baroque Burgundy" Oil Tapestry Bomber Jacket (Women\'s)',
+        fabricTag: 'Drop 001',
+        specTag: 'Baroque Oil Tapestry // Matte Trim',
+        tagline: 'Palatial Renaissance grandeur woven in deep wine and gilded gold.',
+      },
+      'apex-casablanca-palais-silk-twill-tennis-club-bomber-jacket-mens': {
+        title: 'APEX "Casablanca Palais" Silk-Twill Tennis Club Bomber Jacket (Men\'s)',
+        fabricTag: 'Drop 001',
+        specTag: 'Mediterranean Palais // YKK Hardware',
+        tagline: 'Mediterranean sun drenched in North African grandeur. The pinnacle of leisure couture.',
+      },
+      'apex-casablanca-palais-silk-twill-tennis-club-bomber-jacket-womens': {
+        title: 'APEX "Casablanca Palais" Silk-Twill Tennis Club Bomber Jacket (Women\'s)',
+        fabricTag: 'Drop 001',
+        specTag: 'Mediterranean Palais // YKK Hardware',
+        tagline: 'Sun-drenched Riviera leisure meets opulent architectural grace.',
+      },
+      'apex-dark-romance-bone-wings-couture-bomber-jacket-mens': {
+        title: 'APEX "Dark Romance Bone Wings" Couture Bomber Jacket (Men\'s)',
+        fabricTag: 'Drop 001',
+        specTag: 'Bone Wings Tapestry // Ribbed Trim',
+        tagline: 'Ossuary royalty. Symmetrical bone wings and vertebrae spine forged in dark romance.',
+      },
+      'apex-dark-romance-bone-wings-couture-bomber-jacket-womens': {
+        title: 'APEX "Dark Romance Bone Wings" Couture Bomber Jacket (Women\'s)',
+        fabricTag: 'Drop 001',
+        specTag: 'Bone Wings Tapestry // Ribbed Trim',
+        tagline: 'Fallen angel anatomy. Sculpted bone wings and crimson neural veins.',
+      },
+
+      // ── HAUTE COUTURE BOMBER JACKETS (Master Section 1 - Legacy Fallbacks) ──
       'men-s-bomber-jacket-gothic-red-rose-smoke-all-over-print': {
         title: 'APEX "Gothic Blood Rose" Haute Couture Bomber Jacket (Men\'s)',
         fabricTag: 'Drop 001',
@@ -559,17 +646,30 @@ export async function fetchShopifyProducts() {
     else if (titleLower.includes("(men's)") || titleLower.includes("men's")) gender = "Men's";
 
     const COUTURE_HANDLES = new Set([
-      'men-s-bomber-jacket-gothic-red-rose-smoke-all-over-print',     // Model 01 Men's
-      'vintage-gothic-rose-bomber-jacket',                           // Model 01 Women's
-      'dragon-wave-bomber-jacket-gold-asian-dragon-sakura-design',   // Model 02 Men's
-      'dragon-cherry-blossom-bomber-jacket',                         // Model 02 Women's
-      'japanese-oni-mask-wave-bomber-jacket-sakura-great-wave-aop',   // Model 03 Men's
-      'apex-samurai-oni-the-great-wave-couture-bomber-jacket-womens', // Model 03 Women's
-      'baroque-floral-bomber-jacket-gold-ornate-vase-design',         // Model 04 Men's
-      'baroque-rose-bomber-jacket',                                   // Model 04 Women's
-      'apex-casablanca-palais-silk-twill-bomber-jacket-mens',         // Model 05 Men's
-      'apex-casablanca-palais-silk-twill-bomber-jacket-womens',       // Model 05 Women's
-      'gothic-winged-skull-bomber-jacket',                            // Model 06 Men's
+      'unisex-gothic-bomber-jacket',                                  // Model 01 Men's
+      'unisex-gothic-bomber-jacket-1',                                // Model 01 Women's
+      'unisex-dragon-bomber-jacket',                                  // Model 02 Men's
+      'unisex-dragon-bomber-jacket-1',                                // Model 02 Women's
+      'apex-samurai-oni-the-great-wave-couture-bomber-jacket-mens',   // Model 03 Men's
+      'apex-samurai-oni-the-great-wave-couture-bomber-jacket-womens-1', // Model 03 Women's
+      'apex-baroque-burgundy-oil-tapestry-bomber-jacket-mens',        // Model 04 Men's
+      'apex-baroque-burgundy-oil-tapestry-bomber-jacket-womens',      // Model 04 Women's
+      'apex-casablanca-palais-silk-twill-tennis-club-bomber-jacket-mens', // Model 05 Men's
+      'apex-casablanca-palais-silk-twill-tennis-club-bomber-jacket-womens', // Model 05 Women's
+      'apex-dark-romance-bone-wings-couture-bomber-jacket-mens',      // Model 06 Men's
+      'apex-dark-romance-bone-wings-couture-bomber-jacket-womens',    // Model 06 Women's
+      // Legacy Fallbacks
+      'men-s-bomber-jacket-gothic-red-rose-smoke-all-over-print',
+      'vintage-gothic-rose-bomber-jacket',
+      'dragon-wave-bomber-jacket-gold-asian-dragon-sakura-design',
+      'dragon-cherry-blossom-bomber-jacket',
+      'japanese-oni-mask-wave-bomber-jacket-sakura-great-wave-aop',
+      'apex-samurai-oni-the-great-wave-couture-bomber-jacket-womens',
+      'baroque-floral-bomber-jacket-gold-ornate-vase-design',
+      'baroque-rose-bomber-jacket',
+      'apex-casablanca-palais-silk-twill-bomber-jacket-mens',
+      'apex-casablanca-palais-silk-twill-bomber-jacket-womens',
+      'gothic-winged-skull-bomber-jacket',
     ]);
 
     let sectionKey = 'active';
@@ -619,18 +719,31 @@ export async function fetchShopifyProducts() {
 
   // Curated Drop 001 Handle Sequence (Strictly aligned with APEX_WEBSITE_PRODUCT_MASTER.md)
   const DEFAULT_HANDLE_ORDER = [
-    // ── 1. Flagship Haute Couture Bomber Jackets (Master Section 1) ──
-    'men-s-bomber-jacket-gothic-red-rose-smoke-all-over-print',     // Model 01 Gothic Blood Rose Men's
-    'vintage-gothic-rose-bomber-jacket',                           // Model 01 Gothic Blood Rose Women's
-    'dragon-wave-bomber-jacket-gold-asian-dragon-sakura-design',   // Model 02 Imperial Gold Dragon V2 Men's
-    'dragon-cherry-blossom-bomber-jacket',                         // Model 02 Imperial Gold Dragon V2 Women's
-    'japanese-oni-mask-wave-bomber-jacket-sakura-great-wave-aop',   // Model 03 Samurai Oni & Great Wave Men's
-    'apex-samurai-oni-the-great-wave-couture-bomber-jacket-womens', // Model 03 Samurai Oni & Great Wave Women's
-    'baroque-floral-bomber-jacket-gold-ornate-vase-design',         // Model 04 Baroque Burgundy Men's
-    'baroque-rose-bomber-jacket',                                   // Model 04 Baroque Burgundy Women's
-    'apex-casablanca-palais-silk-twill-bomber-jacket-mens',         // Model 05 Casablanca Palais Men's
-    'apex-casablanca-palais-silk-twill-bomber-jacket-womens',       // Model 05 Casablanca Palais Women's
-    'gothic-winged-skull-bomber-jacket',                            // Model 06 Dark Romance Bone Wings Men's
+    // ── 1. Flagship Haute Couture Bomber Jackets (Sequential: Model 01 -> Model 06, Men's & Women's) ──
+    'unisex-gothic-bomber-jacket',                                  // Model 01 Gothic Blood Rose Men's
+    'unisex-gothic-bomber-jacket-1',                                // Model 01 Gothic Blood Rose Women's
+    'unisex-dragon-bomber-jacket',                                  // Model 02 Imperial Gold Dragon V2 Men's
+    'unisex-dragon-bomber-jacket-1',                                // Model 02 Imperial Gold Dragon V2 Women's
+    'apex-samurai-oni-the-great-wave-couture-bomber-jacket-mens',   // Model 03 Samurai Oni & Great Wave Men's
+    'apex-samurai-oni-the-great-wave-couture-bomber-jacket-womens-1', // Model 03 Samurai Oni & Great Wave Women's
+    'apex-baroque-burgundy-oil-tapestry-bomber-jacket-mens',        // Model 04 Baroque Burgundy Men's
+    'apex-baroque-burgundy-oil-tapestry-bomber-jacket-womens',      // Model 04 Baroque Burgundy Women's
+    'apex-casablanca-palais-silk-twill-tennis-club-bomber-jacket-mens', // Model 05 Casablanca Palais Men's
+    'apex-casablanca-palais-silk-twill-tennis-club-bomber-jacket-womens', // Model 05 Casablanca Palais Women's
+    'apex-dark-romance-bone-wings-couture-bomber-jacket-mens',      // Model 06 Dark Romance Bone Wings Men's
+    'apex-dark-romance-bone-wings-couture-bomber-jacket-womens',    // Model 06 Dark Romance Bone Wings Women's
+    // Legacy Printify Handle Fallbacks
+    'men-s-bomber-jacket-gothic-red-rose-smoke-all-over-print',
+    'vintage-gothic-rose-bomber-jacket',
+    'dragon-wave-bomber-jacket-gold-asian-dragon-sakura-design',
+    'dragon-cherry-blossom-bomber-jacket',
+    'japanese-oni-mask-wave-bomber-jacket-sakura-great-wave-aop',
+    'apex-samurai-oni-the-great-wave-couture-bomber-jacket-womens',
+    'baroque-floral-bomber-jacket-gold-ornate-vase-design',
+    'baroque-rose-bomber-jacket',
+    'apex-casablanca-palais-silk-twill-bomber-jacket-mens',
+    'apex-casablanca-palais-silk-twill-bomber-jacket-womens',
+    'gothic-winged-skull-bomber-jacket',
 
     // ── 2. Archival Kinetic & Streetwear Outerwear (Master Section 4) ──
     'red-liquid-marble-bomber-jacket',                              // Model 01 Liquid Marble Crimson Void Men's

@@ -206,6 +206,9 @@ export default function ApexStorefront() {
   // Active Lookbook Card for modal inspection
   const [activeLookbook, setActiveLookbook] = useState(null);
 
+  // Dedicated Size Guide Modal state
+  const [sizeGuideProduct, setSizeGuideProduct] = useState(null);
+
   // Dedicated Product Detail Modal state
   const [detailProduct, setDetailProduct] = useState(null);
   const [detailActiveImg, setDetailActiveImg] = useState('');
@@ -589,7 +592,20 @@ export default function ApexStorefront() {
             <div className="apex-garment-sizes">
               <div className="apex-size-header">
                 <span>{item.category === 'Footwear' ? 'Select Shoe Size' : 'Select Size'}</span>
-                <span style={{ color: 'var(--red)', fontSize: '0.58rem', fontWeight: 600 }}>True to fit</span>
+                <div className="apex-size-header-actions">
+                  <button
+                    type="button"
+                    className="apex-size-guide-pill-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSizeGuideProduct(item);
+                    }}
+                    title="View official measurement table"
+                  >
+                    📐 Size Guide
+                  </button>
+                  <span className="apex-size-fit-tag">True to fit</span>
+                </div>
               </div>
               <div className="apex-garment-size-pills">
                 {item.sizes.map(size => (
@@ -1189,7 +1205,17 @@ export default function ApexStorefront() {
                   <div className="apex-detail-opt-group">
                     <div className="apex-size-header">
                       <span>{detailProduct.category === 'Footwear' ? 'Select Shoe Size:' : 'Select Size:'} <strong>{detailSize}</strong></span>
-                      <span style={{ color: 'var(--red)', fontSize: '0.65rem', fontWeight: 600 }}>True to fit</span>
+                      <div className="apex-size-header-actions">
+                        <button
+                          type="button"
+                          className="apex-size-guide-pill-btn"
+                          onClick={() => setSizeGuideProduct(detailProduct)}
+                          title="View official measurement table"
+                        >
+                          📐 Size Guide
+                        </button>
+                        <span className="apex-size-fit-tag">True to fit</span>
+                      </div>
                     </div>
                     <div className="apex-garment-size-pills">
                       {detailProduct.sizes.map(s => (
@@ -1251,6 +1277,154 @@ export default function ApexStorefront() {
                   <span>✦ Drop 001: 50 Jackets / 20 Footwear</span>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── INTERACTIVE MEASUREMENT & SIZE GUIDE MODAL ── */}
+      {sizeGuideProduct && (
+        <div className="apex-modal-bg" onClick={() => setSizeGuideProduct(null)}>
+          <div className="apex-modal-sheet apex-size-guide-modal-sheet" onClick={e => e.stopPropagation()}>
+            <button className="apex-modal-x" onClick={() => setSizeGuideProduct(null)}>×</button>
+            
+            <div className="apex-size-modal-header">
+              <div className="apex-section-eyebrow">Drop 001 // Master Measurement Guide</div>
+              <h3 className="apex-size-modal-title">
+                {sizeGuideProduct.category === 'Footwear'
+                  ? 'Footwear Sizing & Sole Specifications'
+                  : `${sizeGuideProduct.name || 'Haute Couture Outerwear'} // Size Chart`}
+              </h3>
+              <p className="apex-size-modal-sub">
+                Drop 001 garments are tailored to precision architectural specifications. All garment measurements are provided in inches. Standard garment tolerance +/- 0.5 inches.
+              </p>
+            </div>
+
+            {/* If Outerwear / Bomber Jackets / Tops / Shorts */}
+            {sizeGuideProduct.category !== 'Footwear' && (
+              <div className="apex-size-guide-content">
+                <div className="apex-size-table-wrap">
+                  <table className="apex-size-table">
+                    <thead>
+                      <tr>
+                        <th>SIZE</th>
+                        <th>CHEST (INCHES)</th>
+                        <th>LENGTH (INCHES)</th>
+                        <th>RECOMMENDED SILHOUETTE</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>XS</strong></td>
+                        <td>38"</td>
+                        <td>26"</td>
+                        <td>Tailored Unisex / Petite Drape</td>
+                      </tr>
+                      <tr>
+                        <td><strong>S</strong></td>
+                        <td>40"</td>
+                        <td>27"</td>
+                        <td>Clean Tailored Streetwear Fit</td>
+                      </tr>
+                      <tr>
+                        <td><strong>M</strong></td>
+                        <td>42"</td>
+                        <td>28"</td>
+                        <td>Standard Athletic Silhouette</td>
+                      </tr>
+                      <tr>
+                        <td><strong>L</strong></td>
+                        <td>44"</td>
+                        <td>29"</td>
+                        <td>Structured Regular Drape</td>
+                      </tr>
+                      <tr>
+                        <td><strong>XL</strong></td>
+                        <td>46"</td>
+                        <td>30"</td>
+                        <td>Relaxed Streetwear / Layered Drape</td>
+                      </tr>
+                      <tr>
+                        <td><strong>2XL</strong></td>
+                        <td>48"</td>
+                        <td>31"</td>
+                        <td>Effortless Oversized Fit</td>
+                      </tr>
+                      <tr>
+                        <td><strong>3XL</strong></td>
+                        <td>50"</td>
+                        <td>32"</td>
+                        <td>Generous Extended Drape</td>
+                      </tr>
+                      <tr>
+                        <td><strong>4XL</strong></td>
+                        <td>52"</td>
+                        <td>33"</td>
+                        <td>Relaxed Big & Tall Silhouette</td>
+                      </tr>
+                      <tr>
+                        <td><strong>5XL</strong></td>
+                        <td>54"</td>
+                        <td>34"</td>
+                        <td>Maximum Architectural Volume</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="apex-size-fit-notes">
+                  <div className="apex-size-fit-card">
+                    <h4>✦ Men's Fit & Styling Advice</h4>
+                    <p>Tailored in a regular unisex streetwear drape with structured shoulders. Fits true to size for a sharp tailored silhouette. Order one size up for an effortless oversized drape layered over heavyweight hoodies.</p>
+                  </div>
+                  <div className="apex-size-fit-card">
+                    <h4>✦ Women's Fit & Styling Advice</h4>
+                    <p>Tailored in an architectural unisex streetwear cut. Order true to size for an effortless oversized boyfriend bomber silhouette draped over wide-leg trousers or boots. Size down one size for a more contoured, tailored fit.</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* If Footwear */}
+            {sizeGuideProduct.category === 'Footwear' && (
+              <div className="apex-size-guide-content">
+                <div className="apex-size-table-wrap">
+                  <table className="apex-size-table">
+                    <thead>
+                      <tr>
+                        <th>US SIZE</th>
+                        <th>UK SIZE</th>
+                        <th>EU SIZE</th>
+                        <th>FOOT LENGTH (CM)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td><strong>US 7</strong></td><td>UK 6.5</td><td>EU 40</td><td>25.0 cm</td></tr>
+                      <tr><td><strong>US 8</strong></td><td>UK 7.5</td><td>EU 41</td><td>26.0 cm</td></tr>
+                      <tr><td><strong>US 9</strong></td><td>UK 8.5</td><td>EU 42.5</td><td>27.0 cm</td></tr>
+                      <tr><td><strong>US 10</strong></td><td>UK 9.5</td><td>EU 44</td><td>28.0 cm</td></tr>
+                      <tr><td><strong>US 11</strong></td><td>UK 10.5</td><td>EU 45</td><td>29.0 cm</td></tr>
+                      <tr><td><strong>US 12</strong></td><td>UK 11.5</td><td>EU 46</td><td>30.0 cm</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div className="apex-size-fit-notes">
+                  <div className="apex-size-fit-card">
+                    <h4>✦ Hand-Lasted Vulcanized Sole</h4>
+                    <p>Crafted on a classic dual-density vulcanized rubber chassis with Ortholite arch-support insoles. Fits true to standard athletic sneaker sizing. If between sizes, we recommend ordering half a size up.</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="apex-size-modal-footer">
+              <button
+                type="button"
+                className="apex-btn-primary"
+                onClick={() => setSizeGuideProduct(null)}
+              >
+                Close Size Guide →
+              </button>
             </div>
           </div>
         </div>
