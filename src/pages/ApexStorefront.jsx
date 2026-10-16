@@ -18,15 +18,13 @@ function formatCardTitle(name) {
   if (!name || typeof name !== 'string') return '';
   const match = name.match(/"([^"]+)"/);
   if (match && match[1]) {
-    return match[1].toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+    return match[1].trim();
   }
   return stripGsm(name)
     .replace(/^APEX\s*/i, '')
     .replace(/\bHAUTE COUTURE BOMBER JACKET\b/gi, '')
     .replace(/\((MEN'S|WOMEN'S|UNISEX)\)/gi, '')
-    .trim()
-    .toLowerCase()
-    .replace(/\b\w/g, s => s.toUpperCase());
+    .trim();
 }
 
 /* ── Editorial Campaign Runway Gallery (Using Live Shopify Products) ── */
@@ -567,9 +565,9 @@ export default function ApexStorefront() {
             <img src={hoverImage} alt={`${item.name} alternate view`} className="apex-garment-img-hover" loading="lazy" />
           )}
 
-          {/* Top Badges (Authentic Category/Gender + Wishlist Heart) */}
+          {/* Top Badges (DROP 001 Edition Badge + Wishlist Heart) */}
           <div className="apex-card-top-badges">
-            <span className="apex-card-gender-pill">{item.gender || item.category}</span>
+            <span className="apex-card-drop-badge">DROP 001</span>
             <button 
               type="button" 
               className={`apex-card-heart-btn ${wishlist.includes(item.id) ? 'active' : ''}`}
@@ -585,9 +583,8 @@ export default function ApexStorefront() {
           </div>
         </div>
 
-        {/* Card Body */}
+        {/* Card Body (APEX Haute Couture Typography) */}
         <div className="apex-garment-card-body">
-          <div className="apex-card-brand-label">APEX</div>
           <h3 className="apex-garment-card-title" title={item.name}>
             {formatCardTitle(item.name)}
           </h3>
