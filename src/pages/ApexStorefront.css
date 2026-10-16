@@ -987,22 +987,18 @@ html { scroll-behavior: smooth; }
 }
 
 .apex-garment-card-title {
-  font-family: var(--sans);
-  font-size: 0.95rem;
-  font-weight: 700;
-  line-height: 1.3;
-  letter-spacing: 0.06em;
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.2;
   text-transform: uppercase;
   color: var(--ink);
   margin: 0 0 8px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  transition: color 0.2s ease;
+  cursor: pointer;
+  transition: color 0.2s;
 }
 
-.apex-garment-card:hover .apex-garment-card-title {
+.apex-garment-card-title:hover {
   color: var(--red);
 }
 
@@ -3062,19 +3058,15 @@ html { scroll-behavior: smooth; }
     padding: 8px 9px 10px !important;
   }
   .apex-streetwear-grid.mobile-2col .apex-garment-card-title {
-    font-family: var(--sans) !important;
-    font-size: 0.78rem !important;
-    font-weight: 700 !important;
-    line-height: 1.25 !important;
-    letter-spacing: 0.05em !important;
+    font-family: var(--serif) !important;
+    font-size: 1.15rem !important;
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
     text-transform: uppercase !important;
     color: var(--ink) !important;
     margin: 0 0 6px !important;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 2 !important;
-    -webkit-box-orient: vertical !important;
-    overflow: hidden !important;
-    min-height: 2.5em !important;
+    display: block !important;
+    min-height: auto !important;
   }
   .apex-streetwear-grid.mobile-2col .apex-price-row {
     margin-top: auto;

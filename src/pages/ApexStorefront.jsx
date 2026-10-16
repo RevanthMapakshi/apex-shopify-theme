@@ -583,10 +583,14 @@ export default function ApexStorefront() {
           </div>
         </div>
 
-        {/* Card Body (APEX Haute Couture Typography) */}
+        {/* Card Body */}
         <div className="apex-garment-card-body">
-          <h3 className="apex-garment-card-title" title={item.name}>
-            {formatCardTitle(item.name)}
+          <h3 
+            className="apex-garment-card-title" 
+            title={item.name}
+            onClick={() => openProductDetail(item)}
+          >
+            {stripGsm(item.name)}
           </h3>
           
           <div className="apex-price-row">
