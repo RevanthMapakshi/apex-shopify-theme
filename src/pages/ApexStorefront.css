@@ -977,13 +977,21 @@ html { scroll-behavior: smooth; }
   box-shadow: 0 2px 8px rgba(230, 57, 70, 0.2);
 }
 
-/* Card Body (APEX Haute Couture Typography) */
+/* Card Body (Yesterday's Authentic Layout & Styling) */
 .apex-garment-card-body {
-  padding: 0.85rem 1rem 1.1rem;
+  padding: 0.95rem 1rem 1.15rem;
   display: flex;
   flex-direction: column;
   flex: 1;
   background: #FFFFFF;
+}
+
+.apex-garment-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
 }
 
 .apex-garment-card-title {
@@ -993,28 +1001,22 @@ html { scroll-behavior: smooth; }
   line-height: 1.2;
   text-transform: uppercase;
   color: var(--ink);
-  margin: 0 0 8px;
   cursor: pointer;
   transition: color 0.2s;
+  flex: 1;
 }
 
 .apex-garment-card-title:hover {
   color: var(--red);
 }
 
-.apex-price-row {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  margin-top: auto;
-}
-
+.apex-garment-card-price,
 .apex-selling-price {
   font-family: var(--mono);
-  font-size: 1rem;
-  font-weight: 700;
-  color: #111111;
-  letter-spacing: 0.02em;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
 }
 
 /* Legacy & Shared specs */
@@ -2162,6 +2164,11 @@ html { scroll-behavior: smooth; }
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
+@keyframes apexSlideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
 .apex-modal-x {
   position: absolute;
   top: 1.25rem;
@@ -2903,9 +2910,150 @@ html { scroll-behavior: smooth; }
   .apex-section {
     padding: 3rem 1.25rem;
   }
+
+  /* ── MOBILE / TABLET FULL-WIDTH BOTTOM SHEET MODAL ── */
+  .apex-modal-bg {
+    align-items: flex-end !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    z-index: 1500 !important;
+  }
+  .apex-modal-sheet,
+  .apex-product-detail-modal,
+  .apex-lookbook-modal-sheet,
+  .apex-size-guide-modal-sheet {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 20px 20px 0 0 !important;
+    padding: 1.25rem 1.15rem 2rem !important;
+    max-height: 90vh !important;
+    margin: 0 !important;
+    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.3) !important;
+    border: none !important;
+    animation: apexSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    position: relative;
+  }
+  .apex-modal-sheet::before {
+    content: '';
+    display: block;
+    width: 44px;
+    height: 4.5px;
+    border-radius: 3px;
+    background: #D4D2CA;
+    margin: 0 auto 14px auto;
+  }
+  .apex-modal-x {
+    top: 0.85rem !important;
+    right: 0.85rem !important;
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 50% !important;
+    background: rgba(240, 239, 235, 0.95) !important;
+    backdrop-filter: blur(8px) !important;
+    border: 1px solid rgba(17, 17, 17, 0.1) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.35rem !important;
+    line-height: 1 !important;
+    color: #111111 !important;
+    z-index: 50 !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  }
   .apex-lookbook-modal-grid,
   .apex-detail-grid {
-    grid-template-columns: 1fr;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.15rem !important;
+    width: 100% !important;
+  }
+  .apex-detail-gallery {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.65rem !important;
+  }
+  .apex-detail-main-media {
+    width: 100% !important;
+    max-height: 46vh !important;
+    aspect-ratio: 4 / 5 !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    background: #F4F3EE !important;
+    border: 1px solid var(--border) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .apex-detail-main-media img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: top center !important;
+    padding: 0 !important;
+  }
+  .apex-detail-thumb-strip {
+    display: flex !important;
+    gap: 0.5rem !important;
+    overflow-x: auto !important;
+    padding-bottom: 4px !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  .apex-detail-thumb-btn {
+    width: 54px !important;
+    height: 54px !important;
+    border-radius: 6px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    flex-shrink: 0 !important;
+  }
+  .apex-detail-thumb-btn img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    padding: 0 !important;
+  }
+  .apex-detail-info {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .apex-detail-title {
+    font-family: var(--serif) !important;
+    font-size: 1.45rem !important;
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
+    text-transform: uppercase !important;
+    color: var(--ink) !important;
+    margin-bottom: 0.35rem !important;
+  }
+  .apex-detail-price {
+    font-family: var(--mono) !important;
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    color: var(--ink) !important;
+    margin-bottom: 0.75rem !important;
+  }
+  .apex-detail-cta-row {
+    position: sticky !important;
+    bottom: -2rem !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+    backdrop-filter: blur(12px) !important;
+    padding: 0.85rem 1.15rem 1.25rem !important;
+    margin: 1rem -1.15rem -2rem !important;
+    border-top: 1px solid var(--border) !important;
+    z-index: 30 !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.65rem !important;
+    box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.06) !important;
+  }
+  .apex-detail-cta-row button {
+    padding: 0.85rem 1rem !important;
+    font-size: 0.78rem !important;
   }
 }
 
@@ -3071,9 +3219,13 @@ html { scroll-behavior: smooth; }
   .apex-streetwear-grid.mobile-2col .apex-price-row {
     margin-top: auto;
   }
+  .apex-streetwear-grid.mobile-2col .apex-garment-card-price,
   .apex-streetwear-grid.mobile-2col .apex-selling-price {
-    font-size: 0.88rem !important;
-    font-weight: 700 !important;
+    font-family: var(--mono) !important;
+    font-size: 1.05rem !important;
+    font-weight: 600 !important;
+    color: var(--ink) !important;
+    white-space: nowrap !important;
   }
   .apex-streetwear-grid.mobile-2col .apex-card-heart-btn {
     width: 26px !important;
@@ -3096,43 +3248,42 @@ html { scroll-behavior: smooth; }
     left: 6px !important;
   }
 
-  /* Product Detail Modal as Mobile Bottom Sheet */
-  .apex-modal-bg {
-    align-items: flex-end;
-    padding: 0;
-  }
-  .apex-modal-sheet {
-    max-height: 90vh;
-    border-radius: 16px 16px 0 0;
-    padding: 1.5rem 1.15rem 1.75rem;
-    animation: apexSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  @keyframes apexSlideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
-  }
+  /* Refinements for Product Detail & Size Guide as Full Bottom Sheet on Phones */
+  .apex-modal-sheet,
+  .apex-product-detail-modal,
+  .apex-lookbook-modal-sheet,
   .apex-size-guide-modal-sheet {
-    max-height: 88vh;
-    border-radius: 16px 16px 0 0;
-    padding: 1.75rem 1.15rem;
+    max-height: 88vh !important;
+    padding: 1.15rem 1rem 1.85rem !important;
   }
-  .apex-detail-media-pane {
-    max-height: 45vh;
+  .apex-detail-main-media {
+    max-height: 42vh !important;
+    aspect-ratio: 4 / 5 !important;
   }
-  .apex-detail-main-img-wrap {
-    height: 38vh;
+  .apex-detail-title {
+    font-size: 1.35rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0.35rem !important;
+  }
+  .apex-detail-price {
+    font-family: var(--mono) !important;
+    font-size: 1.22rem !important;
+    font-weight: 600 !important;
+    color: var(--ink) !important;
   }
   .apex-detail-cta-row {
-    position: sticky;
-    bottom: -1rem;
-    background: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(8px);
-    padding: 0.75rem 0;
-    margin: 0.5rem -1.15rem -1.15rem;
-    padding-left: 1.15rem;
-    padding-right: 1.15rem;
-    border-top: 1px solid var(--border);
-    z-index: 20;
+    position: sticky !important;
+    bottom: -1.85rem !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+    backdrop-filter: blur(12px) !important;
+    padding: 0.75rem 1rem 1.15rem !important;
+    margin: 0.85rem -1rem -1.85rem !important;
+    border-top: 1px solid var(--border) !important;
+    z-index: 30 !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.5rem !important;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06) !important;
   }
 
   .apex-ensemble-media-stack {

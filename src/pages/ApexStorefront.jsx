@@ -585,16 +585,15 @@ export default function ApexStorefront() {
 
         {/* Card Body */}
         <div className="apex-garment-card-body">
-          <h3 
-            className="apex-garment-card-title" 
-            title={item.name}
-            onClick={() => openProductDetail(item)}
-          >
-            {stripGsm(item.name)}
-          </h3>
-          
-          <div className="apex-price-row">
-            <span className="apex-selling-price">{formatPrice(item, currency)}</span>
+          <div className="apex-garment-card-top">
+            <h3 
+              className="apex-garment-card-title" 
+              title={item.name}
+              onClick={() => openProductDetail(item)}
+            >
+              {stripGsm(item.name)}
+            </h3>
+            <span className="apex-garment-card-price">{formatPrice(item, currency)}</span>
           </div>
         </div>
       </div>
