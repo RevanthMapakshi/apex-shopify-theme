@@ -591,7 +591,7 @@ export default function ApexStorefront() {
               title={item.name}
               onClick={() => openProductDetail(item)}
             >
-              {stripGsm(item.name)}
+              {formatCardTitle(item.name) || stripGsm(item.name)}
             </h3>
             <span className="apex-garment-card-price">{formatPrice(item, currency)}</span>
           </div>
@@ -1266,7 +1266,7 @@ export default function ApexStorefront() {
                   </span>
                 </div>
 
-                <h2 className="apex-detail-title">{stripGsm(detailProduct.name)}</h2>
+                <h2 className="apex-detail-title">{formatCardTitle(detailProduct.name) || stripGsm(detailProduct.name)}</h2>
                 <div className="apex-detail-price">{formatPrice(detailProduct, currency)}</div>
 
                 {detailProduct.tagline && (
