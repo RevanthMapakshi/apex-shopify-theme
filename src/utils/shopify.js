@@ -135,7 +135,7 @@ export async function fetchShopifyProducts() {
     } else if (titleUpper.includes('SHORT')) {
       category = 'Shorts';
     } else if (titleUpper.includes('T-SHIRT') || titleUpper.includes('TEE') || titleUpper.includes('TOP') || pType.includes('SHIRT')) {
-      category = 'Tops';
+      category = 'T-Shirts';
     } else if (isStationery) {
       category = 'Stationery';
     } else if (isDigital) {
@@ -681,6 +681,10 @@ export async function fetchShopifyProducts() {
       sectionKey = 'outerwear';
     } else if (category === 'Footwear') {
       sectionKey = 'footwear';
+    } else if (category === 'T-Shirts' || titleUpper.includes('T-SHIRT') || titleUpper.includes('TEE')) {
+      sectionKey = 'tshirts';
+    } else if (category === 'Shorts' || titleUpper.includes('SHORT')) {
+      sectionKey = 'shorts';
     } else {
       sectionKey = 'active';
     }
@@ -764,12 +768,14 @@ export async function fetchShopifyProducts() {
     'the-arc-cosmic-void-high-top-sneakers-nebula-edition',
     'the-arc-kanagawa-wave-high-top-sneakers-ukiyo-e-edition',
 
-    // ── 5. Architectural Active Bottoms & Boxy Streetwear Tops (Master Section 2 & 3) ──
+    // ── 5. Heavyweight Streetwear T-Shirts ──
+    'apex-spec-001-heavyweight-washed-boxy-tee',
+    'unisex-tie-dye-oversized-t-shirt',
+
+    // ── 6. Architectural Active Bottoms (Modular Shorts) ──
     'the-arc-monolith-active-shorts-stealth-modular-edition',
     'the-arc-vector-grid-active-shorts-geometric-edition',
-    'apex-liquid-marble-fluid-shorts-crimson-void',
-    'apex-spec-001-heavyweight-washed-boxy-tee',
-    'unisex-tie-dye-oversized-t-shirt'
+    'apex-liquid-marble-fluid-shorts-crimson-void'
   ];
 
   return unrankedProducts.sort((a, b) => {

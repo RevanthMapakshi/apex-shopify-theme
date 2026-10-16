@@ -71,7 +71,7 @@ const LOOKBOOK_ITEMS = [
   }
 ];
 
-/* ── Five Curated Architectural Sections for Drop 001 ── */
+/* ── Six Curated Architectural Sections for Drop 001 ── */
 const SECTION_DEFS = [
   {
     key: 'couture',
@@ -98,10 +98,16 @@ const SECTION_DEFS = [
     tagline: 'Dual-density vulcanized rubber craft silhouettes. Strictly limited to 20 pairs per edition.'
   },
   {
-    key: 'active',
-    title: 'Architectural Shorts & Heavyweight Tops',
+    key: 'tshirts',
+    title: 'Heavyweight Streetwear T-Shirts',
     eyebrow: 'Section 05 // Drop 001 • Limited Run',
-    tagline: 'High-output poly mesh activewear bottoms and heavyweight washed boxy tees. Wear what others can\'t.'
+    tagline: 'Architectural heavyweight combed cotton boxy armor and organic wash streetwear silhouettes. Wear what others can\'t.'
+  },
+  {
+    key: 'shorts',
+    title: 'Architectural Modular Shorts',
+    eyebrow: 'Section 06 // Drop 001 • Limited Run',
+    tagline: 'High-output poly mesh activewear bottoms and deep shadow modular geometry. Wear what others can\'t.'
   }
 ];
 
@@ -313,14 +319,14 @@ export default function ApexStorefront() {
     return streetwearProducts.filter(p => p.gender === "Women's" || p.gender === 'Unisex').length;
   }, [streetwearProducts]);
 
-  // Dynamic Category Extraction: Outerwear prioritized first as requested, followed by Footwear, Shorts, Tops
+  // Dynamic Category Extraction: Outerwear prioritized first, followed by Footwear, T-Shirts, Shorts
   const dynamicCategories = React.useMemo(() => {
     const map = {};
     genderFilteredProducts.forEach(p => {
       const cat = p.category || 'Apparel';
       map[cat] = (map[cat] || 0) + 1;
     });
-    const priority = ['Outerwear', 'Footwear', 'Shorts', 'Tops'];
+    const priority = ['Outerwear', 'Footwear', 'T-Shirts', 'Shorts', 'Tops'];
     return Object.keys(map).sort((a, b) => {
       const ia = priority.indexOf(a);
       const ib = priority.indexOf(b);
@@ -332,9 +338,17 @@ export default function ApexStorefront() {
   }, [genderFilteredProducts]);
 
   // Default grid displays streetwear filtered by both category and gender
-  const filteredProducts = activeCategory === 'ALL'
-    ? genderFilteredProducts
-    : genderFilteredProducts.filter(p => p.category && p.category.toUpperCase() === activeCategory);
+  const filteredProducts = React.useMemo(() => {
+    if (activeCategory === 'ALL') return genderFilteredProducts;
+    return genderFilteredProducts.filter(p => {
+      if (!p.category) return false;
+      const catUpper = p.category.toUpperCase();
+      if (activeCategory === 'T-SHIRTS' || activeCategory === 'TSHIRTS' || activeCategory === 'TOPS') {
+        return catUpper === 'T-SHIRTS' || catUpper === 'TOPS' || (p.handle && /tee|t-shirt/i.test(p.handle)) || (p.name && /t-shirt|tee\b/i.test(p.name));
+      }
+      return catUpper === activeCategory;
+    });
+  }, [genderFilteredProducts, activeCategory]);
 
   const getProductColor = (item) => {
     return selectedColors[item.id] || item.colors?.[0] || null;
@@ -998,15 +1012,33 @@ export default function ApexStorefront() {
         {activeCategory === 'ALL' ? (
           <div className="apex-catalogue-sections-wrap">
             {SECTION_DEFS.map(sec => {
-              const secProds = filteredProducts.filter(p => p.sectionKey === sec.key);
+              const secProds = filteredProducts.filter(p => {
+                if (sec.key === 'tshirts') {
+                  return (
+                    p.sectionKey === 'tshirts' ||
+                    p.category === 'T-Shirts' ||
+                    p.category === 'Tops' ||
+                    (p.name && /t-shirt|tee\b/i.test(p.name)) ||
+                    (p.handle && /tee|t-shirt/i.test(p.handle))
+                  );
+                }
+                if (sec.key === 'shorts') {
+                  return (
+                    (p.sectionKey === 'shorts' || p.category === 'Shorts' || (p.name && /short/i.test(p.name)) || (p.handle && /short/i.test(p.handle))) &&
+                    !/tee|t-shirt/i.test(p.name || '') &&
+                    !/tee|t-shirt/i.test(p.handle || '')
+                  );
+                }
+                return p.sectionKey === sec.key;
+              });
               if (secProds.length === 0) return null;
               return (
-                <div key={sec.key} className="apex-catalogue-section">
+                <div key={sec.key} className="apex-catalogue-section" id={`section-${sec.key}`}>
                   <div className="apex-sub-section-head">
                     <div className="apex-sub-section-eyebrow">{sec.eyebrow}</div>
                     <div className="apex-sub-section-title-row">
                       <h3 className="apex-sub-section-title">{sec.title}</h3>
-                      <span className="apex-sub-section-count">({secProds.length} Pieces)</span>
+                      <span className="apex-sub-section-count">({secProds.length} {secProds.length === 1 ? 'Piece' : 'Pieces'})</span>
                     </div>
                     <p className="apex-sub-section-desc">{sec.tagline}</p>
                   </div>
