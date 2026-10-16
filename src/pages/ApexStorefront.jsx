@@ -208,6 +208,11 @@ export default function ApexStorefront() {
 
   // Dedicated Size Guide Modal state
   const [sizeGuideProduct, setSizeGuideProduct] = useState(null);
+  const [sizeUnit, setSizeUnit] = useState('IN'); // 'IN' | 'CM'
+
+  // Mobile Navigation Drawer & Grid View State
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileGridCols, setMobileGridCols] = useState(2); // 2-column default for mobile
 
   // Dedicated Product Detail Modal state
   const [detailProduct, setDetailProduct] = useState(null);
@@ -721,8 +726,136 @@ export default function ApexStorefront() {
           <button className="apex-cart-trigger" onClick={() => setCartOpen(true)}>
             Bag {totalItems > 0 && <span className="apex-cart-pip">{totalItems}</span>}
           </button>
+          <button
+            type="button"
+            className={`apex-mobile-nav-btn ${mobileMenuOpen ? 'active' : ''}`}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle navigation menu"
+          >
+            <span className="apex-hamburger-line"></span>
+            <span className="apex-hamburger-line"></span>
+            <span className="apex-hamburger-line"></span>
+          </button>
         </div>
       </header>
+
+      {/* ── MOBILE SLIDE-OUT NAVIGATION DRAWER ── */}
+      <div 
+        className={`apex-mobile-drawer-bg ${mobileMenuOpen ? 'open' : ''}`} 
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        <div className="apex-mobile-drawer-sheet" onClick={e => e.stopPropagation()}>
+          <div className="apex-mobile-drawer-head">
+            <div className="apex-logo">
+              <ApexLogoMark />
+              <div className="apex-logo-text">
+                <span className="apex-logo-name">Apex</span>
+                <div className="apex-logo-rule" />
+                <span className="apex-logo-sub">By The ARC</span>
+              </div>
+            </div>
+            <button 
+              type="button" 
+              className="apex-modal-x" 
+              onClick={() => setMobileMenuOpen(false)}
+              aria-label="Close menu"
+            >
+              ×
+            </button>
+          </div>
+
+          <div className="apex-mobile-drawer-body">
+            <div className="apex-mobile-drawer-sec-label">Navigation</div>
+            <ul className="apex-mobile-drawer-links">
+              <li>
+                <a href="#wardrobe" onClick={() => setMobileMenuOpen(false)}>
+                  Collection <span className="apex-mobile-link-badge">({streetwearProducts.length})</span>
+                </a>
+              </li>
+              <li>
+                <a href="#ensembles" onClick={() => setMobileMenuOpen(false)}>
+                  Ensembles &amp; Pairings
+                </a>
+              </li>
+              <li>
+                <a href="#lookbook" onClick={() => setMobileMenuOpen(false)}>
+                  Editorial Lookbook
+                </a>
+              </li>
+              <li>
+                <a href="#manifesto" onClick={() => setMobileMenuOpen(false)}>
+                  The Manifesto
+                </a>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className="apex-mobile-drawer-obj-btn"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    setDrawerOpen(true);
+                  }}
+                >
+                  Objects &amp; Stationery ({objectsCount}) →
+                </button>
+              </li>
+              <li>
+                <a href="#shadows" onClick={() => setMobileMenuOpen(false)}>
+                  Shadows Archive
+                </a>
+              </li>
+            </ul>
+
+            <div className="apex-mobile-drawer-divider" />
+
+            <div className="apex-mobile-drawer-sec-label">Audience Filter</div>
+            <div className="apex-mobile-drawer-filter-chips">
+              <button
+                type="button"
+                className={`apex-mobile-filter-chip ${activeGender === 'ALL' ? 'active' : ''}`}
+                onClick={() => {
+                  setActiveGender('ALL');
+                  setMobileMenuOpen(false);
+                }}
+              >
+                All Pieces ({streetwearProducts.length})
+              </button>
+              <button
+                type="button"
+                className={`apex-mobile-filter-chip ${activeGender === 'MENS' ? 'active' : ''}`}
+                onClick={() => {
+                  setActiveGender('MENS');
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Men's ({mensCount})
+              </button>
+              <button
+                type="button"
+                className={`apex-mobile-filter-chip ${activeGender === 'WOMENS' ? 'active' : ''}`}
+                onClick={() => {
+                  setActiveGender('WOMENS');
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Women's ({womensCount})
+              </button>
+            </div>
+
+            <div className="apex-mobile-drawer-divider" />
+
+            <a 
+              href="https://thearc-rev.online" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="apex-mobile-universe-banner"
+            >
+              <span>✦ Explore The ARC Universe</span>
+              <span className="apex-mobile-arr">↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
 
       {/* ── LUXURY STREETWEAR CAMPAIGN HERO ── */}
       <section className="apex-streetwear-hero" id="hero">
@@ -844,6 +977,27 @@ export default function ApexStorefront() {
 
         {/* Dynamic Controls: Gender Toggle & Category Navigation Pills */}
         <div className="apex-filter-controls">
+          {/* Mobile Grid View Mode Toggle */}
+          <div className="apex-mobile-grid-toggle">
+            <span className="apex-mobile-grid-label">Layout:</span>
+            <button
+              type="button"
+              className={`apex-grid-toggle-btn ${mobileGridCols === 2 ? 'active' : ''}`}
+              onClick={() => setMobileGridCols(2)}
+              title="2-Column Compact Grid"
+            >
+              ⊞ 2-Col
+            </button>
+            <button
+              type="button"
+              className={`apex-grid-toggle-btn ${mobileGridCols === 1 ? 'active' : ''}`}
+              onClick={() => setMobileGridCols(1)}
+              title="1-Column Detailed View"
+            >
+              ⊟ 1-Col
+            </button>
+          </div>
+
           {/* Gender Filter Segment */}
           <div className="apex-gender-nav-pills">
             <span className="apex-filter-heading-label">Audience:</span>
@@ -916,7 +1070,7 @@ export default function ApexStorefront() {
                     </div>
                     <p className="apex-sub-section-desc">{sec.tagline}</p>
                   </div>
-                  <div className="apex-streetwear-grid">
+                  <div className={`apex-streetwear-grid ${mobileGridCols === 2 ? 'mobile-2col' : 'mobile-1col'}`}>
                     {secProds.map(renderProductCard)}
                   </div>
                 </div>
@@ -924,7 +1078,7 @@ export default function ApexStorefront() {
             })}
           </div>
         ) : (
-          <div className="apex-streetwear-grid">
+          <div className={`apex-streetwear-grid ${mobileGridCols === 2 ? 'mobile-2col' : 'mobile-1col'}`}>
             {filteredProducts.map(renderProductCard)}
           </div>
         )}
@@ -1284,7 +1438,7 @@ export default function ApexStorefront() {
 
       {/* ── INTERACTIVE MEASUREMENT & SIZE GUIDE MODAL ── */}
       {sizeGuideProduct && (
-        <div className="apex-modal-bg" onClick={() => setSizeGuideProduct(null)}>
+        <div className="apex-modal-bg apex-size-guide-modal-bg" onClick={() => setSizeGuideProduct(null)}>
           <div className="apex-modal-sheet apex-size-guide-modal-sheet" onClick={e => e.stopPropagation()}>
             <button className="apex-modal-x" onClick={() => setSizeGuideProduct(null)}>×</button>
             
@@ -1296,8 +1450,29 @@ export default function ApexStorefront() {
                   : `${sizeGuideProduct.name || 'Haute Couture Outerwear'} // Size Chart`}
               </h3>
               <p className="apex-size-modal-sub">
-                Drop 001 garments are tailored to precision architectural specifications. All garment measurements are provided in inches. Standard garment tolerance +/- 0.5 inches.
+                Drop 001 garments are tailored to precision architectural specifications. Standard garment tolerance +/- 0.5 inches (1.2 cm).
               </p>
+
+              {/* Units Switcher Toggle */}
+              {sizeGuideProduct.category !== 'Footwear' && (
+                <div className="apex-size-unit-toggle-wrap">
+                  <span className="apex-size-unit-label">Units:</span>
+                  <button
+                    type="button"
+                    className={`apex-size-unit-pill ${sizeUnit === 'IN' ? 'active' : ''}`}
+                    onClick={() => setSizeUnit('IN')}
+                  >
+                    Inches (IN)
+                  </button>
+                  <button
+                    type="button"
+                    className={`apex-size-unit-pill ${sizeUnit === 'CM' ? 'active' : ''}`}
+                    onClick={() => setSizeUnit('CM')}
+                  >
+                    Centimeters (CM)
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* If Outerwear / Bomber Jackets / Tops / Shorts */}
@@ -1308,64 +1483,64 @@ export default function ApexStorefront() {
                     <thead>
                       <tr>
                         <th>SIZE</th>
-                        <th>CHEST (INCHES)</th>
-                        <th>LENGTH (INCHES)</th>
+                        <th>CHEST ({sizeUnit === 'IN' ? 'INCHES' : 'CM'})</th>
+                        <th>LENGTH ({sizeUnit === 'IN' ? 'INCHES' : 'CM'})</th>
                         <th>RECOMMENDED SILHOUETTE</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
                         <td><strong>XS</strong></td>
-                        <td>38"</td>
-                        <td>26"</td>
+                        <td>{sizeUnit === 'IN' ? '38"' : '96.5 cm'}</td>
+                        <td>{sizeUnit === 'IN' ? '26"' : '66.0 cm'}</td>
                         <td>Tailored Unisex / Petite Drape</td>
                       </tr>
                       <tr>
                         <td><strong>S</strong></td>
-                        <td>40"</td>
-                        <td>27"</td>
+                        <td>{sizeUnit === 'IN' ? '40"' : '101.6 cm'}</td>
+                        <td>{sizeUnit === 'IN' ? '27"' : '68.6 cm'}</td>
                         <td>Clean Tailored Streetwear Fit</td>
                       </tr>
                       <tr>
                         <td><strong>M</strong></td>
-                        <td>42"</td>
-                        <td>28"</td>
+                        <td>{sizeUnit === 'IN' ? '42"' : '106.7 cm'}</td>
+                        <td>{sizeUnit === 'IN' ? '28"' : '71.1 cm'}</td>
                         <td>Standard Athletic Silhouette</td>
                       </tr>
                       <tr>
                         <td><strong>L</strong></td>
-                        <td>44"</td>
-                        <td>29"</td>
+                        <td>{sizeUnit === 'IN' ? '44"' : '111.8 cm'}</td>
+                        <td>{sizeUnit === 'IN' ? '29"' : '73.7 cm'}</td>
                         <td>Structured Regular Drape</td>
                       </tr>
                       <tr>
                         <td><strong>XL</strong></td>
-                        <td>46"</td>
-                        <td>30"</td>
+                        <td>{sizeUnit === 'IN' ? '46"' : '116.8 cm'}</td>
+                        <td>{sizeUnit === 'IN' ? '30"' : '76.2 cm'}</td>
                         <td>Relaxed Streetwear / Layered Drape</td>
                       </tr>
                       <tr>
                         <td><strong>2XL</strong></td>
-                        <td>48"</td>
-                        <td>31"</td>
+                        <td>{sizeUnit === 'IN' ? '48"' : '121.9 cm'}</td>
+                        <td>{sizeUnit === 'IN' ? '31"' : '78.7 cm'}</td>
                         <td>Effortless Oversized Fit</td>
                       </tr>
                       <tr>
                         <td><strong>3XL</strong></td>
-                        <td>50"</td>
-                        <td>32"</td>
+                        <td>{sizeUnit === 'IN' ? '50"' : '127.0 cm'}</td>
+                        <td>{sizeUnit === 'IN' ? '32"' : '81.3 cm'}</td>
                         <td>Generous Extended Drape</td>
                       </tr>
                       <tr>
                         <td><strong>4XL</strong></td>
-                        <td>52"</td>
-                        <td>33"</td>
-                        <td>Relaxed Big & Tall Silhouette</td>
+                        <td>{sizeUnit === 'IN' ? '52"' : '132.1 cm'}</td>
+                        <td>{sizeUnit === 'IN' ? '33"' : '83.8 cm'}</td>
+                        <td>Relaxed Big &amp; Tall Silhouette</td>
                       </tr>
                       <tr>
                         <td><strong>5XL</strong></td>
-                        <td>54"</td>
-                        <td>34"</td>
+                        <td>{sizeUnit === 'IN' ? '54"' : '137.2 cm'}</td>
+                        <td>{sizeUnit === 'IN' ? '34"' : '86.4 cm'}</td>
                         <td>Maximum Architectural Volume</td>
                       </tr>
                     </tbody>
