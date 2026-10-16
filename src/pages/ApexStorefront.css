@@ -850,35 +850,40 @@ html { scroll-behavior: smooth; }
 }
 
 .apex-garment-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
+  background: #FFFFFF;
+  border: 1px solid #EAE8E2;
+  border-radius: 8px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.3s;
+  cursor: pointer;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.2s;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 .apex-garment-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--border-strong);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  border-color: #D4D1C7;
 }
 
 .apex-garment-card-media {
   position: relative;
-  background: #F4F3EE;
-  aspect-ratio: 1 / 1;
+  background: #F7F6F2;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
   cursor: pointer;
+  border-radius: 8px 8px 0 0;
 }
 
 .apex-garment-card-media img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  padding: 1rem;
-  transition: transform 0.45s var(--ease), opacity 0.3s ease;
+  object-fit: cover;
+  object-position: top center;
+  padding: 0;
+  display: block;
+  transition: transform 0.4s var(--ease), opacity 0.3s ease;
 }
 
 .apex-garment-card-media .apex-garment-img-primary {
@@ -894,14 +899,163 @@ html { scroll-behavior: smooth; }
 }
 
 .apex-garment-card:hover .apex-garment-card-media .apex-garment-img-primary {
-  transform: scale(1.05);
+  transform: scale(1.04);
 }
 
 .apex-garment-card:hover .apex-garment-card-media .apex-garment-img-hover {
   opacity: 1;
-  transform: scale(1.05);
+  transform: scale(1.04);
 }
 
+/* Floating Badges Over Image (Myntra / The Souled Store layout) */
+.apex-card-top-badges {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.apex-card-gender-pill {
+  font-family: var(--sans);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(17, 17, 17, 0.82);
+  color: #FFFFFF;
+  padding: 3px 8px;
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+}
+
+.apex-card-heart-btn {
+  pointer-events: auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #282C3F;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.apex-card-heart-btn:hover {
+  transform: scale(1.15);
+  background: #FFFFFF;
+  color: #E63946;
+}
+
+.apex-card-heart-btn.active {
+  background: #FFFFFF;
+  color: #E63946;
+  border-color: rgba(230, 57, 70, 0.25);
+  box-shadow: 0 2px 8px rgba(230, 57, 70, 0.2);
+}
+
+.apex-card-rating-pill {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(6px);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #282C3F;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+.apex-card-rating-pill .apex-star {
+  color: #14958F;
+  font-weight: 800;
+}
+
+.apex-card-rating-pill .apex-sep {
+  opacity: 0.35;
+  font-size: 0.6rem;
+}
+
+/* Card Body (Myntra / The Souled Store Clean Specs) */
+.apex-garment-card-body {
+  padding: 0.85rem 0.95rem 1rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background: #FFFFFF;
+}
+
+.apex-card-brand-label {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #282C3F;
+  margin-bottom: 2px;
+}
+
+.apex-garment-card-title {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: #535766;
+  margin: 0 0 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.apex-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+
+.apex-selling-price {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #282C3F;
+}
+
+.apex-mrp-price {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #94969F;
+  text-decoration: line-through;
+}
+
+.apex-discount-badge {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #FF3E6C;
+  letter-spacing: 0.02em;
+}
+
+/* Legacy & Shared specs */
 .apex-garment-badges {
   position: absolute;
   top: 0.85rem;
@@ -956,34 +1110,12 @@ html { scroll-behavior: smooth; }
   text-transform: uppercase;
 }
 
-.apex-garment-card-body {
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
 .apex-garment-card-top {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 1rem;
   margin-bottom: 0.4rem;
-}
-
-.apex-garment-card-title {
-  font-family: var(--serif);
-  font-size: 1.35rem;
-  font-weight: 600;
-  line-height: 1.2;
-  text-transform: uppercase;
-  color: var(--ink);
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.apex-garment-card-title:hover {
-  color: var(--red);
 }
 
 .apex-garment-card-price {
@@ -2816,13 +2948,44 @@ html { scroll-behavior: smooth; }
 }
 
 @media (max-width: 640px) {
-  /* RADICAL TEXT & HERO STREAMLINING FOR MOBILE */
+  /* RADICAL TEXT & HERO STREAMLINING FOR MOBILE (MYNTRA / THE SOULED STORE FEEL) */
   .apex-streetwear-hero {
-    padding: 3.5rem 1.25rem 1.75rem !important;
-    min-height: auto !important;
+    padding: 2rem 1rem 1.25rem !important;
+    min-height: 180px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .apex-hero-content-editorial {
+    max-width: 100%;
+    padding: 0;
+  }
+  .apex-hero-title-monolithic {
+    font-size: 2.2rem !important;
+    line-height: 1 !important;
+    margin-bottom: 0.25rem !important;
+  }
+  .apex-hero-sub-title {
+    font-size: 0.7rem !important;
+    letter-spacing: 0.18em !important;
+    margin-top: 0.2rem !important;
+  }
+  .apex-hero-season-pill {
+    padding: 3px 8px !important;
+    font-size: 0.56rem !important;
+    margin-bottom: 0.5rem !important;
   }
   .apex-hero-editorial-tagline {
     display: none !important;
+  }
+  .apex-hero-cta-group {
+    margin-top: 0.6rem !important;
+    justify-content: center !important;
+  }
+  .apex-hero-btn-primary {
+    padding: 0.55rem 1.25rem !important;
+    font-size: 0.72rem !important;
   }
   .apex-hero-btn-secondary,
   .apex-hero-btn-ghost {
@@ -2834,23 +2997,45 @@ html { scroll-behavior: smooth; }
   .apex-hero-scroll-indicator {
     display: none !important;
   }
+  .apex-ticker-bar {
+    padding: 0.35rem 0 !important;
+    font-size: 0.6rem !important;
+  }
+
+  /* Compact Wardrobe Section */
+  .apex-section#wardrobe {
+    padding: 1rem 0.65rem 2rem !important;
+  }
+  .apex-section-head {
+    margin-bottom: 0.75rem !important;
+    padding-bottom: 0.45rem !important;
+    border-bottom: 1px solid var(--border);
+  }
+  .apex-section-eyebrow {
+    font-size: 0.58rem !important;
+    margin-bottom: 0.2rem !important;
+  }
+  .apex-section-title {
+    font-size: 1.25rem !important;
+  }
   .apex-section-caption {
     display: none !important;
+  }
+  .apex-catalogue-section {
+    margin-bottom: 1.5rem !important;
+  }
+  .apex-sub-section-head {
+    margin-bottom: 0.65rem !important;
+    padding-bottom: 0.35rem !important;
+  }
+  .apex-sub-section-title {
+    font-size: 0.98rem !important;
   }
   .apex-sub-section-desc {
     display: none !important;
   }
   .apex-section {
-    padding: 2.25rem 1rem !important;
-  }
-  .apex-section-head {
-    margin-bottom: 1.25rem !important;
-  }
-  .apex-sub-section-head {
-    margin-bottom: 1rem !important;
-  }
-  .apex-sub-section-title {
-    font-size: 1.25rem !important;
+    padding: 2rem 1rem !important;
   }
 
   .apex-mobile-grid-toggle {
@@ -2862,7 +3047,7 @@ html { scroll-behavior: smooth; }
     flex-direction: column;
     align-items: stretch;
     gap: 0.65rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
   }
   .apex-gender-nav-pills,
   .apex-category-nav-pills {
@@ -2892,39 +3077,63 @@ html { scroll-behavior: smooth; }
   /* Grid layouts */
   .apex-streetwear-grid.mobile-2col {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 0.65rem !important;
+    gap: 8px !important;
   }
   .apex-streetwear-grid.mobile-1col {
     grid-template-columns: 1fr !important;
-    gap: 1.25rem !important;
+    gap: 14px !important;
   }
 
-  /* Compact 2-column card adaptations */
+  /* Compact 2-column card adaptations (Myntra / The Souled Store layout) */
   .apex-streetwear-grid.mobile-2col .apex-garment-card {
-    border-radius: 4px;
+    border-radius: 6px;
+    border-color: #EAE8E2;
+  }
+  .apex-streetwear-grid.mobile-2col .apex-garment-card-media {
+    border-radius: 6px 6px 0 0;
   }
   .apex-streetwear-grid.mobile-2col .apex-garment-card-body {
-    padding: 0.65rem 0.5rem !important;
+    padding: 7px 8px 9px !important;
   }
-  .apex-streetwear-grid.mobile-2col .apex-garment-card-top {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.2rem;
-    margin-bottom: 0.45rem;
+  .apex-streetwear-grid.mobile-2col .apex-card-brand-label {
+    font-size: 0.68rem !important;
+    margin-bottom: 1px !important;
   }
   .apex-streetwear-grid.mobile-2col .apex-garment-card-title {
-    font-size: 0.88rem !important;
+    font-size: 0.76rem !important;
     line-height: 1.25 !important;
-    font-weight: 700 !important;
+    margin: 0 0 5px !important;
   }
-  .apex-streetwear-grid.mobile-2col .apex-garment-card-price {
-    font-size: 0.85rem !important;
-    font-weight: 700 !important;
+  .apex-streetwear-grid.mobile-2col .apex-price-row {
+    gap: 4px !important;
   }
-  .apex-streetwear-grid.mobile-2col .apex-card-action-btn {
-    padding: 0.52rem 0.4rem !important;
+  .apex-streetwear-grid.mobile-2col .apex-selling-price {
+    font-size: 0.82rem !important;
+  }
+  .apex-streetwear-grid.mobile-2col .apex-mrp-price {
     font-size: 0.68rem !important;
-    letter-spacing: 0.04em !important;
+  }
+  .apex-streetwear-grid.mobile-2col .apex-discount-badge {
+    font-size: 0.65rem !important;
+  }
+  .apex-streetwear-grid.mobile-2col .apex-card-heart-btn {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 13px !important;
+    top: 6px !important;
+    right: 6px !important;
+  }
+  .apex-streetwear-grid.mobile-2col .apex-card-gender-pill {
+    font-size: 0.52rem !important;
+    padding: 2px 6px !important;
+    top: 6px !important;
+    left: 6px !important;
+  }
+  .apex-streetwear-grid.mobile-2col .apex-card-rating-pill {
+    padding: 2px 5px !important;
+    font-size: 0.58rem !important;
+    bottom: 6px !important;
+    left: 6px !important;
   }
 
   /* Product Detail Modal as Mobile Bottom Sheet */

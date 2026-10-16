@@ -229,6 +229,25 @@ export default function ApexStorefront() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileGridCols, setMobileGridCols] = useState(2); // 2-column default for mobile
 
+  // Wishlist state (persisted to localStorage)
+  const [wishlist, setWishlist] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('apex_wishlist') || '[]');
+    } catch {
+      return [];
+    }
+  });
+
+  const toggleWishlist = (id) => {
+    setWishlist(prev => {
+      const next = prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id];
+      try {
+        localStorage.setItem('apex_wishlist', JSON.stringify(next));
+      } catch {}
+      return next;
+    });
+  };
+
   // Dedicated Product Detail Modal state
   const [detailProduct, setDetailProduct] = useState(null);
   const [detailActiveImg, setDetailActiveImg] = useState('');
@@ -528,7 +547,6 @@ export default function ApexStorefront() {
 
   const renderProductCard = (item) => {
     const currentColor = getProductColor(item);
-    const currentSize = getProductSize(item);
     const activeImage = getProductImage(item, currentColor);
 
     // Shopify order hover flash: image 2 by default, or image 1 if active is image 2
@@ -536,51 +554,58 @@ export default function ApexStorefront() {
       ? (item.images.find(img => img.src !== activeImage)?.src || item.images[1]?.src)
       : null;
 
+    const mrp = currency === 'INR' ? '₹8,999' : '$110';
+    const discount = '55% OFF';
+
     return (
-      <div className="apex-garment-card" key={item.id}>
+      <div 
+        className="apex-garment-card" 
+        key={item.id} 
+        onClick={() => openProductDetail(item)}
+      >
         {/* Media Wrapper */}
-        <div 
-          className="apex-garment-card-media"
-          onClick={() => openProductDetail(item)}
-          title="Click to view details & specifications"
-        >
+        <div className="apex-garment-card-media">
           <img src={activeImage} alt={item.name} className="apex-garment-img-primary" loading="lazy" />
           {hoverImage && (
             <img src={hoverImage} alt={`${item.name} alternate view`} className="apex-garment-img-hover" loading="lazy" />
           )}
-          <div className="apex-garment-badges">
-            <div className="apex-garment-badges-left">
-              {item.gender && (
-                <span className="apex-garment-badge-gender">{item.gender}</span>
-              )}
-            </div>
-            <span className="apex-garment-badge-fabric">Drop 001</span>
+
+          {/* Top Badges (Gender + Wishlist Heart) */}
+          <div className="apex-card-top-badges">
+            <span className="apex-card-gender-pill">{item.gender || item.category}</span>
+            <button 
+              type="button" 
+              className={`apex-card-heart-btn ${wishlist.includes(item.id) ? 'active' : ''}`}
+              onClick={(e) => { 
+                e.stopPropagation(); 
+                toggleWishlist(item.id);
+              }}
+              aria-label="Wishlist"
+              title={wishlist.includes(item.id) ? 'Remove from wishlist' : 'Save to wishlist'}
+            >
+              {wishlist.includes(item.id) ? '♥' : '♡'}
+            </button>
+          </div>
+
+          {/* Bottom Rating Pill like Myntra */}
+          <div className="apex-card-rating-pill">
+            <span className="apex-star">★ 4.9</span>
+            <span className="apex-sep">•</span>
+            <span>Drop 001</span>
           </div>
         </div>
 
-        {/* Card Body */}
+        {/* Card Body (Myntra / The Souled Store Format) */}
         <div className="apex-garment-card-body">
-          <div className="apex-garment-card-top" onClick={() => openProductDetail(item)}>
-            <div className="apex-garment-card-title-col">
-              <span className="apex-garment-card-sub">
-                {item.gender ? `${item.gender} • ` : ''}{item.category}
-              </span>
-              <h3 className="apex-garment-card-title">
-                {formatCardTitle(item.name)}
-              </h3>
-            </div>
-            <span className="apex-garment-card-price">{formatPrice(item, currency)}</span>
-          </div>
-
-          {/* Clean Luxury Action Button */}
-          <div className="apex-garment-cta-row">
-            <button
-              type="button"
-              className="apex-btn-primary apex-card-action-btn"
-              onClick={() => openProductDetail(item)}
-            >
-              Select Size &amp; Buy →
-            </button>
+          <div className="apex-card-brand-label">APEX</div>
+          <h3 className="apex-garment-card-title" title={item.name}>
+            {formatCardTitle(item.name)}
+          </h3>
+          
+          <div className="apex-price-row">
+            <span className="apex-selling-price">{formatPrice(item, currency)}</span>
+            <span className="apex-mrp-price">{mrp}</span>
+            <span className="apex-discount-badge">{discount}</span>
           </div>
         </div>
       </div>
