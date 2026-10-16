@@ -2754,6 +2754,35 @@ html { scroll-behavior: smooth; }
   z-index: 1200 !important;
 }
 
+/* ── STREAMLINED LUXURY PRODUCT CARD STYLES ──────────────────────── */
+.apex-garment-card-title-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1;
+}
+
+.apex-garment-card-sub {
+  font-family: var(--mono, monospace);
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--ink-muted, #777);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.apex-card-action-btn {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  font-family: var(--mono, monospace);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
 /* ── RESPONSIVE MEDIA QUERIES ────────────────────────────────────── */
 @media (max-width: 1200px) {
   .apex-ensembles-grid {
@@ -2778,7 +2807,7 @@ html { scroll-behavior: smooth; }
     display: flex;
   }
   .apex-section {
-    padding: 3.5rem 1.25rem;
+    padding: 3rem 1.25rem;
   }
   .apex-lookbook-modal-grid,
   .apex-detail-grid {
@@ -2787,9 +2816,43 @@ html { scroll-behavior: smooth; }
 }
 
 @media (max-width: 640px) {
+  /* RADICAL TEXT & HERO STREAMLINING FOR MOBILE */
   .apex-streetwear-hero {
-    padding: 5.5rem 1.25rem 2.5rem;
+    padding: 3.5rem 1.25rem 1.75rem !important;
+    min-height: auto !important;
   }
+  .apex-hero-editorial-tagline {
+    display: none !important;
+  }
+  .apex-hero-btn-secondary,
+  .apex-hero-btn-ghost {
+    display: none !important;
+  }
+  .apex-hero-spec-matrix {
+    display: none !important;
+  }
+  .apex-hero-scroll-indicator {
+    display: none !important;
+  }
+  .apex-section-caption {
+    display: none !important;
+  }
+  .apex-sub-section-desc {
+    display: none !important;
+  }
+  .apex-section {
+    padding: 2.25rem 1rem !important;
+  }
+  .apex-section-head {
+    margin-bottom: 1.25rem !important;
+  }
+  .apex-sub-section-head {
+    margin-bottom: 1rem !important;
+  }
+  .apex-sub-section-title {
+    font-size: 1.25rem !important;
+  }
+
   .apex-mobile-grid-toggle {
     display: flex;
   }
@@ -2799,7 +2862,7 @@ html { scroll-behavior: smooth; }
     flex-direction: column;
     align-items: stretch;
     gap: 0.65rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
   }
   .apex-gender-nav-pills,
   .apex-category-nav-pills {
@@ -2841,71 +2904,27 @@ html { scroll-behavior: smooth; }
     border-radius: 4px;
   }
   .apex-streetwear-grid.mobile-2col .apex-garment-card-body {
-    padding: 0.75rem 0.55rem;
+    padding: 0.65rem 0.5rem !important;
   }
-  .apex-streetwear-grid.mobile-2col .apex-garment-card-header {
+  .apex-streetwear-grid.mobile-2col .apex-garment-card-top {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.2rem;
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.45rem;
   }
   .apex-streetwear-grid.mobile-2col .apex-garment-card-title {
-    font-size: 0.82rem;
-    line-height: 1.25;
+    font-size: 0.88rem !important;
+    line-height: 1.25 !important;
+    font-weight: 700 !important;
   }
   .apex-streetwear-grid.mobile-2col .apex-garment-card-price {
-    font-size: 0.85rem;
-    font-weight: 700;
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
   }
-  .apex-streetwear-grid.mobile-2col .apex-garment-tagline {
-    display: none;
-  }
-  .apex-streetwear-grid.mobile-2col .apex-garment-spec-line {
-    font-size: 0.62rem;
-    margin-bottom: 0.45rem;
-  }
-  .apex-streetwear-grid.mobile-2col .apex-garment-colors {
-    margin-bottom: 0.45rem;
-  }
-  .apex-streetwear-grid.mobile-2col .apex-garment-opt-label {
-    font-size: 0.62rem;
-  }
-  .apex-streetwear-grid.mobile-2col .apex-garment-color-btn {
-    padding: 2px 5px;
-    font-size: 0.6rem;
-  }
-  .apex-streetwear-grid.mobile-2col .apex-garment-sizes {
-    margin-bottom: 0.55rem;
-  }
-  .apex-streetwear-grid.mobile-2col .apex-size-header {
-    font-size: 0.62rem;
-    margin-bottom: 0.3rem;
-  }
-  .apex-streetwear-grid.mobile-2col .apex-size-header-actions .apex-size-fit-tag {
-    display: none;
-  }
-  .apex-streetwear-grid.mobile-2col .apex-size-guide-pill-btn {
-    font-size: 0.58rem;
-    padding: 1px 4px;
-  }
-  .apex-streetwear-grid.mobile-2col .apex-garment-size-pill {
-    padding: 2px 4px;
-    font-size: 0.62rem;
-    min-width: 22px;
-  }
-  .apex-streetwear-grid.mobile-2col .apex-garment-cta-row {
-    grid-template-columns: 1fr;
-    gap: 0.35rem;
-  }
-  .apex-streetwear-grid.mobile-2col .apex-btn-primary,
-  .apex-streetwear-grid.mobile-2col .apex-btn-secondary {
-    padding: 0.55rem 0.4rem;
-    font-size: 0.68rem;
-    letter-spacing: 0.04em;
-  }
-  .apex-streetwear-grid.mobile-2col .apex-garment-details-btn {
-    font-size: 0.65rem;
-    padding: 0.35rem 0 0;
+  .apex-streetwear-grid.mobile-2col .apex-card-action-btn {
+    padding: 0.52rem 0.4rem !important;
+    font-size: 0.68rem !important;
+    letter-spacing: 0.04em !important;
   }
 
   /* Product Detail Modal as Mobile Bottom Sheet */

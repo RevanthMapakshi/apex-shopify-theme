@@ -14,6 +14,21 @@ function stripGsm(text) {
     .trim();
 }
 
+function formatCardTitle(name) {
+  if (!name || typeof name !== 'string') return '';
+  const match = name.match(/"([^"]+)"/);
+  if (match && match[1]) {
+    return match[1].toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+  }
+  return stripGsm(name)
+    .replace(/^APEX\s*/i, '')
+    .replace(/\bHAUTE COUTURE BOMBER JACKET\b/gi, '')
+    .replace(/\((MEN'S|WOMEN'S|UNISEX)\)/gi, '')
+    .trim()
+    .toLowerCase()
+    .replace(/\b\w/g, s => s.toUpperCase());
+}
+
 /* ── Editorial Campaign Runway Gallery (Using Live Shopify Products) ── */
 const LOOKBOOK_ITEMS = [
   {
@@ -535,7 +550,6 @@ export default function ApexStorefront() {
           )}
           <div className="apex-garment-badges">
             <div className="apex-garment-badges-left">
-              <span className="apex-garment-badge-cat">{item.category}</span>
               {item.gender && (
                 <span className="apex-garment-badge-gender">{item.gender}</span>
               )}
@@ -546,115 +560,28 @@ export default function ApexStorefront() {
 
         {/* Card Body */}
         <div className="apex-garment-card-body">
-          <div className="apex-garment-card-top">
-            <h3 
-              className="apex-garment-card-title"
-              onClick={() => openProductDetail(item)}
-            >
-              {stripGsm(item.name)}
-            </h3>
+          <div className="apex-garment-card-top" onClick={() => openProductDetail(item)}>
+            <div className="apex-garment-card-title-col">
+              <span className="apex-garment-card-sub">
+                {item.gender ? `${item.gender} • ` : ''}{item.category}
+              </span>
+              <h3 className="apex-garment-card-title">
+                {formatCardTitle(item.name)}
+              </h3>
+            </div>
             <span className="apex-garment-card-price">{formatPrice(item, currency)}</span>
           </div>
 
-          {/* Clean Product Tagline (Only shown if defined, otherwise empty) */}
-          {item.tagline && (
-            <p className="apex-garment-tagline">{stripGsm(item.tagline)}</p>
-          )}
-
-          {/* Curated Spec / Silhouette Tag */}
-          {item.specTag && (
-            <div className="apex-garment-spec-line">
-              <span>{stripGsm(item.specTag)}</span>
-            </div>
-          )}
-
-          {/* Color / Sole Swatches if available - live switches image on click */}
-          {item.colors && item.colors.length > 1 && (
-            <div className="apex-garment-colors">
-              <span className="apex-garment-opt-label">
-                {item.category === 'Footwear' ? 'Sole Edition:' : 'Colorway:'} <strong>{currentColor}</strong>
-              </span>
-              <div className="apex-garment-color-btns">
-                {item.colors.map(c => (
-                  <button
-                    key={c}
-                    type="button"
-                    className={`apex-garment-color-btn ${currentColor === c ? 'active' : ''}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedColors(prev => ({ ...prev, [item.id]: c }));
-                    }}
-                  >
-                    {c}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Size Selector */}
-          {item.sizes && item.sizes.length > 0 && (
-            <div className="apex-garment-sizes">
-              <div className="apex-size-header">
-                <span>{item.category === 'Footwear' ? 'Select Shoe Size' : 'Select Size'}</span>
-                <div className="apex-size-header-actions">
-                  <button
-                    type="button"
-                    className="apex-size-guide-pill-btn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSizeGuideProduct(item);
-                    }}
-                    title="View official measurement table"
-                  >
-                    📐 Size Guide
-                  </button>
-                  <span className="apex-size-fit-tag">True to fit</span>
-                </div>
-              </div>
-              <div className="apex-garment-size-pills">
-                {item.sizes.map(size => (
-                  <button
-                    key={size}
-                    type="button"
-                    className={`apex-garment-size-pill ${currentSize === size ? 'active' : ''}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedSizes(prev => ({ ...prev, [item.id]: size }));
-                    }}
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Action Buttons */}
+          {/* Clean Luxury Action Button */}
           <div className="apex-garment-cta-row">
             <button
               type="button"
-              className="apex-btn-primary"
-              onClick={() => openBuyNow(item, currentColor, currentSize)}
+              className="apex-btn-primary apex-card-action-btn"
+              onClick={() => openProductDetail(item)}
             >
-              Instant Buy →
-            </button>
-            <button
-              type="button"
-              className="apex-btn-secondary"
-              onClick={() => addItem(item, currentSize, currentColor)}
-            >
-              + Add to Bag
+              Select Size &amp; Buy →
             </button>
           </div>
-
-          <button
-            type="button"
-            className="apex-garment-details-btn"
-            onClick={() => openProductDetail(item)}
-          >
-            View Specs &amp; Details →
-          </button>
         </div>
       </div>
     );
