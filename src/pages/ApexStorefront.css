@@ -964,36 +964,7 @@ html { scroll-behavior: smooth; }
   box-shadow: 0 2px 8px rgba(230, 57, 70, 0.2);
 }
 
-.apex-card-rating-pill {
-  position: absolute;
-  bottom: 8px;
-  left: 8px;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(6px);
-  padding: 3px 8px;
-  border-radius: 4px;
-  font-family: var(--sans);
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: #282C3F;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  z-index: 2;
-}
-
-.apex-card-rating-pill .apex-star {
-  color: #14958F;
-  font-weight: 800;
-}
-
-.apex-card-rating-pill .apex-sep {
-  opacity: 0.35;
-  font-size: 0.6rem;
-}
-
-/* Card Body (Myntra / The Souled Store Clean Specs) */
+/* Card Body (Clean Luxury Streetwear Specs) */
 .apex-garment-card-body {
   padding: 0.85rem 0.95rem 1rem;
   display: flex;
@@ -1028,30 +999,14 @@ html { scroll-behavior: smooth; }
   display: flex;
   align-items: baseline;
   gap: 8px;
-  flex-wrap: wrap;
   margin-top: auto;
 }
 
 .apex-selling-price {
-  font-family: var(--sans);
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: #282C3F;
-}
-
-.apex-mrp-price {
-  font-family: var(--sans);
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: #94969F;
-  text-decoration: line-through;
-}
-
-.apex-discount-badge {
-  font-family: var(--sans);
-  font-size: 0.75rem;
-  font-weight: 800;
-  color: #FF3E6C;
+  font-family: var(--mono);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111111;
   letter-spacing: 0.02em;
 }
 
@@ -3105,16 +3060,11 @@ html { scroll-behavior: smooth; }
     margin: 0 0 5px !important;
   }
   .apex-streetwear-grid.mobile-2col .apex-price-row {
-    gap: 4px !important;
+    margin-top: auto;
   }
   .apex-streetwear-grid.mobile-2col .apex-selling-price {
-    font-size: 0.82rem !important;
-  }
-  .apex-streetwear-grid.mobile-2col .apex-mrp-price {
-    font-size: 0.68rem !important;
-  }
-  .apex-streetwear-grid.mobile-2col .apex-discount-badge {
-    font-size: 0.65rem !important;
+    font-size: 0.88rem !important;
+    font-weight: 700 !important;
   }
   .apex-streetwear-grid.mobile-2col .apex-card-heart-btn {
     width: 26px !important;
@@ -3127,12 +3077,6 @@ html { scroll-behavior: smooth; }
     font-size: 0.52rem !important;
     padding: 2px 6px !important;
     top: 6px !important;
-    left: 6px !important;
-  }
-  .apex-streetwear-grid.mobile-2col .apex-card-rating-pill {
-    padding: 2px 5px !important;
-    font-size: 0.58rem !important;
-    bottom: 6px !important;
     left: 6px !important;
   }
 

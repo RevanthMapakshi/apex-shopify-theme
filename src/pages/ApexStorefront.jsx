@@ -554,9 +554,6 @@ export default function ApexStorefront() {
       ? (item.images.find(img => img.src !== activeImage)?.src || item.images[1]?.src)
       : null;
 
-    const mrp = currency === 'INR' ? '₹8,999' : '$110';
-    const discount = '55% OFF';
-
     return (
       <div 
         className="apex-garment-card" 
@@ -570,7 +567,7 @@ export default function ApexStorefront() {
             <img src={hoverImage} alt={`${item.name} alternate view`} className="apex-garment-img-hover" loading="lazy" />
           )}
 
-          {/* Top Badges (Gender + Wishlist Heart) */}
+          {/* Top Badges (Authentic Category/Gender + Wishlist Heart) */}
           <div className="apex-card-top-badges">
             <span className="apex-card-gender-pill">{item.gender || item.category}</span>
             <button 
@@ -586,16 +583,9 @@ export default function ApexStorefront() {
               {wishlist.includes(item.id) ? '♥' : '♡'}
             </button>
           </div>
-
-          {/* Bottom Rating Pill like Myntra */}
-          <div className="apex-card-rating-pill">
-            <span className="apex-star">★ 4.9</span>
-            <span className="apex-sep">•</span>
-            <span>Drop 001</span>
-          </div>
         </div>
 
-        {/* Card Body (Myntra / The Souled Store Format) */}
+        {/* Card Body */}
         <div className="apex-garment-card-body">
           <div className="apex-card-brand-label">APEX</div>
           <h3 className="apex-garment-card-title" title={item.name}>
@@ -604,8 +594,6 @@ export default function ApexStorefront() {
           
           <div className="apex-price-row">
             <span className="apex-selling-price">{formatPrice(item, currency)}</span>
-            <span className="apex-mrp-price">{mrp}</span>
-            <span className="apex-discount-badge">{discount}</span>
           </div>
         </div>
       </div>
