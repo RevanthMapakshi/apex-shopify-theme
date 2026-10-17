@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useCart, useUserCurrency, formatPrice } from '../context/CartContext';
 import { countries } from '../utils/countries';
 import { db } from '../firebase';
@@ -71,43 +72,49 @@ const LOOKBOOK_ITEMS = [
   }
 ];
 
-/* ── Six Curated Architectural Sections for Drop 001 ── */
+/* ── Curated Architectural Sections for Drop 001 (T-Shirts Prioritized First) ── */
 const SECTION_DEFS = [
+  {
+    key: 'tshirts',
+    title: 'Heavyweight Streetwear T-Shirts',
+    eyebrow: 'Section 01 // Drop 001 • Limited Run',
+    categoryFilter: 'T-SHIRTS',
+  },
   {
     key: 'couture',
     title: 'Haute Couture Bomber Jackets',
-    eyebrow: 'Section 01 // Drop 001 • 50 Pieces Worldwide',
-    tagline: 'Museum-grade statement bombers tailored in complementary Men\'s and Women\'s silhouettes. Limited run of 50 pieces.'
+    eyebrow: 'Section 02 // Drop 001 • 50 Pieces Worldwide',
+    categoryFilter: 'OUTERWEAR',
   },
   {
     key: 'outerwear',
     title: 'Archival Kinetic & Streetwear Outerwear',
-    eyebrow: 'Section 02 // Drop 001 • 50 Pieces Worldwide',
-    tagline: 'High-voltage fluid dynamics, dimensional blackout minimalism, and celestial solar flares. Limited run of 50 pieces.'
-  },
-  {
-    key: 'collegiate',
-    title: 'Collegiate Outerwear',
     eyebrow: 'Section 03 // Drop 001 • 50 Pieces Worldwide',
-    tagline: 'Heritage collegiate silhouette stripped down to pure stealth luxury. Limited run of 50 pieces.'
+    categoryFilter: 'OUTERWEAR',
   },
   {
     key: 'footwear',
     title: 'Hand-Lasted Craft Footwear',
     eyebrow: 'Section 04 // Drop 001 • 20 Pairs Worldwide',
-    tagline: 'Dual-density vulcanized rubber craft silhouettes. Strictly limited to 20 pairs per edition.'
+    categoryFilter: 'FOOTWEAR',
   },
   {
-    key: 'tshirts',
-    title: 'Heavyweight Streetwear T-Shirts',
-    eyebrow: 'Section 05 // Drop 001 • Limited Run',
-    tagline: 'Architectural heavyweight combed cotton boxy armor and organic wash streetwear silhouettes. Wear what others can\'t.'
+    key: 'accessories',
+    title: 'Headwear & Objects // Accessories',
+    eyebrow: 'Section 05 // Drop 001 • Limited Allocation',
+    categoryFilter: 'ACCESSORIES',
+  },
+  {
+    key: 'collegiate',
+    title: 'Collegiate Outerwear',
+    eyebrow: 'Section 06 // Drop 001 • 50 Pieces Worldwide',
+    categoryFilter: 'OUTERWEAR',
   },
   {
     key: 'shorts',
     title: 'Architectural Modular Shorts',
-    eyebrow: 'Section 06 // Drop 001 • Limited Run',
-    tagline: 'High-output poly mesh activewear bottoms and deep shadow modular geometry. Wear what others can\'t.'
+    eyebrow: 'Section 07 // Drop 001 • Limited Run',
+    categoryFilter: 'SHORTS',
   }
 ];
 
@@ -176,6 +183,152 @@ function ApexLogoMark() {
       <path d="M 1534.0,855.5 L 1528.0,855.5 L 1508.0,844.5 L 1494.5,831.0 L 1493.5,826.0 L 1497.0,823.5 L 1718.0,778.5 L 1755.0,775.5 L 1755.5,778.0 L 1749.0,781.5 L 1631.0,818.5 L 1591.0,836.5 L 1560.0,844.5 L 1534.0,855.5 Z" />
       <path d="M 516.0,857.5 L 487.0,855.5 L 456.0,838.5 L 404.0,816.5 L 347.0,800.5 L 300.5,780.0 L 314.0,778.5 L 332.0,782.5 L 364.0,791.5 L 416.0,792.5 L 450.0,804.5 L 487.0,806.5 L 526.0,821.5 L 548.0,824.5 L 549.5,832.0 L 538.0,843.5 L 516.0,857.5 Z" />
     </svg>
+  );
+}
+
+/* ── Interactive Multi-Image Product Card (OWR Carousel Style) ── */
+function ApexProductCard({
+  item,
+  currency,
+  activeColor,
+  activeImage,
+}) {
+  const navigate = useNavigate();
+  const images = React.useMemo(() => {
+    const list = [];
+    if (activeImage) list.push(activeImage);
+    if (item.images && item.images.length > 0) {
+      item.images.forEach(img => {
+        const src = typeof img === 'string' ? img : img.src;
+        if (src && !list.includes(src)) {
+          list.push(src);
+        }
+      });
+    }
+    return list.length > 0 ? list : [item.image];
+  }, [activeImage, item.images, item.image]);
+
+  const [currentIdx, setCurrentIdx] = React.useState(0);
+  const touchStartX = React.useRef(null);
+  const touchStartY = React.useRef(null);
+
+  // Reset to index 0 whenever selected color changes
+  React.useEffect(() => {
+    setCurrentIdx(0);
+  }, [activeColor]);
+
+  const handlePrev = (e) => {
+    e.stopPropagation();
+    setCurrentIdx(prev => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  const handleNext = (e) => {
+    e.stopPropagation();
+    setCurrentIdx(prev => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+    const diffX = touchStartX.current - e.changedTouches[0].clientX;
+    const diffY = touchStartY.current - e.changedTouches[0].clientY;
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 35) {
+      if (diffX > 0) {
+        handleNext(e);
+      } else {
+        handlePrev(e);
+      }
+    }
+    touchStartX.current = null;
+    touchStartY.current = null;
+  };
+
+  const handleCardClick = () => {
+    const productHandle = item.handle || item.id;
+    if (typeof window !== 'undefined' && window.location.hostname.includes('myshopify.com')) {
+      window.location.href = `/products/${productHandle}`;
+    } else {
+      navigate(`/products/${productHandle}`);
+    }
+  };
+
+  const displayedImage = images[currentIdx] || activeImage || item.image;
+
+  return (
+    <div 
+      className="apex-garment-card" 
+      onClick={handleCardClick}
+    >
+      {/* Media Wrapper with Multi-Image Swipe Carousel (OWR style) */}
+      <div 
+        className="apex-garment-card-media"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        <img 
+          src={displayedImage} 
+          alt={`${item.name} view ${currentIdx + 1}`} 
+          className="apex-garment-img-primary" 
+          loading="lazy" 
+        />
+
+        {/* Carousel Prev/Next Buttons (hover on desktop, accessible on mobile) */}
+        {images.length > 1 && (
+          <>
+            <button 
+              type="button" 
+              className="apex-card-carousel-arrow prev"
+              onClick={handlePrev}
+              aria-label="Previous image"
+              title="Previous image"
+            >
+              &#8249;
+            </button>
+            <button 
+              type="button" 
+              className="apex-card-carousel-arrow next"
+              onClick={handleNext}
+              aria-label="Next image"
+              title="Next image"
+            >
+              &#8250;
+            </button>
+          </>
+        )}
+
+        {/* Carousel Pagination Indicator Dots (OWR Minimalist) */}
+        {images.length > 1 && (
+          <div className="apex-card-carousel-dots" aria-hidden="true">
+            {images.slice(0, 6).map((_, idx) => (
+              <span 
+                key={idx}
+                className={`apex-card-carousel-dot ${currentIdx === idx ? 'active' : ''}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentIdx(idx);
+                }}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Card Body (OWR Minimalist Stack) */}
+      <div className="apex-garment-card-body">
+        <h3 
+          className="apex-garment-card-title" 
+          title={item.name}
+          onClick={handleCardClick}
+        >
+          {formatCardTitle(item.name) || stripGsm(item.name)}
+        </h3>
+        <div className="apex-garment-card-price">{formatPrice(item, currency)}</div>
+      </div>
+    </div>
   );
 }
 
@@ -326,7 +479,7 @@ export default function ApexStorefront() {
       const cat = p.category || 'Apparel';
       map[cat] = (map[cat] || 0) + 1;
     });
-    const priority = ['Outerwear', 'Footwear', 'T-Shirts', 'Shorts', 'Tops'];
+    const priority = ['T-Shirts', 'Outerwear', 'Footwear', 'Accessories', 'Shorts', 'Tops'];
     return Object.keys(map).sort((a, b) => {
       const ia = priority.indexOf(a);
       const ib = priority.indexOf(b);
@@ -345,6 +498,9 @@ export default function ApexStorefront() {
       const catUpper = p.category.toUpperCase();
       if (activeCategory === 'T-SHIRTS' || activeCategory === 'TSHIRTS' || activeCategory === 'TOPS') {
         return catUpper === 'T-SHIRTS' || catUpper === 'TOPS' || (p.handle && /tee|t-shirt/i.test(p.handle)) || (p.name && /t-shirt|tee\b/i.test(p.name));
+      }
+      if (activeCategory === 'ACCESSORIES') {
+        return catUpper === 'ACCESSORIES' || p.sectionKey === 'accessories' || (p.name && /cap|hat|accessory/i.test(p.name)) || (p.handle && /cap|hat/i.test(p.handle));
       }
       return catUpper === activeCategory;
     });
@@ -561,56 +717,17 @@ export default function ApexStorefront() {
     const currentColor = getProductColor(item);
     const activeImage = getProductImage(item, currentColor);
 
-    // Shopify order hover flash: image 2 by default, or image 1 if active is image 2
-    const hoverImage = (item.images && item.images.length > 1)
-      ? (item.images.find(img => img.src !== activeImage)?.src || item.images[1]?.src)
-      : null;
-
     return (
-      <div 
-        className="apex-garment-card" 
-        key={item.id} 
-        onClick={() => openProductDetail(item)}
-      >
-        {/* Media Wrapper */}
-        <div className="apex-garment-card-media">
-          <img src={activeImage} alt={item.name} className="apex-garment-img-primary" loading="lazy" />
-          {hoverImage && (
-            <img src={hoverImage} alt={`${item.name} alternate view`} className="apex-garment-img-hover" loading="lazy" />
-          )}
-
-          {/* Top Badges (DROP 001 Edition Badge + Wishlist Heart) */}
-          <div className="apex-card-top-badges">
-            <span className="apex-card-drop-badge">DROP 001</span>
-            <button 
-              type="button" 
-              className={`apex-card-heart-btn ${wishlist.includes(item.id) ? 'active' : ''}`}
-              onClick={(e) => { 
-                e.stopPropagation(); 
-                toggleWishlist(item.id);
-              }}
-              aria-label="Wishlist"
-              title={wishlist.includes(item.id) ? 'Remove from wishlist' : 'Save to wishlist'}
-            >
-              {wishlist.includes(item.id) ? '♥' : '♡'}
-            </button>
-          </div>
-        </div>
-
-        {/* Card Body */}
-        <div className="apex-garment-card-body">
-          <div className="apex-garment-card-top">
-            <h3 
-              className="apex-garment-card-title" 
-              title={item.name}
-              onClick={() => openProductDetail(item)}
-            >
-              {formatCardTitle(item.name) || stripGsm(item.name)}
-            </h3>
-            <span className="apex-garment-card-price">{formatPrice(item, currency)}</span>
-          </div>
-        </div>
-      </div>
+      <ApexProductCard
+        key={item.id}
+        item={item}
+        currency={currency}
+        wishlist={wishlist}
+        toggleWishlist={toggleWishlist}
+        openProductDetail={openProductDetail}
+        activeColor={currentColor}
+        activeImage={activeImage}
+      />
     );
   };
 
@@ -648,7 +765,6 @@ export default function ApexStorefront() {
         <nav>
           <ul className="apex-header-nav">
             <li><a href="#wardrobe">Collection ({streetwearProducts.length})</a></li>
-            <li><a href="#ensembles">Ensembles</a></li>
             <li><a href="#lookbook">Lookbook</a></li>
             <li><a href="#manifesto">Manifesto</a></li>
             <li>
@@ -724,11 +840,6 @@ export default function ApexStorefront() {
               <li>
                 <a href="#wardrobe" onClick={() => setMobileMenuOpen(false)}>
                   Collection <span className="apex-mobile-link-badge">({streetwearProducts.length})</span>
-                </a>
-              </li>
-              <li>
-                <a href="#ensembles" onClick={() => setMobileMenuOpen(false)}>
-                  Ensembles &amp; Pairings
                 </a>
               </li>
               <li>
@@ -831,7 +942,7 @@ export default function ApexStorefront() {
         <div className="apex-hero-content-editorial">
           <div className="apex-hero-season-pill">
             <span className="apex-hero-live-dot" />
-            <span>DROP 001 // WEAR WHAT OTHERS CAN'T</span>
+            <span>DROP 001 // ARCHIVE</span>
           </div>
 
           <h1 className="apex-hero-title-monolithic">
@@ -840,170 +951,87 @@ export default function ApexStorefront() {
           </h1>
 
           <p className="apex-hero-editorial-tagline">
-            Wear what others can't. Every silhouette in Drop 001 is strictly limited — 50 pieces per jacket edition, 20 pairs per footwear silhouette. Once sold out, each model is permanently retired into the archive and succeeded by Drop 002.
+            Wear what others can't. Limited to 50 pieces per edition. Zero restocks.
           </p>
 
           <div className="apex-hero-cta-group">
             <a href="#wardrobe" className="apex-hero-btn-primary">
-              Explore Drop 001 ({streetwearProducts.length}) ↓
+              Explore Collection &darr;
             </a>
-            <a href="#ensembles" className="apex-hero-btn-secondary">
-              View Ensembles →
-            </a>
-            <button
-              type="button"
-              className="apex-hero-btn-ghost"
-              onClick={() => setDrawerOpen(true)}
-            >
-              Objects of Discipline ({objectsCount}) →
-            </button>
           </div>
-
-          <div className="apex-hero-spec-matrix">
-            <div className="apex-hero-matrix-item">
-              <strong>50 Pieces</strong>
-              <span>Per Jacket Edition</span>
-            </div>
-            <div className="apex-hero-matrix-sep" />
-            <div className="apex-hero-matrix-item">
-              <strong>20 Pairs</strong>
-              <span>Per Footwear Silhouette</span>
-            </div>
-            <div className="apex-hero-matrix-sep" />
-            <div className="apex-hero-matrix-item">
-              <strong>Drop 001</strong>
-              <span>Wear What Others Can't</span>
-            </div>
-            <div className="apex-hero-matrix-sep" />
-            <div className="apex-hero-matrix-item">
-              <strong>Drop 002</strong>
-              <span>Succession Upon Sellout</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="apex-hero-scroll-indicator">
-          <span>SCROLL TO DISCOVER</span>
-          <div className="apex-hero-scroll-line" />
         </div>
       </section>
 
-      {/* ── KINETIC RUNWAY TICKER BAR ── */}
-      <div className="apex-ticker-bar">
-        <div className="apex-ticker-track">
-          <span>WEAR WHAT OTHERS CAN'T</span>
-          <span className="ticker-dot">✦</span>
-          <span>DROP 001 // LIMITED ARCHIVE</span>
-          <span className="ticker-dot">✦</span>
-          <span>50 PIECES PER JACKET</span>
-          <span className="ticker-dot">✦</span>
-          <span>20 PAIRS PER FOOTWEAR</span>
-          <span className="ticker-dot">✦</span>
-          <span>HAND-LASTED CRAFT SILHOUETTES</span>
-          <span className="ticker-dot">✦</span>
-          <span>PAN-INDIA PRIORITY DISPATCH</span>
-          <span className="ticker-dot">✦</span>
-          <span>WEAR WHAT OTHERS CAN'T</span>
-          <span className="ticker-dot">✦</span>
-          <span>DROP 001 // LIMITED ARCHIVE</span>
-          <span className="ticker-dot">✦</span>
-          <span>50 PIECES PER JACKET</span>
-          <span className="ticker-dot">✦</span>
-          <span>20 PAIRS PER FOOTWEAR</span>
-          <span className="ticker-dot">✦</span>
-          <span>HAND-LASTED CRAFT SILHOUETTES</span>
-          <span className="ticker-dot">✦</span>
-          <span>PAN-INDIA PRIORITY DISPATCH</span>
-        </div>
-      </div>
-
-      {/* ── WARDROBE CATALOGUE & CATEGORY FILTER ── */}
+      {/* ── WARDROBE CATALOGUE & MINIMAL CATEGORY FILTER ── */}
       <section className="apex-section" id="wardrobe">
-        <div className="apex-section-head">
-          <div>
-            <div className="apex-section-eyebrow">Drop 001 // Wear What Others Can't</div>
-            <h2 className="apex-section-title">The Complete Capsule</h2>
-          </div>
-          <p className="apex-section-caption">
-            Every piece belongs to Drop 001 — strictly limited to 50 pieces per jacket edition and 20 pairs per footwear silhouette. Once sold out, each model is retired to the archive and replaced with Drop 002.
-          </p>
-        </div>
-
-        {/* Dynamic Controls: Gender Toggle & Category Navigation Pills */}
-        <div className="apex-filter-controls">
-          {/* Mobile Grid View Mode Toggle */}
-          <div className="apex-mobile-grid-toggle">
-            <span className="apex-mobile-grid-label">Layout:</span>
+        {/* Minimal Luxury Filter Bar (OWR Aesthetic) */}
+        <div className="apex-minimal-filter-bar">
+          <div className="apex-minimal-cat-tabs">
             <button
               type="button"
-              className={`apex-grid-toggle-btn ${mobileGridCols === 2 ? 'active' : ''}`}
-              onClick={() => setMobileGridCols(2)}
-              title="2-Column Compact Grid"
-            >
-              ⊞ 2-Col
-            </button>
-            <button
-              type="button"
-              className={`apex-grid-toggle-btn ${mobileGridCols === 1 ? 'active' : ''}`}
-              onClick={() => setMobileGridCols(1)}
-              title="1-Column Detailed View"
-            >
-              ⊟ 1-Col
-            </button>
-          </div>
-
-          {/* Gender Filter Segment */}
-          <div className="apex-gender-nav-pills">
-            <span className="apex-filter-heading-label">Audience:</span>
-            <button
-              type="button"
-              className={`apex-gender-pill ${activeGender === 'ALL' ? 'active' : ''}`}
-              onClick={() => setActiveGender('ALL')}
-            >
-              All Pieces ({streetwearProducts.length})
-            </button>
-            <button
-              type="button"
-              className={`apex-gender-pill ${activeGender === 'MENS' ? 'active' : ''}`}
-              onClick={() => setActiveGender('MENS')}
-            >
-              Men's ({mensCount})
-            </button>
-            <button
-              type="button"
-              className={`apex-gender-pill ${activeGender === 'WOMENS' ? 'active' : ''}`}
-              onClick={() => setActiveGender('WOMENS')}
-            >
-              Women's ({womensCount})
-            </button>
-          </div>
-
-          {/* Dynamic Category Navigation Pills */}
-          <div className="apex-category-nav-pills">
-            <span className="apex-filter-heading-label">Category:</span>
-            <button
-              type="button"
-              className={`apex-cat-pill ${activeCategory === 'ALL' ? 'active' : ''}`}
+              className={`apex-minimal-tab ${activeCategory === 'ALL' ? 'active' : ''}`}
               onClick={() => setActiveCategory('ALL')}
             >
-              All Categories ({genderFilteredProducts.length})
+              All
             </button>
-            {dynamicCategories.map(cat => (
-              <button
-                key={cat.name}
-                type="button"
-                className={`apex-cat-pill ${activeCategory === cat.name.toUpperCase() ? 'active' : ''}`}
-                onClick={() => setActiveCategory(cat.name.toUpperCase())}
-              >
-                {cat.name} ({cat.count})
-              </button>
-            ))}
             <button
               type="button"
-              className="apex-cat-pill apex-cat-pill-vault"
-              onClick={() => setDrawerOpen(true)}
+              className={`apex-minimal-tab ${activeCategory === 'T-SHIRTS' || activeCategory === 'TSHIRTS' ? 'active' : ''}`}
+              onClick={() => setActiveCategory('T-SHIRTS')}
             >
-              Objects &amp; Stationery ({objectsCount}) ↗
+              T-Shirts
+            </button>
+            <button
+              type="button"
+              className={`apex-minimal-tab ${activeCategory === 'OUTERWEAR' ? 'active' : ''}`}
+              onClick={() => setActiveCategory('OUTERWEAR')}
+            >
+              Outerwear
+            </button>
+            <button
+              type="button"
+              className={`apex-minimal-tab ${activeCategory === 'FOOTWEAR' ? 'active' : ''}`}
+              onClick={() => setActiveCategory('FOOTWEAR')}
+            >
+              Footwear
+            </button>
+            <button
+              type="button"
+              className={`apex-minimal-tab ${activeCategory === 'ACCESSORIES' ? 'active' : ''}`}
+              onClick={() => setActiveCategory('ACCESSORIES')}
+            >
+              Accessories
+            </button>
+            <button
+              type="button"
+              className={`apex-minimal-tab ${activeCategory === 'SHORTS' ? 'active' : ''}`}
+              onClick={() => setActiveCategory('SHORTS')}
+            >
+              Shorts
+            </button>
+          </div>
+
+          <div className="apex-minimal-audience-tabs">
+            <button
+              type="button"
+              className={`apex-minimal-audience-btn ${activeGender === 'ALL' ? 'active' : ''}`}
+              onClick={() => setActiveGender('ALL')}
+            >
+              All
+            </button>
+            <button
+              type="button"
+              className={`apex-minimal-audience-btn ${activeGender === 'MENS' ? 'active' : ''}`}
+              onClick={() => setActiveGender('MENS')}
+            >
+              Men
+            </button>
+            <button
+              type="button"
+              className={`apex-minimal-audience-btn ${activeGender === 'WOMENS' ? 'active' : ''}`}
+              onClick={() => setActiveGender('WOMENS')}
+            >
+              Women
             </button>
           </div>
         </div>
@@ -1022,6 +1050,14 @@ export default function ApexStorefront() {
                     (p.handle && /tee|t-shirt/i.test(p.handle))
                   );
                 }
+                if (sec.key === 'accessories') {
+                  return (
+                    p.sectionKey === 'accessories' ||
+                    p.category === 'Accessories' ||
+                    (p.name && /cap|hat|accessory/i.test(p.name)) ||
+                    (p.handle && /cap|hat/i.test(p.handle))
+                  );
+                }
                 if (sec.key === 'shorts') {
                   return (
                     (p.sectionKey === 'shorts' || p.category === 'Shorts' || (p.name && /short/i.test(p.name)) || (p.handle && /short/i.test(p.handle))) &&
@@ -1034,14 +1070,28 @@ export default function ApexStorefront() {
               if (secProds.length === 0) return null;
               return (
                 <div key={sec.key} className="apex-catalogue-section" id={`section-${sec.key}`}>
-                  <div className="apex-sub-section-head">
-                    <div className="apex-sub-section-eyebrow">{sec.eyebrow}</div>
-                    <div className="apex-sub-section-title-row">
-                      <h3 className="apex-sub-section-title">{sec.title}</h3>
-                      <span className="apex-sub-section-count">({secProds.length} {secProds.length === 1 ? 'Piece' : 'Pieces'})</span>
+                  {/* Clean Editorial Section Header (OWR Style) */}
+                  <div className="apex-editorial-row-head">
+                    <div className="apex-editorial-head-left">
+                      <span className="apex-editorial-tag">{sec.eyebrow}</span>
+                      <h3 className="apex-editorial-title">{sec.title}</h3>
                     </div>
-                    <p className="apex-sub-section-desc">{sec.tagline}</p>
+                    <button
+                      type="button"
+                      className="apex-editorial-filter-btn"
+                      onClick={() => {
+                        if (sec.key === 'tshirts') setActiveCategory('T-SHIRTS');
+                        else if (sec.key === 'shorts') setActiveCategory('SHORTS');
+                        else if (sec.key === 'footwear') setActiveCategory('FOOTWEAR');
+                        else if (sec.key === 'accessories') setActiveCategory('ACCESSORIES');
+                        else setActiveCategory('OUTERWEAR');
+                        document.getElementById('wardrobe')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                    >
+                      View All ({secProds.length}) &rarr;
+                    </button>
                   </div>
+
                   <div className={`apex-streetwear-grid ${mobileGridCols === 2 ? 'mobile-2col' : 'mobile-1col'}`}>
                     {secProds.map(renderProductCard)}
                   </div>
@@ -1054,58 +1104,6 @@ export default function ApexStorefront() {
             {filteredProducts.map(renderProductCard)}
           </div>
         )}
-      </section>
-
-      {/* ── CURATED ENSEMBLES SECTION ── */}
-      <section className="apex-section apex-section-highlight" id="ensembles">
-        <div className="apex-section-head">
-          <div>
-            <div className="apex-section-eyebrow">Curated Silhouettes // Complete Looks</div>
-            <h2 className="apex-section-title">Drop 001 Ensembles</h2>
-          </div>
-          <p className="apex-section-caption">
-            Discover how hand-lasted craft footwear, active modular bottoms, varsity outerwear, and streetwear tees coordinate into complete outfits.
-          </p>
-        </div>
-
-        <div className="apex-ensembles-grid">
-          {LOOKBOOK_ITEMS.map(ens => (
-            <div className="apex-ensemble-card" key={ens.id}>
-              <div className="apex-ensemble-media-stack">
-                <div className="apex-ensemble-main-img">
-                  <img src={ens.image} alt={ens.title} />
-                </div>
-                {ens.secondaryImage && (
-                  <div className="apex-ensemble-sub-imgs">
-                    <div className="apex-ensemble-sub-img">
-                      <img src={ens.secondaryImage} alt={`${ens.title} Sub`} />
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="apex-ensemble-body">
-                <span className="apex-ensemble-eyebrow">{ens.category}</span>
-                <h3 className="apex-ensemble-title">{ens.title}</h3>
-                <h4 className="apex-ensemble-sub">{ens.subtitle}</h4>
-                <p className="apex-ensemble-desc">{ens.desc}</p>
-                <div className="apex-ensemble-tags">
-                  {ens.tags.map(t => (
-                    <span key={t} className="apex-badge-edition">{t}</span>
-                  ))}
-                </div>
-                <button
-                  type="button"
-                  className="apex-btn-primary"
-                  style={{ marginTop: '1.5rem', width: '100%' }}
-                  onClick={() => setActiveLookbook(ens)}
-                >
-                  Inspect Complete Look →
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
       </section>
 
       {/* ── EDITORIAL CAMPAIGN RUNWAY LOOKBOOK ── */}

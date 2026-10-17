@@ -3,6 +3,70 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useCart, formatPrice, useUserCurrency } from '../context/CartContext';
 import './ProductPage.css';
 
+function parseProductDescription(rawDesc) {
+  if (!rawDesc) return { intro: '', sections: [] };
+
+  const sectionRegex = /(FABRIC\s*&\s*BUILD\s*SPECS:|FABRIC\s*&\s*SPECS:|THE\s*ARTISTRY:|FIT\s*&\s*STYLING:|FIT\s*&\s*SIZING:|CARE:|KEY\s*FEATURES:|📐\s*SIZE\s*GUIDE(?:\s*\([^)]*\))?:?)/gi;
+  const matches = [...rawDesc.matchAll(sectionRegex)];
+
+  if (matches.length === 0) {
+    return {
+      intro: rawDesc,
+      sections: []
+    };
+  }
+
+  const intro = rawDesc.substring(0, matches[0].index).trim();
+  const sections = [];
+
+  for (let i = 0; i < matches.length; i++) {
+    const rawHeading = matches[i][0].replace(/[:📐]/g, '').trim();
+    const start = matches[i].index + matches[i][0].length;
+    const end = (i + 1 < matches.length) ? matches[i + 1].index : rawDesc.length;
+    const content = rawDesc.substring(start, end).trim();
+
+    let title = rawHeading;
+    if (/FABRIC/i.test(rawHeading)) title = 'Fabric & Specifications';
+    else if (/ARTISTRY/i.test(rawHeading)) title = 'The Artistry & Print';
+    else if (/FIT/i.test(rawHeading)) title = 'Fit & Styling Guide';
+    else if (/CARE/i.test(rawHeading)) title = 'Care & Longevity';
+    else if (/SIZE\s*GUIDE/i.test(rawHeading)) title = 'Size Dimensions';
+    else if (/KEY\s*FEATURES/i.test(rawHeading)) title = 'Key Specifications';
+
+    let items = null;
+    if (/FABRIC/i.test(rawHeading) || /KEY\s*FEATURES/i.test(rawHeading)) {
+      const splitItems = content.split(/(?=(?:Material|Design|Hardware|Print|Trim|Storage|Sole|Upper|Construction|Insole|Outsole|Lining|Closure|Fit):)/i);
+      if (splitItems.length > 1) {
+        items = splitItems.map(item => {
+          const colonIdx = item.indexOf(':');
+          if (colonIdx !== -1) {
+            return {
+              label: item.substring(0, colonIdx).trim(),
+              value: item.substring(colonIdx + 1).replace(/\.\s*$/, '').trim()
+            };
+          }
+          return { label: '', value: item.replace(/\.\s*$/, '').trim() };
+        }).filter(it => it.value || it.label);
+      }
+    }
+
+    sections.push({
+      id: `sec-${i}`,
+      title,
+      rawContent: content,
+      items
+    });
+  }
+
+  sections.push({
+    id: 'sec-shipping',
+    title: 'Complimentary Priority Delivery',
+    rawContent: 'Priority courier dispatch within 24–48 hours across India & worldwide. Hand-packaged in APEX custom matte-black archival packaging with tamper-evident seal.'
+  });
+
+  return { intro, sections };
+}
+
 export default function ProductPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -17,6 +81,16 @@ export default function ProductPage() {
   
   const [selectedColor, setSelectedColor] = useState('');
   const [colorError, setColorError] = useState(false);
+
+  // Accordion state: open the first section by default
+  const [openSections, setOpenSections] = useState({ 'sec-0': true });
+
+  const toggleSection = (secId) => {
+    setOpenSections(prev => ({
+      ...prev,
+      [secId]: !prev[secId]
+    }));
+  };
 
   useEffect(() => {
     if (!loadingProducts) {
@@ -74,6 +148,7 @@ export default function ProductPage() {
       }
     }
   };
+
   const handleAddToCart = () => {
     let hasError = false;
     
@@ -92,11 +167,6 @@ export default function ProductPage() {
 
     addItem(product, selectedSize, selectedColor);
   };
-
-  const isApex = typeof window !== 'undefined' && (
-    window.location.hostname.includes('myshopify.com') ||
-    window.location.hostname.includes('apex')
-  );
 
   const handleInstantBuy = async () => {
     let hasError = false;
@@ -131,21 +201,18 @@ export default function ProductPage() {
     addItem(product, selectedSize, selectedColor);
   };
 
-  // Split description if it contains "Key Features:"
-  const descParts = product.desc.split(/(?=Key Features:)/i);
-  const introDesc = descParts[0];
-  const featuresDesc = descParts[1];
+  const { intro, sections } = parseProductDescription(product.desc);
 
   return (
     <div className="product-page">
       <div className="product-page-header">
-        <Link to={isApex ? "/" : "/shop"} className="back-link">
-          {isApex ? "← Back to APEX" : "← Back to The Store"}
+        <Link to="/" className="back-link">
+          ← Back to APEX Collection
         </Link>
       </div>
       
       <div className="product-layout">
-        {/* Left Col: Images & Features */}
+        {/* Left Col: Images */}
         <div className="product-gallery-section">
           <div className="product-gallery">
             <div className="main-image-container">
@@ -158,6 +225,7 @@ export default function ProductPage() {
                     key={idx} 
                     className={`thumbnail-btn ${mainImage === img ? 'active' : ''}`}
                     onClick={() => setMainImage(img)}
+                    aria-label={`View photo ${idx + 1}`}
                   >
                     <img src={img} alt={`Thumbnail ${idx}`} loading="lazy" />
                   </button>
@@ -165,36 +233,19 @@ export default function ProductPage() {
               </div>
             )}
           </div>
-          {featuresDesc && (
-            <div className="product-features-desc">
-              <h3>Specifications</h3>
-              <ul>
-                {featuresDesc.split(/(?<=\.)\s+(?=[A-Z])/).filter(Boolean).map((feature, idx) => (
-                  <li key={idx}>
-                    {feature.includes(':') ? (
-                      <>
-                        <strong>{feature.split(':')[0]}:</strong>
-                        {feature.substring(feature.indexOf(':') + 1)}
-                      </>
-                    ) : (
-                      feature
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </div>
 
-        {/* Right Col: Details */}
+        {/* Right Col: Details, Options, Actions & Accordions */}
         <div className="product-details">
           <div className="product-category-label">{product.category}</div>
           <h1 className="product-title">{product.name}</h1>
           <div className="product-price">{formatPrice(product, currency)}</div>
           
-          <div className="product-description">
-            <p>{introDesc}</p>
-          </div>
+          {intro && (
+            <div className="product-editorial-intro">
+              <p>{intro}</p>
+            </div>
+          )}
 
           <div className="product-options">
             {product.requiresColor && (
@@ -256,8 +307,7 @@ export default function ProductPage() {
             ) : (
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                 <button
-                  className="add-to-cart-btn"
-                  style={{ background: 'var(--red)', color: '#FFFFFF', border: 'none' }}
+                  className="add-to-cart-btn instant-buy"
                   onClick={handleInstantBuy}
                 >
                   Instant Buy Now →
@@ -270,9 +320,48 @@ export default function ProductPage() {
           </div>
           
           <div className="product-trust">
-             <div className="trust-row"><span className="trust-icon">🌍</span> Ships to 220+ countries</div>
-             <div className="trust-row"><span className="trust-icon">🔒</span> Secure Checkout</div>
+             <div className="trust-row"><span className="trust-icon">✦</span> 50 Pieces Worldwide // Zero Restocks</div>
+             <div className="trust-row"><span className="trust-icon">🔒</span> Encrypted Checkout // Pan-India Priority</div>
           </div>
+
+          {/* ── MINIMAL ARCHITECTURAL ACCORDIONS ── */}
+          {sections.length > 0 && (
+            <div className="product-accordions">
+              {sections.map(sec => {
+                const isOpen = !!openSections[sec.id];
+                return (
+                  <div key={sec.id} className={`product-accordion-item ${isOpen ? 'open' : ''}`}>
+                    <button
+                      type="button"
+                      className="product-accordion-header"
+                      onClick={() => toggleSection(sec.id)}
+                      aria-expanded={isOpen}
+                    >
+                      <span className="product-accordion-title">{sec.title}</span>
+                      <span className="product-accordion-icon">{isOpen ? '−' : '+'}</span>
+                    </button>
+                    {isOpen && (
+                      <div className="product-accordion-content">
+                        {sec.items ? (
+                          <ul className="product-spec-list">
+                            {sec.items.map((it, idx) => (
+                              <li key={idx} className="product-spec-row">
+                                {it.label && <strong className="product-spec-label">{it.label}: </strong>}
+                                <span className="product-spec-value">{it.value}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="product-spec-text">{sec.rawContent}</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
         </div>
       </div>
     </div>

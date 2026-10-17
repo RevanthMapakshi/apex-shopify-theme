@@ -127,15 +127,29 @@ export async function fetchShopifyProducts() {
       titleUpper.includes('EBOOK') ||
       titleUpper.includes('SALARY TRAP');
 
+    const isAccessory = 
+      pType.includes('ACCESSOR') ||
+      pType.includes('CAP') ||
+      pType.includes('HAT') ||
+      tagsUpper.includes('ACCESSORIES') ||
+      tagsUpper.includes('CAP') ||
+      tagsUpper.includes('HAT') ||
+      titleUpper.includes('CAP') ||
+      titleUpper.includes('HAT') ||
+      titleUpper.includes('BEANIE') ||
+      Boolean(p.handle && (p.handle.includes('cap') || p.handle.includes('hat')));
+
     let category = 'Apparel';
     if (isFootwear) {
       category = 'Footwear';
+    } else if (isAccessory) {
+      category = 'Accessories';
+    } else if (titleUpper.includes('T-SHIRT') || titleUpper.includes('TEE') || titleUpper.includes('TOP') || pType.includes('SHIRT')) {
+      category = 'T-Shirts';
     } else if (titleUpper.includes('JACKET') || titleUpper.includes('HOODIE') || pType.includes('OUTERWEAR')) {
       category = 'Outerwear';
     } else if (titleUpper.includes('SHORT')) {
       category = 'Shorts';
-    } else if (titleUpper.includes('T-SHIRT') || titleUpper.includes('TEE') || titleUpper.includes('TOP') || pType.includes('SHIRT')) {
-      category = 'T-Shirts';
     } else if (isStationery) {
       category = 'Stationery';
     } else if (isDigital) {
@@ -149,50 +163,18 @@ export async function fetchShopifyProducts() {
     const currencyCode = p.priceRange?.minVariantPrice?.currencyCode || 'INR';
     const rawAmount = parseFloat(p.priceRange?.minVariantPrice?.amount || '0');
 
-    // ── Drop 001 Synced Pricing Map (Ensures Printify USD default values are mapped to authentic drop pricing) ──
-    const LUXURY_PRICES_INR = {
-      'red-liquid-marble-bomber-jacket': 849900,
-      'swirling-amber-flame-bomber-jacket': 799900,
-      'teal-wave-abstract-bomber-jacket': 799900,
-      'black-bomber-jacket-classic-mens-aop-zip-up': 799900,
-      'mens-flame-swirl-bomber-jacket-orange-abstract-aop-outerwear': 799900,
-      'men-s-bomber-jacket-gothic-red-rose-smoke-all-over-print': 849900,
-      'vintage-gothic-rose-bomber-jacket': 599900,
-      'dragon-wave-bomber-jacket-gold-asian-dragon-sakura-design': 899900,
-      'dragon-cherry-blossom-bomber-jacket': 599900,
-      'japanese-oni-mask-wave-bomber-jacket-sakura-great-wave-aop': 849900,
-      'baroque-floral-bomber-jacket-gold-ornate-vase-design': 849900,
-      'baroque-rose-bomber-jacket': 599900,
-      'gothic-winged-skull-bomber-jacket': 849900,
-      'apex-samurai-oni-the-great-wave-couture-bomber-jacket-womens': 599900,
-      'apex-casablanca-palais-silk-twill-bomber-jacket-mens': 849900,
-      'apex-casablanca-palais-silk-twill-bomber-jacket-womens': 599900,
-      // Varsity / Shadow Division — kept at its Shopify-set price
-      'unisex-varsity-jacket': 159900,
-    };
-
+    // ── Drop 001 Synced Pricing (Taken directly from Shopify store) ──
     let priceINR = 0;
     let priceUSD = 0;
 
-    if (LUXURY_PRICES_INR[p.handle]) {
-      priceINR = LUXURY_PRICES_INR[p.handle];
-      priceUSD = Math.round(priceINR / 83.5);
-    } else if (currencyCode === 'INR') {
-      priceINR = Math.round(rawAmount * 100);
-      priceUSD = Math.round((rawAmount / 83.5) * 100);
-    } else {
-      priceUSD = Math.round(rawAmount * 100);
-      priceINR = Math.round(rawAmount * 83.5 * 100);
-    }
-
-    // Protection against unsynced raw Printify prices in Outerwear
-    if (category === 'Outerwear' && priceINR < 20000) {
-      if (titleUpper.includes("WOMEN") || titleUpper.includes("FEMALE")) {
-        priceINR = 599900;
+    if (rawAmount > 0) {
+      if (currencyCode === 'INR') {
+        priceINR = Math.round(rawAmount * 100);
+        priceUSD = Math.round((rawAmount / 83.5) * 100);
       } else {
-        priceINR = 799900;
+        priceUSD = Math.round(rawAmount * 100);
+        priceINR = Math.round(rawAmount * 83.5 * 100);
       }
-      priceUSD = Math.round(priceINR / 83.5);
     }
 
     const rawDescHtml = p.descriptionHtml || '';
@@ -299,10 +281,7 @@ export async function fetchShopifyProducts() {
       let vPriceINR = vCurr === 'INR' ? Math.round(vAmt * 100) : Math.round(vAmt * 83.5 * 100);
       let vPriceUSD = vCurr === 'USD' ? Math.round(vAmt * 100) : Math.round((vAmt / 83.5) * 100);
 
-      if (LUXURY_PRICES_INR[p.handle]) {
-        vPriceINR = LUXURY_PRICES_INR[p.handle];
-        vPriceUSD = Math.round(vPriceINR / 83.5);
-      } else if (category === 'Outerwear' && vPriceINR < 20000) {
+      if (vAmt <= 0) {
         vPriceINR = priceINR;
         vPriceUSD = priceUSD;
       }
@@ -673,7 +652,11 @@ export async function fetchShopifyProducts() {
     ]);
 
     let sectionKey = 'active';
-    if (COUTURE_HANDLES.has(p.handle)) {
+    if (category === 'Accessories' || isAccessory) {
+      sectionKey = 'accessories';
+    } else if (category === 'T-Shirts' || titleUpper.includes('T-SHIRT') || titleUpper.includes('TEE')) {
+      sectionKey = 'tshirts';
+    } else if (COUTURE_HANDLES.has(p.handle)) {
       sectionKey = 'couture';
     } else if (p.handle === 'unisex-varsity-jacket') {
       sectionKey = 'collegiate';
@@ -681,8 +664,6 @@ export async function fetchShopifyProducts() {
       sectionKey = 'outerwear';
     } else if (category === 'Footwear') {
       sectionKey = 'footwear';
-    } else if (category === 'T-Shirts' || titleUpper.includes('T-SHIRT') || titleUpper.includes('TEE')) {
-      sectionKey = 'tshirts';
     } else if (category === 'Shorts' || titleUpper.includes('SHORT')) {
       sectionKey = 'shorts';
     } else {
@@ -693,7 +674,7 @@ export async function fetchShopifyProducts() {
       id: p.handle,
       shopifyId: p.id,
       handle: p.handle,
-      name: stripGsm(meta.title || p.title),
+      name: stripGsm(p.title || meta.title),
       category,
       gender,
       sectionKey,
