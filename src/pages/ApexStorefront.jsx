@@ -4,6 +4,11 @@ import { useCart, useUserCurrency, formatPrice } from '../context/CartContext';
 import { countries } from '../utils/countries';
 import { db } from '../firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import heroDuo from '../../assets/backdrop-user-black-duo.jpg';
+import heroMobile from '../../assets/backdrop-user-black-mobile.jpg';
+import heroJacket from '../../assets/backdrop-jacket-sneakers-model.jpg';
+import heroSneaker from '../../assets/backdrop-sneaker-bomber-duo.jpg';
+import heroStreet from '../../assets/backdrop-streetwear-fashion-look.jpg';
 import './ApexStorefront.css';
 
 function stripGsm(text) {
@@ -332,6 +337,58 @@ function ApexProductCard({
   );
 }
 
+/* ── Multi-Slide Hero Streetwear Campaign Slides ── */
+const HERO_SLIDES = [
+  {
+    id: 'hero-01',
+    eyebrow: 'COLLECTION 001 // ARCHIVE',
+    title: 'APEX',
+    subtitle: 'BY THE ARC',
+    tagline: "Wear what others can't. Limited to 50 pieces per edition. Zero restocks.",
+    ctaText: 'Explore Collection ↓',
+    categoryTarget: 'ALL',
+    desktopImg: (typeof window !== 'undefined' && window.APEX_ASSETS?.heroBackdropDuo) || heroDuo,
+    mobileImg: (typeof window !== 'undefined' && window.APEX_ASSETS?.heroBackdropMobile) || heroMobile,
+    alt: 'APEX Streetwear Campaign Duo'
+  },
+  {
+    id: 'hero-02',
+    eyebrow: 'HAUTE COUTURE // 50 PIECES WORLDWIDE',
+    title: 'BOMBERS',
+    subtitle: 'KINETIC ARCHITECTURE',
+    tagline: 'Hand-tailored embroidery, heavyweight silk lining, and monolithic drape.',
+    ctaText: 'Shop Outerwear →',
+    categoryTarget: 'OUTERWEAR',
+    desktopImg: (typeof window !== 'undefined' && window.APEX_ASSETS?.heroBackdropJacket) || heroJacket,
+    mobileImg: (typeof window !== 'undefined' && window.APEX_ASSETS?.heroBackdropJacket) || heroJacket,
+    alt: 'Haute Couture Bomber Runway'
+  },
+  {
+    id: 'hero-03',
+    eyebrow: 'FOOTWEAR DIVISION // 20 PAIRS ONLY',
+    title: 'THE ORIGINS',
+    subtitle: 'VULCANIZED HIGH-TOP',
+    tagline: 'Hand-lasted 16oz vulcanized canvas, dual-density memory foam, engraved eyelets.',
+    ctaText: 'Shop Footwear →',
+    categoryTarget: 'FOOTWEAR',
+    desktopImg: (typeof window !== 'undefined' && window.APEX_ASSETS?.heroBackdropSneaker) || heroSneaker,
+    mobileImg: (typeof window !== 'undefined' && window.APEX_ASSETS?.heroBackdropSneaker) || heroSneaker,
+    alt: 'Origins High-Top Craft Footwear'
+  },
+  {
+    id: 'hero-04',
+    eyebrow: 'HEAVYWEIGHT APPAREL // 280 GSM',
+    title: 'AVANT-GARDE',
+    subtitle: 'OVERSIZED TEES',
+    tagline: 'Combed cotton jersey with high-density archival prints and drop-shoulder drape.',
+    ctaText: 'Shop T-Shirts →',
+    categoryTarget: 'T-SHIRTS',
+    desktopImg: (typeof window !== 'undefined' && window.APEX_ASSETS?.heroBackdropStreetwear) || heroStreet,
+    mobileImg: (typeof window !== 'undefined' && window.APEX_ASSETS?.heroBackdropStreetwear) || heroStreet,
+    alt: 'Heavyweight Graphic T-Shirts'
+  }
+];
+
 export default function ApexStorefront() {
   const { products, loadingProducts, addItem, totalItems, setCartOpen } = useCart();
   const currency = useUserCurrency();
@@ -342,10 +399,8 @@ export default function ApexStorefront() {
   // Active Gender Filter ('ALL' | 'MENS' | 'WOMENS')
   const [activeGender, setActiveGender] = useState('ALL');
 
-  // Header scroll detection
+  // Header scroll detection (header stays permanently sticky while scrolling)
   const [scrolled, setScrolled] = useState(false);
-  const [headerHidden, setHeaderHidden] = useState(false);
-  const lastScrollY = useRef(0);
 
   useEffect(() => {
     document.title = "APEX by The ARC | Wear What Others Can't";
@@ -362,14 +417,55 @@ export default function ApexStorefront() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 50);
-      setHeaderHidden(y > lastScrollY.current && y > 120);
-      lastScrollY.current = y;
+      setScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Multi-slide Hero Campaign Slider state & controls
+  const [heroSlideIdx, setHeroSlideIdx] = useState(0);
+  const [heroPaused, setHeroPaused] = useState(false);
+  const heroTouchStartX = useRef(0);
+  const heroTouchEndX = useRef(0);
+
+  useEffect(() => {
+    if (heroPaused) return;
+    const timer = setInterval(() => {
+      setHeroSlideIdx(prev => (prev + 1) % HERO_SLIDES.length);
+    }, 5500);
+    return () => clearInterval(timer);
+  }, [heroPaused]);
+
+  const nextHeroSlide = () => {
+    setHeroSlideIdx(prev => (prev + 1) % HERO_SLIDES.length);
+  };
+
+  const prevHeroSlide = () => {
+    setHeroSlideIdx(prev => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
+  };
+
+  const handleHeroTouchStart = (e) => {
+    if (e.targetTouches && e.targetTouches.length > 0) {
+      heroTouchStartX.current = e.targetTouches[0].clientX;
+      heroTouchEndX.current = e.targetTouches[0].clientX;
+    }
+  };
+
+  const handleHeroTouchMove = (e) => {
+    if (e.targetTouches && e.targetTouches.length > 0) {
+      heroTouchEndX.current = e.targetTouches[0].clientX;
+    }
+  };
+
+  const handleHeroTouchEnd = () => {
+    const diff = heroTouchStartX.current - heroTouchEndX.current;
+    if (diff > 45) {
+      nextHeroSlide();
+    } else if (diff < -45) {
+      prevHeroSlide();
+    }
+  };
 
   // State per product: { [productId]: { color, size } }
   const [selectedSizes, setSelectedSizes] = useState({});
@@ -756,9 +852,12 @@ export default function ApexStorefront() {
 
       {/* ── TOP ANNOUNCEMENT BAR ── */}
       <div className="apex-top-bar">
-        <span className="apex-top-bar-marquee">
-          DROP 001 // WEAR WHAT OTHERS CAN'T • 50 PIECES PER JACKET • 20 PAIRS PER FOOTWEAR • PAN-INDIA PRIORITY DISPATCH
-        </span>
+        <div className="apex-top-bar-marquee-wrapper">
+          <div className="apex-top-bar-marquee-track">
+            <span>WEAR WHAT OTHERS CAN'T • 50 PIECES WORLDWIDE // ZERO RESTOCKS • 20 PAIRS PER FOOTWEAR EDITION • PAN-INDIA PRIORITY EXPRESS DISPATCH • COMPLIMENTARY PRESENTATION PACKAGING •&nbsp;</span>
+            <span aria-hidden="true">WEAR WHAT OTHERS CAN'T • 50 PIECES WORLDWIDE // ZERO RESTOCKS • 20 PAIRS PER FOOTWEAR EDITION • PAN-INDIA PRIORITY EXPRESS DISPATCH • COMPLIMENTARY PRESENTATION PACKAGING •&nbsp;</span>
+          </div>
+        </div>
         <a 
           href="https://thearc-rev.online" 
           target="_blank" 
@@ -771,115 +870,130 @@ export default function ApexStorefront() {
         </a>
       </div>
 
-      {/* ── HEADER ── */}
-      <header className={`apex-header ${scrolled ? 'scrolled' : ''} ${headerHidden ? 'hidden' : ''}`}>
-        <a href="#hero" className="apex-logo">
-          <ApexLogoMark />
-          <div className="apex-logo-text">
-            <span className="apex-logo-name">Apex</span>
-            <div className="apex-logo-rule" />
-            <span className="apex-logo-sub">By The ARC</span>
-          </div>
-        </a>
+      {/* ── HEADER (PERMANENTLY STICKY) ── */}
+      <header className={`apex-header ${scrolled ? 'scrolled' : ''}`}>
+        <div className="apex-header-left-group">
+          <a href="#hero" className="apex-logo">
+            <ApexLogoMark />
+            <div className="apex-logo-text">
+              <span className="apex-logo-name">Apex</span>
+              <div className="apex-logo-rule" />
+              <span className="apex-logo-sub">By The ARC</span>
+            </div>
+          </a>
 
-        <nav>
-          <ul className="apex-header-nav">
-            <li>
-              <button
-                type="button"
-                className={`apex-nav-link-btn ${activeCategory === 'ALL' ? 'active' : ''}`}
-                onClick={() => handleNavCategory('ALL')}
-              >
-                Collection
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                className={`apex-nav-link-btn ${activeCategory === 'T-SHIRTS' ? 'active' : ''}`}
-                onClick={() => handleNavCategory('T-SHIRTS')}
-              >
-                T-Shirts
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                className={`apex-nav-link-btn ${activeCategory === 'OUTERWEAR' ? 'active' : ''}`}
-                onClick={() => handleNavCategory('OUTERWEAR')}
-              >
-                Outerwear
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                className={`apex-nav-link-btn ${activeCategory === 'SHORTS' ? 'active' : ''}`}
-                onClick={() => handleNavCategory('SHORTS')}
-              >
-                Bottomwear
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                className={`apex-nav-link-btn ${activeCategory === 'FOOTWEAR' ? 'active' : ''}`}
-                onClick={() => handleNavCategory('FOOTWEAR')}
-              >
-                Footwear
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                className={`apex-nav-link-btn ${activeCategory === 'ACCESSORIES' ? 'active' : ''}`}
-                onClick={() => handleNavCategory('ACCESSORIES')}
-              >
-                Accessories
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                className="apex-nav-link-btn"
-                onClick={() => handleNavEditorial('lookbook')}
-              >
-                Lookbook
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                className="apex-nav-link-btn"
-                onClick={() => handleNavEditorial('manifesto')}
-              >
-                Manifesto
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                className="apex-nav-objects-btn"
-                onClick={() => setDrawerOpen(true)}
-              >
-                Objects ({objectsCount})
-              </button>
-            </li>
-            <li>
-              <a 
-                href="https://thearc-rev.online" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="apex-nav-universe-pill"
-                title="Explore The ARC Universe"
-              >
-                The ARC Universe ↗
-              </a>
-            </li>
-          </ul>
-        </nav>
+          <nav className="apex-header-nav-wrap">
+            <ul className="apex-header-nav">
+              <li>
+                <button
+                  type="button"
+                  className={`apex-nav-link-btn ${activeCategory === 'ALL' ? 'active' : ''}`}
+                  onClick={() => handleNavCategory('ALL')}
+                >
+                  Collection
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className={`apex-nav-link-btn ${activeCategory === 'T-SHIRTS' ? 'active' : ''}`}
+                  onClick={() => handleNavCategory('T-SHIRTS')}
+                >
+                  T-Shirts
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className={`apex-nav-link-btn ${activeCategory === 'OUTERWEAR' ? 'active' : ''}`}
+                  onClick={() => handleNavCategory('OUTERWEAR')}
+                >
+                  Outerwear
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className={`apex-nav-link-btn ${activeCategory === 'SHORTS' ? 'active' : ''}`}
+                  onClick={() => handleNavCategory('SHORTS')}
+                >
+                  Bottomwear
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className={`apex-nav-link-btn ${activeCategory === 'FOOTWEAR' ? 'active' : ''}`}
+                  onClick={() => handleNavCategory('FOOTWEAR')}
+                >
+                  Footwear
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className={`apex-nav-link-btn ${activeCategory === 'ACCESSORIES' ? 'active' : ''}`}
+                  onClick={() => handleNavCategory('ACCESSORIES')}
+                >
+                  Accessories
+                </button>
+              </li>
+            </ul>
 
+            {/* Audience Filter under Navigation */}
+            <div className="apex-nav-audience-filter" title="Filter by audience">
+              <button
+                type="button"
+                className={`apex-nav-filter-btn ${activeGender === 'ALL' ? 'active' : ''}`}
+                onClick={() => {
+                  setActiveGender('ALL');
+                  document.getElementById('wardrobe')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                All
+              </button>
+              <button
+                type="button"
+                className={`apex-nav-filter-btn ${activeGender === 'MENS' ? 'active' : ''}`}
+                onClick={() => {
+                  setActiveGender('MENS');
+                  document.getElementById('wardrobe')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                Men
+              </button>
+              <button
+                type="button"
+                className={`apex-nav-filter-btn ${activeGender === 'WOMENS' ? 'active' : ''}`}
+                onClick={() => {
+                  setActiveGender('WOMENS');
+                  document.getElementById('wardrobe')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                Women
+              </button>
+            </div>
+          </nav>
+        </div>
+
+        {/* Top Right Options Cleanly Grouped */}
         <div className="apex-header-right">
+          <button
+            type="button"
+            className="apex-nav-objects-btn desktop-only"
+            onClick={() => setDrawerOpen(true)}
+          >
+            Objects ({objectsCount})
+          </button>
+          <a 
+            href="https://thearc-rev.online" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="apex-nav-universe-pill desktop-only"
+            title="Explore The ARC Universe"
+          >
+            The ARC Universe ↗
+          </a>
           <span className="apex-curr-pill">{currency}</span>
           <button className="apex-cart-trigger" onClick={() => setCartOpen(true)}>
             Bag {totalItems > 0 && <span className="apex-cart-pip">{totalItems}</span>}
@@ -1072,43 +1186,96 @@ export default function ApexStorefront() {
         </div>
       </div>
 
-      {/* ── LUXURY STREETWEAR CAMPAIGN HERO ── */}
-      <section className="apex-streetwear-hero" id="hero">
-        {/* Shaded Campaign Backdrop (Hoodie & Sneaker Duo with Atmospheric Vignette) */}
-        <div className="apex-hero-stage-backdrop" aria-hidden="true">
-          <picture>
-            <source media="(max-width: 768px)" srcSet={heroBgMobile} />
-            <img 
-              src={heroBgDesktop} 
-              alt="APEX Streetwear Campaign" 
-              className="apex-hero-backdrop-img"
-            />
-          </picture>
-          <div className="apex-hero-backdrop-overlay" />
-          <div className="apex-hero-backdrop-glow" />
+      {/* ── LUXURY STREETWEAR CAMPAIGN HERO SLIDER ── */}
+      <section 
+        className="apex-streetwear-hero" 
+        id="hero"
+        onMouseEnter={() => setHeroPaused(true)}
+        onMouseLeave={() => setHeroPaused(false)}
+        onTouchStart={handleHeroTouchStart}
+        onTouchMove={handleHeroTouchMove}
+        onTouchEnd={handleHeroTouchEnd}
+      >
+        <div className="apex-hero-slider-container" aria-hidden="true">
+          {HERO_SLIDES.map((slide, idx) => (
+            <div 
+              key={slide.id}
+              className={`apex-hero-slide ${idx === heroSlideIdx ? 'active' : ''}`}
+            >
+              <picture>
+                <source media="(max-width: 768px)" srcSet={slide.mobileImg} />
+                <img 
+                  src={slide.desktopImg} 
+                  alt={slide.alt} 
+                  className="apex-hero-backdrop-img"
+                />
+              </picture>
+              <div className="apex-hero-backdrop-overlay" />
+              <div className="apex-hero-backdrop-glow" />
+            </div>
+          ))}
         </div>
         <div className="apex-hero-grid-lines" />
 
-        <div className="apex-hero-content-editorial">
+        {/* Slide Content */}
+        <div className="apex-hero-content-editorial" key={HERO_SLIDES[heroSlideIdx].id}>
           <div className="apex-hero-season-pill">
             <span className="apex-hero-live-dot" />
-            <span>DROP 001 // ARCHIVE</span>
+            <span>{HERO_SLIDES[heroSlideIdx].eyebrow}</span>
           </div>
 
           <h1 className="apex-hero-title-monolithic">
-            APEX
-            <span className="apex-hero-sub-title">BY THE ARC</span>
+            {HERO_SLIDES[heroSlideIdx].title}
+            <span className="apex-hero-sub-title">{HERO_SLIDES[heroSlideIdx].subtitle}</span>
           </h1>
 
           <p className="apex-hero-editorial-tagline">
-            Wear what others can't. Limited to 50 pieces per edition. Zero restocks.
+            {HERO_SLIDES[heroSlideIdx].tagline}
           </p>
 
           <div className="apex-hero-cta-group">
-            <a href="#wardrobe" className="apex-hero-btn-primary">
-              Explore Collection &darr;
-            </a>
+            <button 
+              type="button"
+              onClick={() => {
+                const targetCat = HERO_SLIDES[heroSlideIdx].categoryTarget;
+                if (targetCat) setActiveCategory(targetCat);
+                document.getElementById('wardrobe')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="apex-hero-btn-primary"
+            >
+              {HERO_SLIDES[heroSlideIdx].ctaText}
+            </button>
           </div>
+        </div>
+
+        {/* Slider Navigation Controls */}
+        <button 
+          type="button" 
+          className="apex-hero-slider-arrow prev" 
+          onClick={prevHeroSlide}
+          aria-label="Previous slide"
+        >
+          ‹
+        </button>
+        <button 
+          type="button" 
+          className="apex-hero-slider-arrow next" 
+          onClick={nextHeroSlide}
+          aria-label="Next slide"
+        >
+          ›
+        </button>
+
+        <div className="apex-hero-slider-dots">
+          {HERO_SLIDES.map((slide, idx) => (
+            <button
+              key={slide.id}
+              type="button"
+              className={`apex-hero-slider-dot ${idx === heroSlideIdx ? 'active' : ''}`}
+              onClick={() => setHeroSlideIdx(idx)}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
         </div>
       </section>
 
@@ -1160,30 +1327,6 @@ export default function ApexStorefront() {
               Bottomwear
             </button>
           </div>
-
-          <div className="apex-minimal-audience-tabs">
-            <button
-              type="button"
-              className={`apex-minimal-audience-btn ${activeGender === 'ALL' ? 'active' : ''}`}
-              onClick={() => setActiveGender('ALL')}
-            >
-              All
-            </button>
-            <button
-              type="button"
-              className={`apex-minimal-audience-btn ${activeGender === 'MENS' ? 'active' : ''}`}
-              onClick={() => setActiveGender('MENS')}
-            >
-              Men
-            </button>
-            <button
-              type="button"
-              className={`apex-minimal-audience-btn ${activeGender === 'WOMENS' ? 'active' : ''}`}
-              onClick={() => setActiveGender('WOMENS')}
-            >
-              Women
-            </button>
-          </div>
         </div>
 
         {/* Product Catalogue Display: Curated Sections when ALL, or Unified Grid when Category Selected */}
@@ -1219,33 +1362,86 @@ export default function ApexStorefront() {
               });
               if (secProds.length === 0) return null;
               return (
-                <div key={sec.key} className="apex-catalogue-section" id={`section-${sec.key}`}>
-                  {/* Clean Editorial Section Header (OWR Style) */}
-                  <div className="apex-editorial-row-head">
-                    <div className="apex-editorial-head-left">
-                      <span className="apex-editorial-tag">{sec.eyebrow}</span>
-                      <h3 className="apex-editorial-title">{sec.title}</h3>
+                <React.Fragment key={sec.key}>
+                  <div className="apex-catalogue-section" id={`section-${sec.key}`}>
+                    {/* Clean Editorial Section Header (OWR Style) */}
+                    <div className="apex-editorial-row-head">
+                      <div className="apex-editorial-head-left">
+                        <span className="apex-editorial-tag">{sec.eyebrow}</span>
+                        <h3 className="apex-editorial-title">{sec.title}</h3>
+                      </div>
+                      <button
+                        type="button"
+                        className="apex-editorial-filter-btn"
+                        onClick={() => {
+                          if (sec.key === 'tshirts') setActiveCategory('T-SHIRTS');
+                          else if (sec.key === 'shorts') setActiveCategory('SHORTS');
+                          else if (sec.key === 'footwear') setActiveCategory('FOOTWEAR');
+                          else if (sec.key === 'accessories') setActiveCategory('ACCESSORIES');
+                          else setActiveCategory('OUTERWEAR');
+                          document.getElementById('wardrobe')?.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                      >
+                        View All ({secProds.length}) &rarr;
+                      </button>
                     </div>
-                    <button
-                      type="button"
-                      className="apex-editorial-filter-btn"
-                      onClick={() => {
-                        if (sec.key === 'tshirts') setActiveCategory('T-SHIRTS');
-                        else if (sec.key === 'shorts') setActiveCategory('SHORTS');
-                        else if (sec.key === 'footwear') setActiveCategory('FOOTWEAR');
-                        else if (sec.key === 'accessories') setActiveCategory('ACCESSORIES');
-                        else setActiveCategory('OUTERWEAR');
-                        document.getElementById('wardrobe')?.scrollIntoView({ behavior: 'smooth' });
-                      }}
-                    >
-                      View All ({secProds.length}) &rarr;
-                    </button>
+
+                    <div className={`apex-streetwear-grid ${mobileGridCols === 2 ? 'mobile-2col' : 'mobile-1col'}`}>
+                      {secProds.map(renderProductCard)}
+                    </div>
                   </div>
 
-                  <div className={`apex-streetwear-grid ${mobileGridCols === 2 ? 'mobile-2col' : 'mobile-1col'}`}>
-                    {secProds.map(renderProductCard)}
-                  </div>
-                </div>
+                  {/* Inter-Section Sliding Showcase Banners */}
+                  {sec.key === 'tshirts' && (
+                    <div className="apex-inter-section-showcase">
+                      <div className="apex-inter-showcase-bg" style={{ backgroundImage: `url(${heroJacket})` }}>
+                        <div className="apex-inter-showcase-overlay" />
+                        <div className="apex-inter-showcase-content">
+                          <span className="apex-inter-showcase-pill">HAUTE COUTURE // 50 PIECES WORLDWIDE</span>
+                          <h3 className="apex-inter-showcase-title">Hand-Tailored Bomber Division</h3>
+                          <p className="apex-inter-showcase-desc">
+                            Individually numbered editions with heavyweight silk interior lining, dual-needle architectural seams, and metallic embroidery.
+                          </p>
+                          <button
+                            type="button"
+                            className="apex-inter-showcase-btn"
+                            onClick={() => {
+                              setActiveCategory('OUTERWEAR');
+                              document.getElementById('wardrobe')?.scrollIntoView({ behavior: 'smooth' });
+                            }}
+                          >
+                            Explore Outerwear →
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {sec.key === 'outerwear' && (
+                    <div className="apex-inter-section-showcase">
+                      <div className="apex-inter-showcase-bg" style={{ backgroundImage: `url(${heroSneaker})` }}>
+                        <div className="apex-inter-showcase-overlay" />
+                        <div className="apex-inter-showcase-content">
+                          <span className="apex-inter-showcase-pill">LIMITED EDITION // 20 PAIRS ONLY</span>
+                          <h3 className="apex-inter-showcase-title">The Origins Vulcanized High-Top</h3>
+                          <p className="apex-inter-showcase-desc">
+                            Hand-lasted 16oz duck canvas, dual-density memory foam footbed, and architectural vulcanized rubber outsoles.
+                          </p>
+                          <button
+                            type="button"
+                            className="apex-inter-showcase-btn"
+                            onClick={() => {
+                              setActiveCategory('FOOTWEAR');
+                              document.getElementById('wardrobe')?.scrollIntoView({ behavior: 'smooth' });
+                            }}
+                          >
+                            Explore Footwear →
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </React.Fragment>
               );
             })}
           </div>
