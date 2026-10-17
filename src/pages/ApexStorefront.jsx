@@ -873,6 +873,18 @@ export default function ApexStorefront() {
       {/* ── HEADER (PERMANENTLY STICKY) ── */}
       <header className={`apex-header ${scrolled ? 'scrolled' : ''}`}>
         <div className="apex-header-left-group">
+          {/* Mobile Navigation Toggle Button (Left-Aligned) */}
+          <button
+            type="button"
+            className={`apex-mobile-nav-btn ${mobileMenuOpen ? 'active' : ''}`}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle navigation menu"
+          >
+            <span className="apex-hamburger-line"></span>
+            <span className="apex-hamburger-line"></span>
+            <span className="apex-hamburger-line"></span>
+          </button>
+
           <a href="#hero" className="apex-logo">
             <ApexLogoMark />
             <div className="apex-logo-text">
@@ -997,16 +1009,6 @@ export default function ApexStorefront() {
           <span className="apex-curr-pill">{currency}</span>
           <button className="apex-cart-trigger" onClick={() => setCartOpen(true)}>
             Bag {totalItems > 0 && <span className="apex-cart-pip">{totalItems}</span>}
-          </button>
-          <button
-            type="button"
-            className={`apex-mobile-nav-btn ${mobileMenuOpen ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle navigation menu"
-          >
-            <span className="apex-hamburger-line"></span>
-            <span className="apex-hamburger-line"></span>
-            <span className="apex-hamburger-line"></span>
           </button>
         </div>
       </header>
