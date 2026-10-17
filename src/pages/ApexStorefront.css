@@ -210,17 +210,18 @@ html { scroll-behavior: smooth; }
 
 .apex-header-nav {
   display: flex;
-  gap: 2rem;
+  gap: 1.25rem;
   list-style: none;
   align-items: center;
 }
 
 .apex-header-nav a,
-.apex-nav-trigger {
+.apex-nav-trigger,
+.apex-nav-link-btn {
   font-family: var(--sans);
   font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-secondary);
   text-decoration: none;
@@ -229,11 +230,19 @@ html { scroll-behavior: smooth; }
   cursor: pointer;
   transition: color 0.2s;
   padding: 0;
+  white-space: nowrap;
 }
 
 .apex-header-nav a:hover,
-.apex-nav-trigger:hover {
+.apex-nav-trigger:hover,
+.apex-nav-link-btn:hover {
   color: var(--red);
+}
+
+.apex-header-nav a.active,
+.apex-nav-link-btn.active {
+  color: #111111;
+  font-weight: 700;
 }
 
 .apex-header-nav a.nav-red {
@@ -3097,23 +3106,43 @@ html { scroll-behavior: smooth; }
   gap: 0.85rem;
 }
 
-.apex-mobile-drawer-links a {
+.apex-mobile-drawer-links a,
+.apex-mobile-nav-cat-btn {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+  text-align: left;
   font-family: var(--sans, sans-serif);
   font-size: 1.05rem;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--ink, #111);
   text-decoration: none;
   padding: 0.35rem 0;
-  border-bottom: 1px solid transparent;
+  background: transparent;
+  border: none;
+  cursor: pointer;
   transition: color 0.2s ease;
 }
 
-.apex-mobile-drawer-links a:hover {
+.apex-mobile-drawer-links a:hover,
+.apex-mobile-nav-cat-btn:hover {
   color: var(--red, #C8102E);
+}
+
+.apex-mobile-nav-cat-btn.active {
+  color: var(--red, #C8102E);
+  font-weight: 700;
+}
+
+.apex-mobile-universe-link {
+  font-family: var(--mono, monospace);
+  font-size: 0.8rem;
+  color: #666666;
+  text-decoration: none;
+  padding: 0.35rem 0;
+  letter-spacing: 0.05em;
 }
 
 .apex-mobile-link-badge {
@@ -3121,6 +3150,64 @@ html { scroll-behavior: smooth; }
   font-size: 0.72rem;
   color: var(--red, #C8102E);
   font-weight: 600;
+}
+
+/* ── Clean Editorial Empty Category Placeholder (OWR Luxury Minimalist) ── */
+.apex-empty-cat-container {
+  grid-column: 1 / -1;
+  padding: 5rem 1.5rem;
+  text-align: center;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+}
+
+.apex-empty-cat-mark {
+  font-size: 1.2rem;
+  color: #111111;
+  margin-bottom: 0.8rem;
+  letter-spacing: 0.2em;
+}
+
+.apex-empty-cat-heading {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 2.8vw, 2rem);
+  font-weight: 400;
+  color: #111111;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 0.75rem 0;
+}
+
+.apex-empty-cat-message {
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  color: #666666;
+  max-width: 440px;
+  line-height: 1.5;
+  margin: 0 0 1.75rem 0;
+}
+
+.apex-btn-editorial-return {
+  background: transparent;
+  border: 1px solid #111111;
+  color: #111111;
+  font-family: var(--sans);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.apex-btn-editorial-return:hover {
+  background: #111111;
+  color: #FFFFFF;
 }
 
 .apex-mobile-drawer-obj-btn {

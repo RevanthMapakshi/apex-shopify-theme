@@ -713,6 +713,26 @@ export default function ApexStorefront() {
     }
   };
 
+  const handleNavCategory = (cat) => {
+    setActiveCategory(cat);
+    setMobileMenuOpen(false);
+    const el = document.getElementById('wardrobe');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleNavEditorial = (id) => {
+    setActiveCategory('ALL');
+    setMobileMenuOpen(false);
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 50);
+  };
+
   const renderProductCard = (item) => {
     const currentColor = getProductColor(item);
     const activeImage = getProductImage(item, currentColor);
@@ -764,19 +784,87 @@ export default function ApexStorefront() {
 
         <nav>
           <ul className="apex-header-nav">
-            <li><a href="#wardrobe">Collection ({streetwearProducts.length})</a></li>
-            <li><a href="#lookbook">Lookbook</a></li>
-            <li><a href="#manifesto">Manifesto</a></li>
+            <li>
+              <button
+                type="button"
+                className={`apex-nav-link-btn ${activeCategory === 'ALL' ? 'active' : ''}`}
+                onClick={() => handleNavCategory('ALL')}
+              >
+                Collection
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                className={`apex-nav-link-btn ${activeCategory === 'T-SHIRTS' ? 'active' : ''}`}
+                onClick={() => handleNavCategory('T-SHIRTS')}
+              >
+                T-Shirts
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                className={`apex-nav-link-btn ${activeCategory === 'OUTERWEAR' ? 'active' : ''}`}
+                onClick={() => handleNavCategory('OUTERWEAR')}
+              >
+                Outerwear
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                className={`apex-nav-link-btn ${activeCategory === 'SHORTS' ? 'active' : ''}`}
+                onClick={() => handleNavCategory('SHORTS')}
+              >
+                Bottomwear
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                className={`apex-nav-link-btn ${activeCategory === 'FOOTWEAR' ? 'active' : ''}`}
+                onClick={() => handleNavCategory('FOOTWEAR')}
+              >
+                Footwear
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                className={`apex-nav-link-btn ${activeCategory === 'ACCESSORIES' ? 'active' : ''}`}
+                onClick={() => handleNavCategory('ACCESSORIES')}
+              >
+                Accessories
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                className="apex-nav-link-btn"
+                onClick={() => handleNavEditorial('lookbook')}
+              >
+                Lookbook
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                className="apex-nav-link-btn"
+                onClick={() => handleNavEditorial('manifesto')}
+              >
+                Manifesto
+              </button>
+            </li>
             <li>
               <button
                 type="button"
                 className="apex-nav-objects-btn"
                 onClick={() => setDrawerOpen(true)}
               >
-                Objects &amp; Stationery ({objectsCount})
+                Objects ({objectsCount})
               </button>
             </li>
-            <li><a href="#shadows">Shadows</a></li>
             <li>
               <a 
                 href="https://thearc-rev.online" 
@@ -838,19 +926,76 @@ export default function ApexStorefront() {
             <div className="apex-mobile-drawer-sec-label">Navigation</div>
             <ul className="apex-mobile-drawer-links">
               <li>
-                <a href="#wardrobe" onClick={() => setMobileMenuOpen(false)}>
-                  Collection <span className="apex-mobile-link-badge">({streetwearProducts.length})</span>
-                </a>
+                <button
+                  type="button"
+                  className={`apex-mobile-nav-cat-btn ${activeCategory === 'ALL' ? 'active' : ''}`}
+                  onClick={() => handleNavCategory('ALL')}
+                >
+                  All Collection <span className="apex-mobile-link-badge">({streetwearProducts.length})</span>
+                </button>
               </li>
               <li>
-                <a href="#lookbook" onClick={() => setMobileMenuOpen(false)}>
+                <button
+                  type="button"
+                  className={`apex-mobile-nav-cat-btn ${activeCategory === 'T-SHIRTS' ? 'active' : ''}`}
+                  onClick={() => handleNavCategory('T-SHIRTS')}
+                >
+                  T-Shirts
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className={`apex-mobile-nav-cat-btn ${activeCategory === 'OUTERWEAR' ? 'active' : ''}`}
+                  onClick={() => handleNavCategory('OUTERWEAR')}
+                >
+                  Outerwear
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className={`apex-mobile-nav-cat-btn ${activeCategory === 'SHORTS' ? 'active' : ''}`}
+                  onClick={() => handleNavCategory('SHORTS')}
+                >
+                  Bottomwear
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className={`apex-mobile-nav-cat-btn ${activeCategory === 'FOOTWEAR' ? 'active' : ''}`}
+                  onClick={() => handleNavCategory('FOOTWEAR')}
+                >
+                  Footwear
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className={`apex-mobile-nav-cat-btn ${activeCategory === 'ACCESSORIES' ? 'active' : ''}`}
+                  onClick={() => handleNavCategory('ACCESSORIES')}
+                >
+                  Accessories
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className="apex-mobile-nav-cat-btn"
+                  onClick={() => handleNavEditorial('lookbook')}
+                >
                   Editorial Lookbook
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#manifesto" onClick={() => setMobileMenuOpen(false)}>
+                <button
+                  type="button"
+                  className="apex-mobile-nav-cat-btn"
+                  onClick={() => handleNavEditorial('manifesto')}
+                >
                   The Manifesto
-                </a>
+                </button>
               </li>
               <li>
                 <button
@@ -865,8 +1010,13 @@ export default function ApexStorefront() {
                 </button>
               </li>
               <li>
-                <a href="#shadows" onClick={() => setMobileMenuOpen(false)}>
-                  Shadows Archive
+                <a 
+                  href="https://thearc-rev.online" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="apex-mobile-universe-link"
+                >
+                  The ARC Universe ↗
                 </a>
               </li>
             </ul>
@@ -1007,7 +1157,7 @@ export default function ApexStorefront() {
               className={`apex-minimal-tab ${activeCategory === 'SHORTS' ? 'active' : ''}`}
               onClick={() => setActiveCategory('SHORTS')}
             >
-              Shorts
+              Bottomwear
             </button>
           </div>
 
@@ -1101,134 +1251,120 @@ export default function ApexStorefront() {
           </div>
         ) : (
           <div className={`apex-streetwear-grid ${mobileGridCols === 2 ? 'mobile-2col' : 'mobile-1col'}`}>
-            {filteredProducts.map(renderProductCard)}
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map(renderProductCard)
+            ) : (
+              <div className="apex-empty-cat-container">
+                <div className="apex-empty-cat-mark">✦</div>
+                <h3 className="apex-empty-cat-heading">
+                  Drop 001 // {activeCategory === 'SHORTS' ? 'Bottomwear' : activeCategory}
+                </h3>
+                <p className="apex-empty-cat-message">
+                  Modular architectural silhouettes are currently in pattern production. Limited allocation dropping soon.
+                </p>
+                <button
+                  type="button"
+                  className="apex-btn-editorial-return"
+                  onClick={() => setActiveCategory('ALL')}
+                >
+                  ← Return to Complete Collection
+                </button>
+              </div>
+            )}
           </div>
         )}
       </section>
 
-      {/* ── EDITORIAL CAMPAIGN RUNWAY LOOKBOOK ── */}
-      <section className="apex-section" id="lookbook">
-        <div className="apex-section-head">
-          <div>
-            <div className="apex-section-eyebrow">Campaign 001 // Visual Runway</div>
-            <h2 className="apex-section-title">The Runway Lookbook</h2>
-          </div>
-          <p className="apex-section-caption">
-            Visual documentation of Drop 001. Where industrial minimalism meets high-fashion luxury streetwear.
-          </p>
-        </div>
-
-        <div className="apex-lookbook-grid">
-          {LOOKBOOK_ITEMS.map((item, idx) => (
-            <div 
-              className={`apex-lookbook-card ${idx === 0 ? 'span-2' : ''}`}
-              key={item.id}
-              onClick={() => setActiveLookbook(item)}
-            >
-              <div className="apex-lookbook-img-wrap">
-                <img src={item.image} alt={item.title} className="apex-lookbook-img-main" loading="lazy" />
-                <div className="apex-lookbook-overlay">
-                  <div className="apex-lookbook-tag-row">
-                    {item.tags.map(t => (
-                      <span key={t} className="apex-lookbook-tag-pill">{t}</span>
-                    ))}
-                  </div>
-                  <div className="apex-lookbook-content">
-                    <span className="apex-lookbook-cat">{item.category}</span>
-                    <h3 className="apex-lookbook-title">{item.title}</h3>
-                    <p className="apex-lookbook-desc">{item.desc}</p>
-                    <span className="apex-lookbook-view-btn">Inspect Ensemble ↗</span>
-                  </div>
+      {/* ── EDITORIAL CONTENT (HOMEPAGE ONLY) ── */}
+      {/* Category pages (e.g. Bottomwear/Shorts) strictly display only their products and end directly at the footer */}
+      {activeCategory === 'ALL' && (
+        <>
+          {/* ── ARCHIVAL INSTRUMENTS & OBJECTS BANNER ── */}
+          {stationeryAndDigital.length > 0 && (
+            <div className="apex-objects-banner-bar">
+              <div className="apex-objects-banner-inner">
+                <div>
+                  <div className="apex-section-eyebrow" style={{ marginBottom: '0.2rem' }}>Archival Daily Instruments</div>
+                  <h3 className="apex-objects-banner-title">The Arc Objects of Discipline</h3>
+                  <p className="apex-objects-banner-sub">
+                    Explore our hardbound discipline journals, daily planners, habit trackers, and The Salary Trap framework.
+                  </p>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── ARCHIVAL INSTRUMENTS & OBJECTS BANNER ── */}
-      {stationeryAndDigital.length > 0 && (
-        <div className="apex-objects-banner-bar">
-          <div className="apex-objects-banner-inner">
-            <div>
-              <div className="apex-section-eyebrow" style={{ marginBottom: '0.2rem' }}>Archival Daily Instruments</div>
-              <h3 className="apex-objects-banner-title">The Arc Objects of Discipline</h3>
-              <p className="apex-objects-banner-sub">
-                Explore our hardbound discipline journals, daily planners, habit trackers, and The Salary Trap framework.
-              </p>
-            </div>
-            <button
-              type="button"
-              className="apex-objects-banner-btn"
-              onClick={() => setDrawerOpen(true)}
-            >
-              Access Archival Vault ({stationeryAndDigital.length}) →
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* ── THE CRAFT & MATERIAL MANIFESTO ── */}
-      <section className="apex-section" id="manifesto">
-        <div className="apex-section-head">
-          <div>
-            <div className="apex-section-eyebrow">Streetwear Engineering // Material Science</div>
-            <h2 className="apex-section-title">The Material Manifesto</h2>
-          </div>
-          <p className="apex-section-caption">
-            Every APEX silhouette is constructed with genuine attention to material integrity, reinforced stitching, and precision finish.
-          </p>
-        </div>
-
-        <div className="apex-manifesto-grid">
-          {MANIFESTO_ITEMS.map(mat => (
-            <div className="apex-manifesto-card" key={mat.id}>
-              <div className="apex-manifesto-weight">{mat.weight}</div>
-              <h3 className="apex-manifesto-title">{mat.title}</h3>
-              <p className="apex-manifesto-desc">{mat.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── THE SHADOWS (FUTURE DROPS & CONFIDENTIAL PATTERNS) ── */}
-      <section className="apex-section" id="shadows">
-        <div className="apex-section-head">
-          <div>
-            <div className="apex-section-eyebrow">The Archive // Future Drops</div>
-            <h2 className="apex-section-title">The Shadows</h2>
-          </div>
-          <p className="apex-section-caption">
-            Confidential cuts, tailored technical trousers, and experimental outerwear currently on pattern tables for Drop 002. As Drop 001 silhouettes sell out (50 jackets / 20 footwear pairs), these next-generation forms activate.
-          </p>
-        </div>
-
-        <div className="apex-shadow-grid">
-          {SHADOW_ITEMS.map(shadow => (
-            <div className="apex-shadow-item" key={shadow.id}>
-              <div className="apex-shadow-media">
-                <svg className="apex-shadow-svg-art" viewBox="0 0 100 130" fill="none" stroke="#111111" strokeWidth="1.2">
-                  <path d={shadow.svgPath} />
-                </svg>
-                <div className="apex-shadow-veil" />
-                <span className="apex-shadow-status-tag">{shadow.status}</span>
-              </div>
-              <div className="apex-shadow-body">
-                <h3 className="apex-shadow-name">{shadow.name}</h3>
-                <div className="apex-shadow-unrevealed">Confidential Pattern</div>
-                <p className="apex-shadow-desc">{shadow.desc}</p>
                 <button
                   type="button"
-                  className="apex-shadow-btn"
-                  onClick={() => openWaitlistModal(shadow, 'General')}
+                  className="apex-objects-banner-btn"
+                  onClick={() => setDrawerOpen(true)}
                 >
-                  Notify On Reveal →
+                  Access Archival Vault ({stationeryAndDigital.length}) →
                 </button>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
+          )}
+
+          {/* ── EDITORIAL CAMPAIGN RUNWAY LOOKBOOK (Homepage Only) ── */}
+          <section className="apex-section" id="lookbook">
+            <div className="apex-section-head">
+              <div>
+                <div className="apex-section-eyebrow">Campaign 001 // Visual Runway</div>
+                <h2 className="apex-section-title">The Runway Lookbook</h2>
+              </div>
+              <p className="apex-section-caption">
+                Visual documentation of Drop 001. Where industrial minimalism meets high-fashion luxury streetwear.
+              </p>
+            </div>
+
+            <div className="apex-lookbook-grid">
+              {LOOKBOOK_ITEMS.map((item, idx) => (
+                <div 
+                  className={`apex-lookbook-card ${idx === 0 ? 'span-2' : ''}`}
+                  key={item.id}
+                  onClick={() => setActiveLookbook(item)}
+                >
+                  <div className="apex-lookbook-img-wrap">
+                    <img src={item.image} alt={item.title} className="apex-lookbook-img-main" loading="lazy" />
+                    <div className="apex-lookbook-overlay">
+                      <div className="apex-lookbook-tag-row">
+                        {item.tags.map(t => (
+                          <span key={t} className="apex-lookbook-tag-pill">{t}</span>
+                        ))}
+                      </div>
+                      <div className="apex-lookbook-content">
+                        <span className="apex-lookbook-cat">{item.category}</span>
+                        <h3 className="apex-lookbook-title">{item.title}</h3>
+                        <p className="apex-lookbook-desc">{item.desc}</p>
+                        <span className="apex-lookbook-view-btn">Inspect Ensemble ↗</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ── THE CRAFT & MATERIAL MANIFESTO (At the end before footer) ── */}
+          <section className="apex-section" id="manifesto">
+            <div className="apex-section-head">
+              <div>
+                <div className="apex-section-eyebrow">Streetwear Engineering // Material Science</div>
+                <h2 className="apex-section-title">The Material Manifesto</h2>
+              </div>
+              <p className="apex-section-caption">
+                Every APEX silhouette is constructed with genuine attention to material integrity, reinforced stitching, and precision finish.
+              </p>
+            </div>
+
+            <div className="apex-manifesto-grid">
+              {MANIFESTO_ITEMS.map(mat => (
+                <div className="apex-manifesto-card" key={mat.id}>
+                  <div className="apex-manifesto-weight">{mat.weight}</div>
+                  <h3 className="apex-manifesto-title">{mat.title}</h3>
+                  <p className="apex-manifesto-desc">{mat.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </>
+      )}
 
       {/* ── FOOTER ── */}
       <footer className="apex-footer">
