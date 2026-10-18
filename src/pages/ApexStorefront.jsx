@@ -40,51 +40,7 @@ function formatCardTitle(name) {
     .trim();
 }
 
-/* ── Editorial Campaign Runway Gallery (Using Live Shopify Products) ── */
-const LOOKBOOK_ITEMS = [
-  {
-    id: 'look-01',
-    title: 'Look 01 // Origins & The Monolith',
-    subtitle: 'Signature Silhouette & Stealth Architecture',
-    category: 'Footwear + Active Shorts',
-    image: 'https://cdn.shopify.com/s/files/1/0996/5194/4767/files/16340475902737369818_2048.jpg?v=1788675203',
-    secondaryImage: 'https://cdn.shopify.com/s/files/1/0996/5194/4767/files/Left_Pocket_6_c_1.jpg?v=1788804951',
-    tags: ['16oz Canvas', 'Drop 001', 'Signature Silhouette'],
-    desc: 'The definitive silhouette of Drop 001. Hand-lasted Origins signature high-top sneakers paired with architectural Monolith active modular shorts.'
-  },
-  {
-    id: 'look-02',
-    title: 'Look 02 // Liquid Marble Crimson Suite',
-    subtitle: 'High-Impact Contrast & Fluid Motion',
-    category: 'Fluid Series',
-    image: 'https://cdn.shopify.com/s/files/1/0996/5194/4767/files/Left_Pocket_6_c_1_929bb280-57c3-4c3d-9e85-2e9933a58299.jpg?v=1788815501',
-    secondaryImage: 'https://cdn.shopify.com/s/files/1/0996/5194/4767/files/15881962354647610567_2048_custom.jpg?v=1788675150',
-    tags: ['Crimson Void', 'Low-Top Craft', 'Drop 001'],
-    desc: 'Deep crimson void and midnight smoke fluid grain on technical micro-knit paired with the matching Liquid Marble low-top sneakers.'
-  },
-  {
-    id: 'look-03',
-    title: 'Look 03 // Vector Grid Geometry',
-    subtitle: 'High-Frequency Geometric Streetwear',
-    category: 'Geometric Suite',
-    image: 'https://cdn.shopify.com/s/files/1/0996/5194/4767/files/16477481640706225762_2048.jpg?v=1788675111',
-    secondaryImage: 'https://cdn.shopify.com/s/files/1/0996/5194/4767/files/Left_Pocket_1_c_2.jpg?v=1788788425',
-    tags: ['Pure Vector', 'Heavy Cotton', 'Dual-Density'],
-    desc: 'High-frequency isometric wireframe geometry rendered with sub-millimeter precision on hand-lasted craft footwear and varsity outerwear.'
-  },
-  {
-    id: 'look-04',
-    title: 'Look 04 // Urban Camo & Tie-Dye Wash',
-    subtitle: 'Streetwear Form & Organic Wash Texture',
-    category: 'Streetwear Capsule',
-    image: 'https://cdn.shopify.com/s/files/1/0996/5194/4767/files/14063778369052034190_2048.jpg?v=1788675026',
-    secondaryImage: 'https://cdn.shopify.com/s/files/1/0996/5194/4767/files/Front_1_c_7.jpg?v=1788787836',
-    tags: ['Urban Camo', 'Streetwear Wash', 'Drop 001'],
-    desc: 'Stealth stripe architectural camouflage high-top sneakers paired with oversized washed combed cotton jersey.'
-  }
-];
-
-/* ── Curated Architectural Sections for Drop 001 (OWR Style: 1 Clean Banner Above Each Section) ── */
+/* ── Curated Architectural Sections for Drop 001 (OWR Style: 1 Clean Minimal Banner Above Each Section) ── */
 const SECTION_DEFS = [
   {
     key: 'tshirts',
@@ -92,10 +48,9 @@ const SECTION_DEFS = [
     eyebrow: 'Section 01 // Drop 001 • Limited Run',
     categoryFilter: 'T-SHIRTS',
     banner: {
-      pill: 'HEAVYWEIGHT APPAREL // 280 GSM',
-      title: 'Avant-Garde Oversized Streetwear Tees',
-      desc: '280 GSM combed cotton jersey with high-density archival prints and relaxed drop-shoulder drape.',
-      btnText: 'Explore T-Shirts →',
+      pill: 'DROP 001 // 280 GSM',
+      title: 'OVERSIZED TEES',
+      btnText: 'Shop T-Shirts →',
       targetCategory: 'T-SHIRTS',
       image: 'https://cdn.shopify.com/s/files/1/0996/5194/4767/files/00_Duo_Hero_Front_Back.jpg?v=1791993388'
     }
@@ -106,10 +61,9 @@ const SECTION_DEFS = [
     eyebrow: 'Section 02 // Drop 001 • 50 Pieces Worldwide',
     categoryFilter: 'OUTERWEAR',
     banner: {
-      pill: 'HAUTE COUTURE // 50 PIECES WORLDWIDE',
-      title: 'Hand-Tailored Bomber Division',
-      desc: 'Individually numbered editions with heavyweight silk interior lining, dual-needle architectural seams, and metallic embroidery.',
-      btnText: 'Explore Outerwear →',
+      pill: 'HAUTE COUTURE // 50 PIECES',
+      title: 'BOMBER JACKETS',
+      btnText: 'Shop Outerwear →',
       targetCategory: 'OUTERWEAR',
       assetKey: 'heroGothicRoseBack',
       fallbackImage: 'https://cdn.shopify.com/s/files/1/0996/5194/4767/files/01_Gothic_Blood_Rose_Editorial_Model_Mockup.jpg?v=1790055421'
@@ -121,10 +75,9 @@ const SECTION_DEFS = [
     eyebrow: 'Section 03 // Drop 001 • 20 Pairs Worldwide',
     categoryFilter: 'FOOTWEAR',
     banner: {
-      pill: 'LIMITED EDITION // 20 PAIRS ONLY',
-      title: 'The Origins Vulcanized High-Top',
-      desc: 'Hand-lasted 16oz duck canvas, dual-density memory foam footbed, and architectural vulcanized rubber outsoles.',
-      btnText: 'Explore Footwear →',
+      pill: 'LIMITED CRAFT // 20 PAIRS ONLY',
+      title: 'ORIGINS HIGH-TOP',
+      btnText: 'Shop Footwear →',
       targetCategory: 'FOOTWEAR',
       assetKey: 'heroOriginsSneaker',
       fallbackImage: 'https://cdn.shopify.com/s/files/1/0996/5194/4767/files/16340475902737369818_2048.jpg?v=1788675203'
@@ -136,9 +89,8 @@ const SECTION_DEFS = [
     eyebrow: 'Section 04 // Drop 001 • Limited Allocation',
     categoryFilter: 'ACCESSORIES',
     banner: {
-      pill: 'ARCHIVAL OBJECTS // LIMITED ALLOCATION',
-      title: 'Headwear & Objects // Accessories',
-      desc: 'Structured 6-panel architectural baseball caps with custom engraved hardware and tonal embroidery.',
+      pill: 'ARCHIVAL OBJECTS',
+      title: 'HEADWEAR & OBJECTS',
       btnText: 'Shop Accessories →',
       targetCategory: 'ACCESSORIES',
       image: 'https://cdn.shopify.com/s/files/1/0996/5194/4767/files/Front_1_c_2_a61d98f4-85c0-4118-8013-2babd2b8e272.jpg?v=1791365773'
@@ -476,8 +428,6 @@ export default function ApexStorefront() {
   const [selectedSizes, setSelectedSizes] = useState({});
   const [selectedColors, setSelectedColors] = useState({});
 
-  // Active Lookbook Card for modal inspection
-  const [activeLookbook, setActiveLookbook] = useState(null);
 
   // Dedicated Size Guide Modal state
   const [sizeGuideProduct, setSizeGuideProduct] = useState(null);
@@ -1104,15 +1054,6 @@ export default function ApexStorefront() {
                 <button
                   type="button"
                   className="apex-mobile-nav-cat-btn"
-                  onClick={() => handleNavEditorial('lookbook')}
-                >
-                  Editorial Lookbook
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  className="apex-mobile-nav-cat-btn"
                   onClick={() => handleNavEditorial('manifesto')}
                 >
                   The Manifesto
@@ -1403,7 +1344,7 @@ export default function ApexStorefront() {
                         <div className="apex-inter-showcase-content">
                           <span className="apex-inter-showcase-pill">{sec.banner.pill}</span>
                           <h3 className="apex-inter-showcase-title">{sec.banner.title}</h3>
-                          <p className="apex-inter-showcase-desc">{sec.banner.desc}</p>
+                          {sec.banner.desc && <p className="apex-inter-showcase-desc">{sec.banner.desc}</p>}
                           <button
                             type="button"
                             className="apex-inter-showcase-btn"
@@ -1498,45 +1439,6 @@ export default function ApexStorefront() {
             </div>
           )}
 
-          {/* ── EDITORIAL CAMPAIGN RUNWAY LOOKBOOK (Homepage Only) ── */}
-          <section className="apex-section" id="lookbook">
-            <div className="apex-section-head">
-              <div>
-                <div className="apex-section-eyebrow">Campaign 001 // Visual Runway</div>
-                <h2 className="apex-section-title">The Runway Lookbook</h2>
-              </div>
-              <p className="apex-section-caption">
-                Visual documentation of Drop 001. Where industrial minimalism meets high-fashion luxury streetwear.
-              </p>
-            </div>
-
-            <div className="apex-lookbook-grid">
-              {LOOKBOOK_ITEMS.map((item, idx) => (
-                <div 
-                  className={`apex-lookbook-card ${idx === 0 ? 'span-2' : ''}`}
-                  key={item.id}
-                  onClick={() => setActiveLookbook(item)}
-                >
-                  <div className="apex-lookbook-img-wrap">
-                    <img src={item.image} alt={item.title} className="apex-lookbook-img-main" loading="lazy" />
-                    <div className="apex-lookbook-overlay">
-                      <div className="apex-lookbook-tag-row">
-                        {item.tags.map(t => (
-                          <span key={t} className="apex-lookbook-tag-pill">{t}</span>
-                        ))}
-                      </div>
-                      <div className="apex-lookbook-content">
-                        <span className="apex-lookbook-cat">{item.category}</span>
-                        <h3 className="apex-lookbook-title">{item.title}</h3>
-                        <p className="apex-lookbook-desc">{item.desc}</p>
-                        <span className="apex-lookbook-view-btn">Inspect Ensemble ↗</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
 
           {/* ── THE CRAFT & MATERIAL MANIFESTO (At the end before footer) ── */}
           <section className="apex-section" id="manifesto">
@@ -1908,38 +1810,6 @@ export default function ApexStorefront() {
         </div>
       )}
 
-      {/* ── LOOKBOOK INSPECTION MODAL ── */}
-      {activeLookbook && (
-        <div className="apex-modal-bg" onClick={() => setActiveLookbook(null)}>
-          <div className="apex-modal-sheet apex-lookbook-modal-sheet" onClick={e => e.stopPropagation()}>
-            <button className="apex-modal-x" onClick={() => setActiveLookbook(null)}>×</button>
-            <div className="apex-lookbook-modal-grid">
-              <div className="apex-lookbook-modal-media">
-                <img src={activeLookbook.image} alt={activeLookbook.title} />
-                {activeLookbook.secondaryImage && (
-                  <img src={activeLookbook.secondaryImage} alt={`${activeLookbook.title} Secondary`} className="apex-lookbook-modal-sub-img" />
-                )}
-              </div>
-              <div className="apex-lookbook-modal-details">
-                <div className="apex-section-eyebrow">{activeLookbook.category}</div>
-                <h3 className="apex-lookbook-modal-title">{activeLookbook.title}</h3>
-                <h4 className="apex-lookbook-modal-subtitle">{activeLookbook.subtitle}</h4>
-                <p className="apex-lookbook-modal-desc">{activeLookbook.desc}</p>
-                <div className="apex-lookbook-modal-tags">
-                  {activeLookbook.tags.map(t => (
-                    <span key={t} className="apex-badge-edition">{t}</span>
-                  ))}
-                </div>
-                <div style={{ marginTop: '2rem' }}>
-                  <a href="#wardrobe" onClick={() => setActiveLookbook(null)} className="apex-hero-btn-primary" style={{ display: 'inline-block', textAlign: 'center' }}>
-                    Shop The Collection →
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* ── STATIONERY & OBJECTS SLIDE-OUT VAULT DRAWER ── */}
       {drawerOpen && (
