@@ -4,11 +4,12 @@ import { useCart, useUserCurrency, formatPrice } from '../context/CartContext';
 import { countries } from '../utils/countries';
 import { db } from '../firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import heroDuo from '../../assets/backdrop-user-black-duo.jpg';
-import heroMobile from '../../assets/backdrop-user-black-mobile.jpg';
-import heroJacket from '../../assets/backdrop-jacket-sneakers-model.jpg';
-import heroSneaker from '../../assets/backdrop-sneaker-bomber-duo.jpg';
-import heroStreet from '../../assets/backdrop-streetwear-fashion-look.jpg';
+import heroDuo from '../../assets/editorial/01_gothic_rose_male_front.jpg';
+import heroMobile from '../../assets/editorial/01_gothic_rose_male_front.jpg';
+import heroJacket from '../../assets/editorial/04_imperial_dragon_female_front.jpg';
+import heroJacketBack from '../../assets/editorial/02_gothic_rose_male_back.jpg';
+import heroSneaker from '../../assets/editorial/06_the_arc_originals_sneaker.jpg';
+import heroKanagawa from '../../assets/editorial/07_kanagawa_wave_sneaker.jpg';
 import './ApexStorefront.css';
 
 function stripGsm(text) {
@@ -337,7 +338,7 @@ function ApexProductCard({
   );
 }
 
-/* ── Multi-Slide Hero Streetwear Campaign Slides ── */
+/* ── Multi-Slide Hero Streetwear Campaign Slides (100% In-Store Products) ── */
 const HERO_SLIDES = [
   {
     id: 'hero-01',
@@ -347,33 +348,33 @@ const HERO_SLIDES = [
     tagline: "Wear what others can't. Limited to 50 pieces per edition. Zero restocks.",
     ctaText: 'Explore Collection ↓',
     categoryTarget: 'ALL',
-    desktopImg: (typeof window !== 'undefined' && window.APEX_ASSETS?.heroBackdropDuo) || heroDuo,
-    mobileImg: (typeof window !== 'undefined' && window.APEX_ASSETS?.heroBackdropMobile) || heroMobile,
-    alt: 'APEX Streetwear Campaign Duo'
+    desktopImg: heroDuo,
+    mobileImg: heroMobile,
+    alt: 'APEX Gothic Blood Rose Haute Couture Bomber Jacket'
   },
   {
     id: 'hero-02',
     eyebrow: 'HAUTE COUTURE // 50 PIECES WORLDWIDE',
     title: 'BOMBERS',
     subtitle: 'KINETIC ARCHITECTURE',
-    tagline: 'Hand-tailored embroidery, heavyweight silk lining, and monolithic drape.',
+    tagline: 'Hand-tailored silk lining, high-density gold bullion embroidery, and monolithic drape.',
     ctaText: 'Shop Outerwear →',
     categoryTarget: 'OUTERWEAR',
-    desktopImg: (typeof window !== 'undefined' && window.APEX_ASSETS?.heroBackdropJacket) || heroJacket,
-    mobileImg: (typeof window !== 'undefined' && window.APEX_ASSETS?.heroBackdropJacket) || heroJacket,
-    alt: 'Haute Couture Bomber Runway'
+    desktopImg: heroJacket,
+    mobileImg: heroJacket,
+    alt: 'APEX Imperial Gold Dragon Sukajan Bomber Jacket'
   },
   {
     id: 'hero-03',
     eyebrow: 'FOOTWEAR DIVISION // 20 PAIRS ONLY',
     title: 'THE ORIGINS',
     subtitle: 'VULCANIZED HIGH-TOP',
-    tagline: 'Hand-lasted 16oz vulcanized canvas, dual-density memory foam, engraved eyelets.',
+    tagline: 'Hand-lasted 16oz duck canvas, dual-density memory foam, and engraved metal hardware.',
     ctaText: 'Shop Footwear →',
     categoryTarget: 'FOOTWEAR',
-    desktopImg: (typeof window !== 'undefined' && window.APEX_ASSETS?.heroBackdropSneaker) || heroSneaker,
-    mobileImg: (typeof window !== 'undefined' && window.APEX_ASSETS?.heroBackdropSneaker) || heroSneaker,
-    alt: 'Origins High-Top Craft Footwear'
+    desktopImg: heroSneaker,
+    mobileImg: heroSneaker,
+    alt: 'The Arc Origins Vulcanized High-Top Craft Sneaker'
   },
   {
     id: 'hero-04',
@@ -385,7 +386,19 @@ const HERO_SLIDES = [
     categoryTarget: 'T-SHIRTS',
     desktopImg: 'https://cdn.shopify.com/s/files/1/0996/5194/4767/files/00_Duo_Hero_Front_Back.jpg?v=1791993388',
     mobileImg: 'https://cdn.shopify.com/s/files/1/0996/5194/4767/files/00_Duo_Hero_Front_Back.jpg?v=1791993388',
-    alt: 'APEX Heavyweight Oversized Graphic T-Shirt Campaign Duo'
+    alt: 'APEX Celestial Tiger Sumi-E Graphic Tee Lookbook Duo'
+  },
+  {
+    id: 'hero-05',
+    eyebrow: 'UKIYO-E ART ARCHIVE // 20 PAIRS ONLY',
+    title: 'KANAGAWA WAVE',
+    subtitle: 'CRAFT HIGH-TOP',
+    tagline: 'Archival Great Wave woodblock art bonded to 16oz duck canvas with vulcanized soles.',
+    ctaText: 'Shop Footwear →',
+    categoryTarget: 'FOOTWEAR',
+    desktopImg: heroKanagawa,
+    mobileImg: heroKanagawa,
+    alt: 'The Arc Kanagawa Wave Craft High-Top Sneaker'
   }
 ];
 
@@ -1393,10 +1406,10 @@ export default function ApexStorefront() {
                     </div>
                   </div>
 
-                  {/* Inter-Section Sliding Showcase Banners */}
+                  {/* Inter-Section Sliding Showcase Banners (100% In-Store Products) */}
                   {sec.key === 'tshirts' && (
                     <div className="apex-inter-section-showcase">
-                      <div className="apex-inter-showcase-bg" style={{ backgroundImage: `url(${heroJacket})` }}>
+                      <div className="apex-inter-showcase-bg" style={{ backgroundImage: `url(${heroJacketBack})` }}>
                         <div className="apex-inter-showcase-overlay" />
                         <div className="apex-inter-showcase-content">
                           <span className="apex-inter-showcase-pill">HAUTE COUTURE // 50 PIECES WORLDWIDE</span>
@@ -1438,6 +1451,31 @@ export default function ApexStorefront() {
                             }}
                           >
                             Explore Footwear →
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {sec.key === 'footwear' && (
+                    <div className="apex-inter-section-showcase">
+                      <div className="apex-inter-showcase-bg" style={{ backgroundImage: 'url(https://cdn.shopify.com/s/files/1/0996/5194/4767/files/Vintage_Racing_Tee_Lookbook_Duo.png?v=1792078652)' }}>
+                        <div className="apex-inter-showcase-overlay" />
+                        <div className="apex-inter-showcase-content">
+                          <span className="apex-inter-showcase-pill">HEAVYWEIGHT STREETWEAR // 280 GSM</span>
+                          <h3 className="apex-inter-showcase-title">Paddock Grand Prix Racing Oversized Tee</h3>
+                          <p className="apex-inter-showcase-desc">
+                            Heavyweight 280 GSM combed cotton jersey with archival speed club graphics, vintage motorsport typography, and drop shoulders.
+                          </p>
+                          <button
+                            type="button"
+                            className="apex-inter-showcase-btn"
+                            onClick={() => {
+                              setActiveCategory('T-SHIRTS');
+                              document.getElementById('wardrobe')?.scrollIntoView({ behavior: 'smooth' });
+                            }}
+                          >
+                            Explore T-Shirts →
                           </button>
                         </div>
                       </div>
