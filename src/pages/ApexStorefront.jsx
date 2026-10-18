@@ -380,12 +380,12 @@ const HERO_SLIDES = [
     eyebrow: 'HEAVYWEIGHT APPAREL // 280 GSM',
     title: 'AVANT-GARDE',
     subtitle: 'OVERSIZED TEES',
-    tagline: 'Combed cotton jersey with high-density archival prints and drop-shoulder drape.',
+    tagline: '280 GSM combed cotton jersey with high-density archival prints and relaxed drop-shoulder drape.',
     ctaText: 'Shop T-Shirts →',
     categoryTarget: 'T-SHIRTS',
-    desktopImg: (typeof window !== 'undefined' && window.APEX_ASSETS?.heroBackdropStreetwear) || heroStreet,
-    mobileImg: (typeof window !== 'undefined' && window.APEX_ASSETS?.heroBackdropStreetwear) || heroStreet,
-    alt: 'Heavyweight Graphic T-Shirts'
+    desktopImg: 'https://cdn.shopify.com/s/files/1/0996/5194/4767/files/00_Duo_Hero_Front_Back.jpg?v=1791993388',
+    mobileImg: 'https://cdn.shopify.com/s/files/1/0996/5194/4767/files/00_Duo_Hero_Front_Back.jpg?v=1791993388',
+    alt: 'APEX Heavyweight Oversized Graphic T-Shirt Campaign Duo'
   }
 ];
 
