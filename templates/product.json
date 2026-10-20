@@ -1,7 +1,31 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "main-product",
+      "blocks": {
+        "drapx_ai_virtual_try_on_try_on_button_KYxNkc": {
+          "type": "shopify://apps/drapx-ai-virtual-try-on/blocks/try-on-button/019ebda2-7a92-7982-8061-49e032d0c18e",
+          "settings": {
+            "button_text": "✨ Try It On",
+            "button_color": "#000000",
+            "text_color": "#ffffff",
+            "button_width": "auto",
+            "border_radius": 8
+          }
+        }
+      },
+      "block_order": [
+        "drapx_ai_virtual_try_on_try_on_button_KYxNkc"
+      ],
       "settings": {}
     }
   },
