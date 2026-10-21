@@ -5,6 +5,44 @@ import ApexHeader from '../components/ApexHeader';
 import './ApexStorefront.css';
 import './ProductPage.css';
 
+function parseSizeTable(content) {
+  if (!content) return null;
+  const match = content.match(/SIZE\s+(CHEST|WIDTH)\s+LENGTH/i);
+  if (!match) return null;
+
+  const prefix = content.substring(0, match.index);
+  const cleanSubtitle = prefix
+    .replace(/^[—–-]\s*/, '')
+    .replace(/\+?\s*Tap to view measurements/i, '')
+    .trim();
+
+  const afterHeader = content.substring(match.index + match[0].length);
+  const rawTokens = afterHeader.replace(/\*.*$/, '').trim().split(/\s+/);
+
+  const rows = [];
+  for (let i = 0; i < rawTokens.length; i += 3) {
+    if (rawTokens[i] && rawTokens[i + 1] && rawTokens[i + 2]) {
+      rows.push({
+        size: rawTokens[i],
+        chest: rawTokens[i + 1],
+        length: rawTokens[i + 2]
+      });
+    }
+  }
+
+  if (rows.length === 0) return null;
+
+  const noteMatch = content.match(/(\*.*)/i);
+  const note = noteMatch ? noteMatch[1].trim() : '';
+
+  return {
+    subtitle: cleanSubtitle,
+    headerCol2: match[1].toUpperCase(),
+    rows,
+    note
+  };
+}
+
 function parseProductDescription(rawDesc) {
   if (!rawDesc) return { intro: '', sections: [] };
 
@@ -36,7 +74,11 @@ function parseProductDescription(rawDesc) {
     else if (/KEY\s*FEATURES/i.test(rawHeading)) title = 'Key Specifications';
 
     let items = null;
-    if (/FABRIC/i.test(rawHeading) || /KEY\s*FEATURES/i.test(rawHeading)) {
+    let sizeTable = null;
+
+    if (/SIZE\s*GUIDE/i.test(rawHeading) || /SIZE/i.test(title)) {
+      sizeTable = parseSizeTable(content);
+    } else if (/FABRIC/i.test(rawHeading) || /KEY\s*FEATURES/i.test(rawHeading)) {
       const splitItems = content.split(/(?=(?:Material|Design|Hardware|Print|Trim|Storage|Sole|Upper|Construction|Insole|Outsole|Lining|Closure|Fit):)/i);
       if (splitItems.length > 1) {
         items = splitItems.map(item => {
@@ -56,7 +98,8 @@ function parseProductDescription(rawDesc) {
       id: `sec-${i}`,
       title,
       rawContent: content,
-      items
+      items,
+      sizeTable
     });
   }
 
@@ -392,7 +435,36 @@ export default function ProductPage() {
                     </button>
                     {isOpen && (
                       <div className="product-accordion-content">
-                        {sec.items ? (
+                        {sec.sizeTable ? (
+                          <div className="product-size-table-container">
+                            {sec.sizeTable.subtitle && (
+                              <div className="product-size-subtitle">{sec.sizeTable.subtitle}</div>
+                            )}
+                            <div className="product-size-table-wrapper">
+                              <table className="product-size-table">
+                                <thead>
+                                  <tr>
+                                    <th>SIZE</th>
+                                    <th>{sec.sizeTable.headerCol2} (IN)</th>
+                                    <th>LENGTH (IN)</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {sec.sizeTable.rows.map((row, idx) => (
+                                    <tr key={idx}>
+                                      <td className="size-col">{row.size}</td>
+                                      <td>{row.chest}</td>
+                                      <td>{row.length}</td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                            {sec.sizeTable.note && (
+                              <p className="product-size-note">{sec.sizeTable.note}</p>
+                            )}
+                          </div>
+                        ) : sec.items ? (
                           <ul className="product-spec-list">
                             {sec.items.map((it, idx) => (
                               <li key={idx} className="product-spec-row">

@@ -420,3 +420,88 @@
     aspect-ratio: 4 / 5;
   }
 }
+
+
+/* ── Minimal Architectural Size Table ── */
+.product-size-table-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding-top: 0.25rem;
+}
+
+.product-size-subtitle {
+  font-family: var(--mono, monospace);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--red, #C23B22);
+  font-weight: 500;
+}
+
+.product-size-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  border-radius: 4px;
+}
+
+.product-size-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--sans, 'Inter', -apple-system, sans-serif);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.product-size-table thead tr {
+  background: #111111;
+  color: #FFFFFF;
+}
+
+.product-size-table th {
+  padding: 0.65rem 0.85rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.product-size-table th:last-child {
+  border-right: none;
+}
+
+.product-size-table td {
+  padding: 0.6rem 0.85rem;
+  color: #333333;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+  border-right: 1px solid rgba(17, 17, 17, 0.08);
+}
+
+.product-size-table td:last-child {
+  border-right: none;
+}
+
+.product-size-table tr:last-child td {
+  border-bottom: none;
+}
+
+.product-size-table tr:nth-child(even) {
+  background: rgba(17, 17, 17, 0.02);
+}
+
+.product-size-table td.size-col {
+  font-weight: 700;
+  color: #111111;
+  font-family: var(--mono, monospace);
+}
+
+.product-size-note {
+  font-family: var(--sans, 'Inter', -apple-system, sans-serif);
+  font-size: 0.74rem;
+  color: #777777;
+  font-style: italic;
+  margin: 0.2rem 0 0;
+  line-height: 1.4;
+}
