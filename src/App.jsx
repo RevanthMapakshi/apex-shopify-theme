@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
+import CartDrawer from './components/CartDrawer';
 import ApexStorefront from './pages/ApexStorefront';
 import ProductPage from './pages/ProductPage';
 import Terms from './pages/Terms';
@@ -10,6 +11,7 @@ import Contact from './pages/Contact';
 export default function App() {
   return (
     <CartProvider>
+      <CartDrawer />
       <Router>
         <Routes>
           <Route path="/" element={<ApexStorefront />} />

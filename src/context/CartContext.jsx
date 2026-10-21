@@ -1,7 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 
-const CartContext = createContext(null);
-
 // ── 1. CORE ARCHIVAL & WAITLIST CATALOGUE (Main Website / The ARC) ──
 export const LOCAL_PRODUCTS = [
   {
@@ -146,6 +144,23 @@ export function formatPrice(product, currency) {
   const val = typeof product.priceUSD === 'number' ? product.priceUSD : 0;
   return `$${(val / 100).toFixed(2)}`;
 }
+
+export const defaultCartState = {
+  products: LOCAL_PRODUCTS,
+  loadingProducts: false,
+  items: [],
+  addItem: () => {},
+  removeItem: () => {},
+  updateQty: () => {},
+  clearCart: () => {},
+  cartOpen: false,
+  setCartOpen: () => {},
+  totalItems: 0,
+  getTotal: () => 0,
+  checkoutWithShopify: () => {},
+};
+
+export const CartContext = createContext(defaultCartState);
 
 // ── Cart Provider ──────────────────────────────────────────────────
 export function CartProvider({ children }) {
@@ -317,5 +332,6 @@ export function CartProvider({ children }) {
 }
 
 export function useCart() {
-  return useContext(CartContext);
+  const ctx = useContext(CartContext);
+  return ctx || defaultCartState;
 }

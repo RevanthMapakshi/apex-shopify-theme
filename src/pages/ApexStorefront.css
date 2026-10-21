@@ -1558,6 +1558,20 @@ body {
   border-bottom: 1px solid rgba(17, 17, 17, 0.08);
 }
 
+@media (max-width: 768px) {
+  .apex-editorial-row-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.65rem;
+    margin: 2.5rem 0 1.25rem;
+  }
+  .apex-editorial-filter-btn {
+    align-self: flex-start;
+    padding: 0.25rem 0;
+    font-size: 0.82rem;
+  }
+}
+
 .apex-editorial-tag {
   font-family: var(--mono);
   font-size: 0.65rem;
@@ -1593,6 +1607,54 @@ body {
 
 .apex-editorial-filter-btn:hover {
   color: var(--red);
+}
+
+/* ── Section View All Button (Cleanly Positioned Below Products) ── */
+.apex-section-view-all-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0 3.5rem;
+  padding: 0 1rem;
+}
+
+.apex-section-view-all-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.85rem 2.2rem;
+  background: transparent;
+  color: #111111;
+  border: 1px solid rgba(17, 17, 17, 0.25);
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.apex-section-view-all-btn:hover {
+  background: #111111;
+  color: #FFFFFF;
+  border-color: #111111;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+@media (max-width: 600px) {
+  .apex-section-view-all-wrapper {
+    margin: 1.5rem 0 2.5rem;
+  }
+  .apex-section-view-all-btn {
+    width: 100%;
+    padding: 0.95rem 1.25rem;
+    font-size: 0.8rem;
+  }
 }
 
 /* ── Minimal Luxury Filter Bar (OWR Aesthetic) ────────────────────── */

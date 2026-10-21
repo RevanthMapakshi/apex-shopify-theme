@@ -235,6 +235,12 @@ function ApexProductCard({
 
   const handleCardClick = () => {
     const productHandle = item.handle || item.id;
+    try {
+      sessionStorage.setItem('apex_storefront_scroll', window.scrollY.toString());
+      sessionStorage.setItem('apex_last_product_id', item.id);
+    } catch (e) {
+      // ignore
+    }
     if (typeof window !== 'undefined' && window.location.hostname.includes('myshopify.com')) {
       window.location.href = `/products/${productHandle}`;
     } else {
@@ -347,17 +353,71 @@ const HERO_SLIDES = [
 ];
 
 export default function ApexStorefront() {
-  const { products, loadingProducts, addItem, totalItems, setCartOpen } = useCart();
+  const { products = [], loadingProducts = false, addItem = () => {}, totalItems = 0, setCartOpen = () => {} } = useCart() || {};
   const currency = useUserCurrency();
 
-  // Active Category Filter for Streetwear House (Apparel default)
-  const [activeCategory, setActiveCategory] = useState('ALL');
+  // Active Category Filter for Streetwear House (Apparel default, persisted in session)
+  const [activeCategory, setActiveCategoryState] = useState(() => {
+    try {
+      return sessionStorage.getItem('apex_active_category') || 'ALL';
+    } catch {
+      return 'ALL';
+    }
+  });
 
-  // Active Gender Filter ('ALL' | 'MENS' | 'WOMENS')
-  const [activeGender, setActiveGender] = useState('ALL');
+  const setActiveCategory = (cat) => {
+    try {
+      sessionStorage.setItem('apex_active_category', cat);
+    } catch {
+      // ignore
+    }
+    setActiveCategoryState(cat);
+  };
+
+  // Active Gender Filter ('ALL' | 'MENS' | 'WOMENS', persisted in session)
+  const [activeGender, setActiveGenderState] = useState(() => {
+    try {
+      return sessionStorage.getItem('apex_active_gender') || 'ALL';
+    } catch {
+      return 'ALL';
+    }
+  });
+
+  const setActiveGender = (gen) => {
+    try {
+      sessionStorage.setItem('apex_active_gender', gen);
+    } catch {
+      // ignore
+    }
+    setActiveGenderState(gen);
+  };
 
   // Header scroll detection (header stays permanently sticky while scrolling)
   const [scrolled, setScrolled] = useState(false);
+
+  // Restore scroll position when returning to the storefront
+  useEffect(() => {
+    try {
+      const savedScroll = sessionStorage.getItem('apex_storefront_scroll');
+      if (savedScroll && !loadingProducts) {
+        const pos = parseInt(savedScroll, 10);
+        if (!isNaN(pos) && pos > 0) {
+          const t1 = setTimeout(() => {
+            window.scrollTo({ top: pos, behavior: 'instant' });
+          }, 50);
+          const t2 = setTimeout(() => {
+            window.scrollTo({ top: pos, behavior: 'instant' });
+          }, 200);
+          return () => {
+            clearTimeout(t1);
+            clearTimeout(t2);
+          };
+        }
+      }
+    } catch {
+      // ignore
+    }
+  }, [loadingProducts]);
 
   useEffect(() => {
     document.title = "APEX by The ARC | Wear What Others Can't";
@@ -840,7 +900,20 @@ export default function ApexStorefront() {
             <span className="apex-hamburger-line"></span>
           </button>
 
-          <a href="#hero" className="apex-logo">
+          <a 
+            href="#hero" 
+            className="apex-logo"
+            onClick={(e) => {
+              e.preventDefault();
+              try {
+                sessionStorage.setItem('apex_active_category', 'ALL');
+                sessionStorage.removeItem('apex_storefront_scroll');
+              } catch {}
+              setActiveCategory('ALL');
+              setActiveGender('ALL');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+          >
             <ApexLogoMark />
             <div className="apex-logo-text">
               <span className="apex-logo-name">Apex</span>
@@ -1367,9 +1440,17 @@ export default function ApexStorefront() {
                         <span className="apex-editorial-tag">{sec.eyebrow}</span>
                         <h3 className="apex-editorial-title">{sec.title}</h3>
                       </div>
+                    </div>
+
+                    <div className={`apex-streetwear-grid ${mobileGridCols === 2 ? 'mobile-2col' : 'mobile-1col'}`}>
+                      {secProds.map(renderProductCard)}
+                    </div>
+
+                    {/* View All Button Placed Cleanly Below The Products */}
+                    <div className="apex-section-view-all-wrapper">
                       <button
                         type="button"
-                        className="apex-editorial-filter-btn"
+                        className="apex-section-view-all-btn"
                         onClick={() => {
                           setActiveCategory(sec.categoryFilter);
                           document.getElementById('wardrobe')?.scrollIntoView({ behavior: 'smooth' });
@@ -1377,10 +1458,6 @@ export default function ApexStorefront() {
                       >
                         View All ({secProds.length}) &rarr;
                       </button>
-                    </div>
-
-                    <div className={`apex-streetwear-grid ${mobileGridCols === 2 ? 'mobile-2col' : 'mobile-1col'}`}>
-                      {secProds.map(renderProductCard)}
                     </div>
                   </div>
                 </React.Fragment>

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useCart, formatPrice, useUserCurrency } from '../context/CartContext';
+import ApexHeader from '../components/ApexHeader';
+import './ApexStorefront.css';
 import './ProductPage.css';
 
 function parseProductDescription(rawDesc) {
@@ -70,7 +72,7 @@ function parseProductDescription(rawDesc) {
 export default function ProductPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { products, loadingProducts, addItem } = useCart();
+  const { products = [], loadingProducts = false, addItem = () => {} } = useCart() || {};
   const currency = useUserCurrency();
   
   const [product, setProduct] = useState(null);
@@ -108,13 +110,39 @@ export default function ProductPage() {
     }
   }, [id, products, loadingProducts]);
 
-  if (loadingProducts) return <div className="product-page-loading">Loading Product...</div>;
-  if (!product) return (
-    <div className="product-page-empty">
-      <h1>Product Not Found</h1>
-      <Link to="/" className="back-link">← Return to APEX Collection</Link>
-    </div>
-  );
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [id]);
+
+  if (loadingProducts) {
+    return (
+      <>
+        <ApexHeader />
+        <div className="product-page-loading" style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          Loading Product...
+        </div>
+      </>
+    );
+  }
+
+  if (!product) {
+    return (
+      <>
+        <ApexHeader />
+        <div className="product-page-empty" style={{ minHeight: '60vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
+          <h1>Product Not Found</h1>
+          <button 
+            type="button" 
+            className="back-link" 
+            onClick={() => navigate('/')}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', font: 'inherit', color: 'inherit' }}
+          >
+            ← Return to APEX Collection
+          </button>
+        </div>
+      </>
+    );
+  }
 
   let allImages = product.images ? product.images.map(img => img?.src || img) : [product.image];
   if (product.images && product.parsedVariants && selectedColor) {
@@ -203,13 +231,35 @@ export default function ProductPage() {
 
   const { intro, sections } = parseProductDescription(product.desc);
 
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate('/');
+    }
+  };
+
   return (
-    <div className="product-page">
-      <div className="product-page-header">
-        <Link to="/" className="back-link">
-          ← Back to APEX Collection
-        </Link>
-      </div>
+    <>
+      <ApexHeader />
+      <div className="product-page">
+        <div className="product-page-header">
+          <button 
+            type="button" 
+            className="back-link"
+            onClick={handleBack}
+            style={{ 
+              background: 'none', 
+              border: 'none', 
+              cursor: 'pointer', 
+              padding: '0.5rem 0',
+              font: 'inherit',
+              color: 'inherit'
+            }}
+          >
+            ← Back to APEX Collection
+          </button>
+        </div>
       
       <div className="product-layout">
         {/* Left Col: Images */}
@@ -365,5 +415,6 @@ export default function ProductPage() {
         </div>
       </div>
     </div>
+  </>
   );
 }
